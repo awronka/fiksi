@@ -5,8 +5,9 @@
     <title>scotch-chat</title>
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="libs/angular-material/angular-material.css">
-    
+
     <script src="libs/angular/angular.js"></script>
     <script src="http://localhost:2015/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="libs/angular-animate/angular-animate.js"></script>
@@ -18,8 +19,12 @@
     <script src="js/app.js"></script>
 </head>
 
-
-<body ng-controller="MainCtrl" ng-init="usernameModal()">
+<body>
+<div ng-controller="MainCtrl" ng-init="usernameModal()">
+    <div class='col-xs-6'><canvas id="my-canvas" width="400" height="600">I am canvas</canvas>
+    <button onclick="getInfo()">log</button>
+</div>
+    <div class='col-xs-6'>
     <md-content>
         <section>
             <md-list>
@@ -50,6 +55,77 @@
         </div>
 
     </md-content>
+    </div>
+</div>
 </body>
-
+    <script>
+        var canvas = document.getElementById("my-canvas");
+        console.log(canvas);
+        context = canvas.getContext("2d"),
+        img = document.createElement("img"),
+        mouseDown = false,
+        brushColor = "rgb(0, 0, 0)",
+        hasText = true,
+        clearCanvas = function () {
+            if (hasText) {
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                hasText = false;
+            }
+        };
+            // Adding instructions
+        context.fillText("Drop an image onto the canvas", 240, 200);
+        context.fillText("Click a spot to set as brush color", 240, 220);
+        
+        // Image for loading	
+        img.addEventListener("load", function () {
+            clearCanvas();
+            context.drawImage(img, 0, 0);
+        }, false);
+        
+                // To enable drag and drop
+        canvas.addEventListener("dragover", function (evt) {
+            evt.preventDefault();
+        }, false);
+        
+        // Handle dropped image file - only Firefox and Google Chrome
+        canvas.addEventListener("drop", function (evt) {
+            var files = evt.dataTransfer.files;
+            if (files.length > 0) {
+                var file = files[0];
+                if (typeof FileReader !== "undefined" && file.type.indexOf("image") != -1) {
+                    var reader = new FileReader();
+                    // Note: addEventListener doesn't work in Google Chrome for this event
+                    reader.onload = function (evt) {
+                        img.src = evt.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+            evt.preventDefault();
+        }, false);    
+                // Detect mousedown
+        canvas.addEventListener("mousedown", function (evt) {
+            clearCanvas();
+            mouseDown = true;
+            context.beginPath();
+        }, false);
+        
+        // Detect mouseup
+        canvas.addEventListener("mouseup", function (evt) {
+            mouseDown = false;
+            var colors = context.getImageData(evt.layerX, evt.layerY, 1, 1).data;
+            brushColor = "rgb(" + colors[0] + ", " + colors[1] + ", " + colors[2] + ")";
+        }, false);
+        
+        // Draw, if mouse button is pressed
+        canvas.addEventListener("mousemove", function (evt) {
+            if (mouseDown) {
+                context.strokeStyle = brushColor;								
+                context.lineWidth = 20;
+                context.lineJoin = "round";
+                context.lineTo(evt.layerX+1, evt.layerY+1);
+                context.stroke();
+            }
+        }, false);    
+    </script>
 </html>

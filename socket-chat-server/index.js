@@ -19,6 +19,34 @@ var ChatSchema = mongoose.Schema({
   room: String
 });
 
+var UserSchema = new mongoose.Schema({
+      refresh:{type:Boolean, default: false},
+      isAdmin: {type: Boolean, default: true},   
+      firstName: String,
+      lastName: String,
+      displayName: {type: String, unique: true},
+      phone: String,
+      userBlurb: String,
+        email: {
+            type: String
+        },
+        password: {
+            type: String
+        },
+        salt: {
+            type: String
+        },
+        google: {
+            id: String,
+            token: String,
+        },
+        pictureUrl: String,
+        chatHistory:[{type: mongoose.Schema.Types.ObjectId, ref:"Chat"}]
+});
+
+var User = mongoose.model('User', UserSchema);
+
+
 //Create a model from the chat schema
 var Chat = mongoose.model('Chat', ChatSchema);
 
