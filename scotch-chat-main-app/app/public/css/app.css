@@ -16,3 +16,7 @@ body {
     -ms-animation: zoomIn 1s;
     animation: zoomIn 1s;
 }
+
+.col-xs-6{
+    height:100px;
+}
