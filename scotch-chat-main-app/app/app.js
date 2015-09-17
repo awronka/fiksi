@@ -8,13 +8,19 @@ var routes = require('./routes');
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'ejs');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'views')));
+
+app.get('/', function(req, res) {
+  res.sendfile(__dirname + '/views/index.html');
+});
+
 
 app.get('/', routes.index);
 
