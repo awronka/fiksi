@@ -92,6 +92,7 @@ app.controller('MainCtrl', function ($scope, Window, GUI, $mdDialog, socket, $ht
                 targetEvent: ev,
             })
             .then(function (answer) {
+ 
                 //Set username with the value returned from the modal
                 $scope.username = answer;
                 //Tell the server there is a new user
@@ -100,6 +101,13 @@ app.controller('MainCtrl', function ($scope, Window, GUI, $mdDialog, socket, $ht
                 });
                 //Set room to general;
                 $scope.room = 'GENERAL';
+                
+                //set up to get user from the server
+                $http.get(serverBaseUrl + '/user').then(function(user){
+                   console.log(user.data)
+                   return user
+                });
+                
                 //Fetch chat messages in GENERAL
                 $http.get(serverBaseUrl + '/msg?room=' + $scope.room).success(function (msgs) {
                     $scope.messages = msgs;
@@ -159,6 +167,16 @@ app.directive('ngEnter', function () {
 
 //Dialog controller
 function UsernameDialogController($scope, $mdDialog) {
+    //show and hide the depending on the userStatus being new or returning
+    $scope.userStatus = true;
+    
+    $scope.newUser = function(){
+        $scope.userStatus = true;
+    }
+    
+    $scope.returningUser = function(){
+        $scope.userStatus = false;
+    }
     $scope.answer = function (answer) {
         $mdDialog.hide(answer);
     };
