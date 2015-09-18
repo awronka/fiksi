@@ -21,8 +21,10 @@
 
 <body>
 <div ng-controller="MainCtrl" ng-init="usernameModal()">
-    <div class='col-xs-6'><canvas id="my-canvas" width="400" height="600">I am canvas</canvas>
+    <div class='col-xs-6'>
+    <div class="canvas-container"><canvas id="my-canvas" width="400" height="600">I am canvas</canvas></div>
     <button onclick="getInfo()">log</button>
+
 </div>
     <div class='col-xs-6'>
     <md-content>
@@ -113,7 +115,8 @@
         // Detect mouseup
         canvas.addEventListener("mouseup", function (evt) {
             mouseDown = false;
-            var colors = context.getImageData(evt.layerX, evt.layerY, 1, 1).data;
+            // var colors = context.getImageData(evt.layerX, evt.layerY, 1, 1).data;
+            var colors =[255,0,255];
             brushColor = "rgb(" + colors[0] + ", " + colors[1] + ", " + colors[2] + ")";
         }, false);
         
@@ -121,7 +124,7 @@
         canvas.addEventListener("mousemove", function (evt) {
             if (mouseDown) {
                 context.strokeStyle = brushColor;								
-                context.lineWidth = 20;
+                context.lineWidth = 5;
                 context.lineJoin = "round";
                 context.lineTo(evt.layerX+1, evt.layerY+1);
                 context.stroke();

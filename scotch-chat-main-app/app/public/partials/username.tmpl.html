@@ -2,13 +2,21 @@
     <form>
         <md-toolbar>
             <div class="md-toolbar-tools">
+                <button ng-click ="newUser()">new user</button>
+                <button ng-click ="returningUser()">returning user</button>
                 <h2>Enter your chat username</h2>
                 <span flex></span>
             </div>
         </md-toolbar>
-        <md-dialog-content>
+        <md-dialog-content ng-show="userStatus">
             <md-input-container>
-                <label>Username Please!</label>
+                <label>New User Enter Name</label>
+                <input ng-model="username" type="text">
+            </md-input-container>
+        </md-dialog-content>
+        <md-dialog-content ng-show="!userStatus">
+            <md-input-container>
+                <label>Returning User Enter Name</label>
                 <input ng-model="username" type="text">
             </md-input-container>
         </md-dialog-content>

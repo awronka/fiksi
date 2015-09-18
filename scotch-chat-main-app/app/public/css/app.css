@@ -20,3 +20,11 @@ body {
 .col-xs-6{
     height:100px;
 }
+
+canvas{
+    border-left: 1px solid grey;
+    border-bottom: 2px solid grey;
+    padding: 2%;
+    margin-left: -5%;
+}
+
