@@ -4,9 +4,17 @@ var mongoose = require('mongoose');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var bodyParser = require('body-parser');
 
 //Set our static file directory to public
 app.use(express.static(__dirname + '/public'));
+
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 //Connect to mongo DB database
 mongoose.connect("mongodb://127.0.0.1:27017/scotch-chat");
@@ -24,24 +32,24 @@ var UserSchema = new mongoose.Schema({
       isAdmin: {type: Boolean, default: true},   
       firstName: String,
       lastName: String,
-      displayName: {type: String, unique: true},
-      phone: String,
-      userBlurb: String,
-        email: {
-            type: String
-        },
-        password: {
-            type: String
-        },
-        salt: {
-            type: String
-        },
-        google: {
-            id: String,
-            token: String,
-        },
-        pictureUrl: String,
-        chatHistory:[{type: mongoose.Schema.Types.ObjectId, ref:"Chat"}]
+      displayName: String
+      // phone: String,
+      // userBlurb: String,
+      //   email: {
+      //       type: String
+      //   },
+      //   password: {
+      //       type: String
+      //   },
+      //   salt: {
+      //       type: String
+      //   },
+      //   google: {
+      //       id: String,
+      //       token: String,
+      //   },
+      //   pictureUrl: String,
+      //   chatHistory:[{type: mongoose.Schema.Types.ObjectId, ref:"Chat"}]
 });
 
 var User = mongoose.model('User', UserSchema);
@@ -106,6 +114,23 @@ app.post('/setup', function(req, res) {
   }
   //Send a resoponse so the serve would not get stuck
   res.send('created');
+});
+
+//This route gets all the users from the data base
+app.get('/user', function(req,res, next){
+  User.find().exec().then(function(users){
+    console.log("hit " + users)
+    res.json(users)
+  }, next);
+});
+
+//Create a new user with a post request
+app.post('/user', function(req,res,next){
+  console.log(req.body)
+		User.create(req.body).then(function(user){
+			res.status(201).json(user);
+		})
+		.then(null,next);
 });
 
 //This route produces a list of chat as filterd by 'room' query
