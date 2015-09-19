@@ -1,4 +1,4 @@
-SCOTCH CHAT
+Fiksi
 ======================
 
-This is a demo for a proposed article on [Scotch](https://scotch.io)
+Fiksi desktop, web app, and server
