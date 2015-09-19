@@ -25,13 +25,10 @@
 </head>
 
 <body>
-    <div ng-controller="MainCtrl" >
-
+    <div ng-controller="MainCtrl">
         <video id="my-video" autoplay></video>
         <canvas id="my-canvas" width="400" height="600" autoplay>I am canvas</canvas>
-        
         <img id="my-img" />
-
         <!--ng-init="usernameModal()" <div class='col-xs-6'>
             <div class="canvas-container">
                 <canvas id="my-canvas" width="400" height="600" autoplay>I am canvas</canvas>
@@ -94,13 +91,15 @@
         </div> -->
     </div>
     <script>
-
     var photoButton = document.createElement('button');
-  photoButton.innerText = 'Smile!';
-  photoButton.addEventListener('click', takePhoto, true);
-  document.body.appendChild(photoButton);
+    var saveButton = document.createElement('button');
+    saveButton.innerText = 'Save Image';
+    saveButton.addEventListener('click', savePhoto, true);
+    photoButton.innerText = 'Take Screenshot';
+    photoButton.addEventListener('click', takePhoto, true);
+    document.body.appendChild(photoButton);
 
-    
+
     var gui = require('nw.gui');
 
     console.log(gui);
@@ -116,7 +115,16 @@
 
     function takePhoto() {
         context.drawImage(video, 0, 0, 600, 400);
-    }
+    };
+
+    function savePhoto() {
+
+        var data = photo.toDataURL("image/png");
+
+        data = data.replace("image/png", "image/octet-stream");
+        document.location.href = data;
+
+    };
 
 
 
