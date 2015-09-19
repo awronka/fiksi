@@ -1,5 +1,5 @@
 //Dialog controller
-function UsernameDialogController($scope, $mdDialog, SignUp) {
+function UsernameDialogController($scope, $mdDialog, SignUp, AuthService) {
     //show and hide the depending on the userStatus being new or returning
     $scope.userStatus = true;
     
@@ -15,7 +15,25 @@ function UsernameDialogController($scope, $mdDialog, SignUp) {
     $scope.returningUser = function(){
         $scope.userStatus = false;
     }
+    
+   $scope.sendLogin = function (answer) {
+
+        $scope.error = null;
+
+        AuthService.login(answer).then(function () {
+            // $state.go('home');
+        }).catch(function () {
+            $scope.error = 'Invalid login credentials.';
+        });
+
+    };
+    
+    
+    
     $scope.answer = function (answer) {
+         SignUp.signup(answer).then(function(data){
+             console.log(data);
+         });
         $mdDialog.hide(answer);
     };
 }
