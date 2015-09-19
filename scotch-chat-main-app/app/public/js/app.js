@@ -1,6 +1,6 @@
 'use strict';
 //Load angular
-var app = angular.module('scotch-chat', ['ngMaterial', 'ngAnimate', 'ngMdIcons', 'btford.socket-io'])
+var app = angular.module('Fiksi', ['ngMaterial', 'ngAnimate', 'ngMdIcons', 'btford.socket-io'])
     //Set our server url
 var serverBaseUrl = 'http://localhost:2015';
 //Services to interact with nodewebkit GUI and Window
