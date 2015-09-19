@@ -62,7 +62,7 @@ app.controller('MainCtrl', function ($scope, Window, GUI, $mdDialog, SignUp, soc
         //Launch Modal to get username
         $mdDialog.show({
                 controller: UsernameDialogController,
-                templateUrl: 'partials/username.tmpl.html',
+                templateUrl: 'html/username.tmpl.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
             })

@@ -2,10 +2,12 @@
     <form>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <button ng-click ="newUser()">new user</button>
-                <button ng-click ="returningUser()">returning user</button>
                 <h2>Enter your chat username</h2>
                 <span flex></span>
+            </div>
+            <div col-xs-12>
+                <button ng-click ="newUser()">new user</button>
+                <button ng-click ="returningUser()">returning user</button>
             </div>
         </md-toolbar>
         <md-dialog-content ng-show="userStatus">
