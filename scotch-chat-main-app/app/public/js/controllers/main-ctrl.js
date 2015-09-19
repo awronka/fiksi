@@ -1,5 +1,5 @@
 //Our Contrller 
-app.controller('MainCtrl', function ($scope, Window, GUI, $mdDialog, SignUp, socket, $http) {
+app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog, SignUp, socket, $http) {
     //Global Scope
     $scope.messages = [];
     $scope.room = "";

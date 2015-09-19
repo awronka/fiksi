@@ -32,11 +32,16 @@
                 <input ng-model="username.password" type="text">
             </md-input-container>
         </md-dialog-content>
-        <div class="md-actions" layout="row">
+        <div ng-show="userStatus" class="md-actions" layout="row">
             <md-button ng-click="answer(username)" class="md-primary" ng-disabled="!username">
-                Ok
+                Add User
             </md-button>
         </div>
+        <div ng-show="!userStatus" class="md-actions" layout="row">
+        <md-button ng-click="sendLogin(username)" class="md-primary" ng-disabled="!username">
+                Login
+         </md-button>
+         </div>
     </form>
       <button  ng-show="!userStatus" class="login-btn btn" ng-click ="newUser()">new user</button>
       <button ng-show="userStatus" class="login-btn btn" ng-click ="returningUser()">returning user</button>
