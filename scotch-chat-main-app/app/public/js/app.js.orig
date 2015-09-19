@@ -2,8 +2,21 @@
 //Load angular
 var app = angular.module('Fiksi', ['ngMaterial', 'ngAnimate', 'ngMdIcons', 'btford.socket-io'])
     //Set our server url
+<<<<<<< HEAD
+//var serverBaseUrl = 'http://localhost:2015';
+var serverBaseUrl = 'https://frozen-sea-6880.herokuapp.com';
+//Services to interact with nodewebkit GUI and Window
+app.factory('GUI', function () {
+    //Return nw.gui
+    return require('nw.gui');
+});
+app.factory('Window', function (GUI) {
+    return GUI.Window.get();
+});
+=======
 var serverBaseUrl = 'http://localhost:2015';
 
+>>>>>>> 452e17d0b7ade2600719e04c122e17408776ba62
 
 //Service to interact with the socket library
 app.factory('socket', function (socketFactory) {
