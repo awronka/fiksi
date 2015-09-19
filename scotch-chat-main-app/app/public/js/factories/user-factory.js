@@ -1,5 +1,7 @@
 app.factory('SignUp', function ($http) {
-	var serverBaseUrl = 'http://localhost:2015';
+	//var serverBaseUrl = 'http://localhost:2015';
+	var serverBaseUrl = 'https://frozen-sea-6880.herokuapp.com';
+
 	return{
 		signup: function (credentials) {
 		return $http.post('/user', credentials).then(function (res) {
