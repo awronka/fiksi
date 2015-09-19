@@ -16,6 +16,9 @@ function UsernameDialogController($scope, $mdDialog, SignUp) {
         $scope.userStatus = false;
     }
     $scope.answer = function (answer) {
+         SignUp.signup(answer).then(function(data){
+             console.log(data);
+         });
         $mdDialog.hide(answer);
     };
 }

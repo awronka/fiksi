@@ -28,3 +28,14 @@ canvas{
     margin-left: -5%;
 }
 
+.user-enter-box{
+    align-content: center;
+
+}
+
+.login-btn{
+    margin: auto;
+    width: 45%;
+    color: white;
+}
+

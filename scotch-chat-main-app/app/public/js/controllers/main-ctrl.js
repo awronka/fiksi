@@ -69,10 +69,10 @@ app.controller('MainCtrl', function ($scope, Window, GUI, $mdDialog, SignUp, soc
             .then(function (answer) {
  
                 //Set username with the value returned from the modal
-                $scope.username = answer;
+                $scope.username = answer.displayName;
                 //Tell the server there is a new user
                 socket.emit('new user', {
-                    username: answer
+                    username: answer.displayName
                 });
                 //Set room to general;
                 $scope.room = 'GENERAL';

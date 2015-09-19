@@ -5,21 +5,31 @@
                 <h2>Enter your chat username</h2>
                 <span flex></span>
             </div>
-            <div col-xs-12>
-                <button ng-click ="newUser()">new user</button>
-                <button ng-click ="returningUser()">returning user</button>
+            <div class='col-xs-12 user-enter-box'>
             </div>
         </md-toolbar>
         <md-dialog-content ng-show="userStatus">
             <md-input-container>
                 <label>New User Enter Name</label>
-                <input ng-model="username" type="text">
+                <input ng-model="username.displayName" type="text">
+            </md-input-container>
+            <md-input-container>
+                <label>Enter Password</label>
+                <input ng-model="username.password" type="text">
+            </md-input-container>
+            <md-input-container>
+                <label>Repeat Password</label>
+                <input type="text">
             </md-input-container>
         </md-dialog-content>
         <md-dialog-content ng-show="!userStatus">
             <md-input-container>
-                <label>Returning User Enter Name</label>
-                <input ng-model="username" type="text">
+                <label>Enter Name</label>
+                <input ng-model="username.displayName" type="text">
+            </md-input-container>
+            <md-input-container>
+                <label>Enter Password</label>
+                <input ng-model="username.password" type="text">
             </md-input-container>
         </md-dialog-content>
         <div class="md-actions" layout="row">
@@ -28,4 +38,6 @@
             </md-button>
         </div>
     </form>
+      <button  ng-show="!userStatus" class="login-btn btn" ng-click ="newUser()">new user</button>
+      <button ng-show="userStatus" class="login-btn btn" ng-click ="returningUser()">returning user</button>
 </md-dialog>
