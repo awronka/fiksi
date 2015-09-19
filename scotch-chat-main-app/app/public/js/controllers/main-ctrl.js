@@ -64,7 +64,7 @@ app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog
                 controller: UsernameDialogController,
                 templateUrl: 'html/username.tmpl.html',
                 parent: angular.element(document.body),
-                targetEvent: ev,
+                targetEvent: ev
             })
             .then(function (answer) {
  

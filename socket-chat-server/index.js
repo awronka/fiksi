@@ -35,7 +35,8 @@ var UserSchema = new mongoose.Schema({
       isAdmin: {type: Boolean, default: true},   
       firstName: String,
       lastName: String,
-      displayName: String
+      displayName: String,
+      password: String
       // phone: String,
       // userBlurb: String,
       //   email: {
@@ -71,6 +72,14 @@ app.all('/*', function(req, res, next) {
   } else {
     next();
   }
+});
+
+//start to login user
+app.post('/user', function(req,res, next){
+  User.findOne({password: req.body.password}).exec().then(function(user){
+    console.log("hit " + user)
+    res.json(user)
+  }, next);
 });
 
 /*||||||||||||||||||||||||||||||||||||||ROUTES||||||||||||||||||||||||||||||||||||||*/
