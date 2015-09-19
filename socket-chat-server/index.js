@@ -116,6 +116,21 @@ app.post('/setup', function(req, res) {
   res.send('created');
 });
 
+
+
+//This route produces a list of chat as filterd by 'room' query
+app.get('/msg', function(req, res) {
+  //Find
+  Chat.find({
+    'room': req.query.room.toLowerCase()
+  }).exec(function(err, msgs) {
+    //Send
+    res.json(msgs);
+  });
+});
+
+/*------------------------------------User Routes--------------------------------------*/
+
 //This route gets all the users from the data base
 app.get('/user', function(req,res, next){
   User.find().exec().then(function(users){
@@ -131,17 +146,6 @@ app.post('/user', function(req,res,next){
 			res.status(201).json(user);
 		})
 		.then(null,next);
-});
-
-//This route produces a list of chat as filterd by 'room' query
-app.get('/msg', function(req, res) {
-  //Find
-  Chat.find({
-    'room': req.query.room.toLowerCase()
-  }).exec(function(err, msgs) {
-    //Send
-    res.json(msgs);
-  });
 });
 
 /*||||||||||||||||||||||||||||||||||||||END ROUTES||||||||||||||||||||||||||||||||||||||*/
