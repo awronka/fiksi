@@ -1,9 +1,34 @@
 <md-dialog aria-label="Mango">
-    <form>
+    <form ng-show="!userStatus">
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <button ng-click ="newUser()">new user</button>
-                <button ng-click ="returningUser()">returning user</button>
+                <h2>Enter your chat username</h2>
+                <span flex></span>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <md-input-container>
+                <label>New User Enter Name</label>
+                <input ng-model="username.displayName" type="text">
+            </md-input-container>
+            <md-input-container>
+                <label>Enter Password</label>
+                <input ng-model="username.password" type="text">
+            </md-input-container>
+            <md-input-container>
+                <label>Re-Enter Password</label>
+                <input ng-model="username.password" type="text">
+            </md-input-container>
+        </md-dialog-content>
+        <div class="md-actions" layout="row">
+            <md-button ng-click="answer(username)" class="md-primary" ng-disabled="!username">
+                New User
+            </md-button>
+        </div>
+    </form>
+        <form ng-show="userStatus">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
                 <h2>Enter your chat username</h2>
                 <span flex></span>
             </div>
@@ -11,19 +36,19 @@
         <md-dialog-content ng-show="userStatus">
             <md-input-container>
                 <label>New User Enter Name</label>
-                <input ng-model="username" type="text">
+                <input ng-model="username.displayName" type="text">
             </md-input-container>
-        </md-dialog-content>
-        <md-dialog-content ng-show="!userStatus">
             <md-input-container>
-                <label>Returning User Enter Name</label>
-                <input ng-model="username" type="text">
+                <label>Enter Password</label>
+                <input ng-model="username.password" type="text">
             </md-input-container>
         </md-dialog-content>
         <div class="md-actions" layout="row">
-            <md-button ng-click="answer(username)" class="md-primary" ng-disabled="!username">
-                Ok
+            <md-button ng-click="sendLogin(username)" class="md-primary" ng-disabled="!username">
+               Login
             </md-button>
         </div>
     </form>
+    <button ng-show="!userStatus" class="login-btn btn" ng-click ="newUser()">new user</button>
+    <button ng-show="userStatus" class="login-btn btn"  ng-click ="returningUser()">returning user</button>
 </md-dialog>
