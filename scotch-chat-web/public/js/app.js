@@ -27,28 +27,28 @@ app.controller('MainCtrl', function ($scope, $mdDialog, socket, $http) {
         var rooms = data.rooms;;
         console.log(rooms);
         $scope.rooms = rooms;
-        //        for (var r = 0; r < rooms.length; r++) {
-        //            handleRoomSubMenu(r);
-        //        }
-        //
-        //        function handleRoomSubMenu(r) {
-        //            var clickedRoom = rooms[r];
-        //            roomsMenu.append(new GUI.MenuItem({
-        //                label: clickedRoom.toUpperCase(),
-        //                click: function () {
-        //                    $scope.room = clickedRoom.toUpperCase();
-        //                    socket.emit('switch room', {
-        //                        newRoom: clickedRoom,
-        //                        username: $scope.username
-        //                    });
-        //                    $http.get(serverBaseUrl + '/msg?room=' + clickedRoom).success(function (msgs) {
-        //                        $scope.messages = msgs;
-        //                    });
-        //                }
-        //            }));
-        //        }
+               for (var r = 0; r < rooms.length; r++) {
+                   handleRoomSubMenu(r);
+               }
+        
+               function handleRoomSubMenu(r) {
+                   var clickedRoom = rooms[r];
+                   roomsMenu.append(new GUI.MenuItem({
+                       label: clickedRoom.toUpperCase(),
+                       click: function () {
+                           $scope.room = clickedRoom.toUpperCase();
+                           socket.emit('switch room', {
+                               newRoom: clickedRoom,
+                               username: $scope.username
+                           });
+                           $http.get(serverBaseUrl + '/msg?room=' + clickedRoom).success(function (msgs) {
+                               $scope.messages = msgs;
+                           });
+                       }
+                   }));
+               }
 
-        //GUI.Window.get().menu = windowMenu;
+        GUI.Window.get().menu = windowMenu;
     });
     $scope.changeRoom = function (clickedRoom) {
         $scope.room = clickedRoom.toUpperCase();
