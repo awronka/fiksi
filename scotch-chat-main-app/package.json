@@ -1,5 +1,5 @@
 {
-    "name": "scotch-chat",
+    "name": "Fiksi",
     "version": "0.0.1",
     "private": true,
     "main": "./app/index.html",
@@ -17,7 +17,7 @@
         "nw-builder": "latest"
     },
     "window": {
-        "title": "Scotch Chat",
+        "title": "Fiksi",
         "toolbar": true,
         "frame": true,
         "position": "center",
@@ -27,7 +27,7 @@
         "height": 700,
         "min_width": 600,
         "min_height": 400,
-         "icon": "app/public/img/scotch.png"
+         "icon": "app/public/img/wrench.png"
     },
     "node-remote": "<local>"
 }
