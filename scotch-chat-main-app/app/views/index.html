@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="css/animate.css">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="libs/angular-material/angular-material.css">
-
     <script src="libs/angular/angular.js"></script>
     <!--<script src="http://localhost:2015/socket.io/socket.io.js"></script>-->
     <script src="https://frozen-sea-6880.herokuapp.com/socket.io/socket.io.js"></script>
@@ -16,7 +15,6 @@
     <script type="text/javascript" src="libs/angular-material/angular-material.js"></script>
     <script type="text/javascript" src="libs/angular-socket-io/socket.js"></script>
     <script type="text/javascript" src="libs/angular-material-icons/angular-material-icons.js"></script>
-
     <script src="js/app.js"></script>
     <script src="js/factories/user-factory.js"></script>
     <script src="js/factories/gui-factory.js"></script>
@@ -32,14 +30,22 @@
 </head>
 
 <body>
-<div ng-controller="MainCtrl" ng-init="usernameModal()">
-    <div class='col-xs-6'>
-        <dynamic-canvas></dynamic-canvas>
-    <button onclick="getInfo()">log</button>
-    <div class="tools">
-  <a href="#colors_sketch" data-download="png" style="float: right; width: 100px;">Download</a>
-</div>
-    <script type="text/javascript">
+    <div ng-controller="MainCtrl">
+        <video id="my-video" autoplay></video>
+        <canvas id="my-canvas" width="400" height="600" autoplay>I am canvas</canvas>
+        <img id="my-img" />
+        <!--ng-init="usernameModal()" <div class='col-xs-6'>
+            <div class="canvas-container">
+                <canvas id="my-canvas" width="400" height="600" autoplay>I am canvas</canvas>
+            </div>
+            <button onclick="getInfo()">log</button>
+            <div class="tools">
+                <a href="#colors_sketch" data-download="png" style="float: right; width: 100px;">Download</a>
+            </div>
+            <div class="canvas-container">
+                <canvas id="my-canvas" id="color-sketch" width="400" height="600">I am canvas</canvas>
+            </div> 
+             <script type="text/javascript">
     $(function() {
         $.each(['#f00', '#ff0', '#0f0', '#0ff', '#00f', '#f0f', '#000', '#fff'], function() {
         $('#colors_demo .tools').append("<a href='#colors_sketch' data-color='" + this + "' style='width: 10px; background: " + this + ";'></a> ");
@@ -50,39 +56,184 @@
         $('#colors_sketch').sketch();
     });
     </script>
-</div>
-    <div class='col-xs-6'>
-    <md-content>
-        <section>
-            <md-list>
-                <md-subheader class="md-primary header">Room: {{room}} <span align="right">Userame: {{username}} </span> </md-subheader>
-
-                <md-whiteframe ng-repeat="m in messages" class="md-whiteframe-z2 message" layout layout-align="center center">
-                    <md-list-item class="md-3-line">
-                        <img ng-src="img/user.png" class="md-avatar" alt="User" />
-                        <div class="md-list-item-text">
-                            <h3>{{ m.username }}</h3>
-                            <p>{{m.content}}</p>
-                        </div>
-                    </md-list-item>
-                </md-whiteframe>
-
-            </md-list>
-        </section>
-
-        <div class="footer">
-
-
-            <md-input-container>
-                <label>Message</label>
-                <textarea ng-model="message" columns="1" md-maxlength="100" ng-enter="send(message)"></textarea>
-            </md-input-container>
-
-
         </div>
-
-    </md-content>
+        <div class='col-xs-6'>
+            <md-content>
+                <section>
+                    <md-list>
+                        <md-subheader class="md-primary header">Room: {{room}} <span align="right">Userame: {{username}} </span> </md-subheader>
+                        <md-whiteframe ng-repeat="m in messages" class="md-whiteframe-z2 message" layout layout-align="center center">
+                            <md-list-item class="md-3-line">
+                                <img ng-src="img/user.png" class="md-avatar" alt="User" />
+                                <div class="md-list-item-text">
+                                    <h3>{{ m.username }}</h3>
+                                    <p>{{m.content}}</p>
+                                </div>
+                            </md-list-item>
+                        </md-whiteframe>
+                    </md-list>
+                </section>
+                <div class="footer">
+                    <md-input-container>
+                        <label>Message</label>
+                        <textarea ng-model="message" columns="1" md-maxlength="100" ng-enter="send(message)"></textarea>
+                    </md-input-container>
+                </div>
+            </md-content>
+        </div>
     </div>
-</div>
+    <div style="width:352px; height:625px; margin:0 auto; background-color:#fff;">
+        <div>
+            <video id="camFeed" width="320" height="240" autoplay>
+            </video>
+        </div>
+        <div>
+            <canvas id="photo" width="320" height="240">
+            </canvas>
+        </div>
+        <div style="margin:0 auto; width:82px;">
+            <input type="button" value="Take Photo" onclick="takePhoto();">
+        </div> -->
+    </div>
+    <script>
+    var photoButton = document.createElement('button');
+    var saveButton = document.createElement('button');
+    saveButton.innerText = 'Save Image';
+    saveButton.addEventListener('click', savePhoto, true);
+    photoButton.innerText = 'Take Screenshot';
+    photoButton.addEventListener('click', takePhoto, true);
+    document.body.appendChild(photoButton);
+    document.body.appendChild(saveButton);
+
+
+    var gui = require('nw.gui');
+
+    console.log(gui);
+
+
+
+    gui.Screen.Init();
+
+    var video = document.querySelector('video');
+    var canvas = document.getElementById('my-canvas');
+    var context = canvas.getContext('2d');
+
+    function takePhoto() {
+        context.drawImage(video, 0, 0, 600, 400);
+    };
+
+    function savePhoto() {
+
+        var data = photo.toDataURL("image/png");
+
+        data = data.replace("image/png", "image/octet-stream");
+        document.location.href = data;
+
+    };
+
+
+
+    gui.Screen.chooseDesktopMedia(
+        ["window", "screen"],
+        function(streamId) {
+            var vid_constraint = {
+                mandatory: {
+                    chromeMediaSource: 'desktop',
+                    chromeMediaSourceId: streamId,
+                    maxWidth: 600,
+                    maxHeight: 400,
+                    minFrameRate: 1,
+                    maxFrameRate: 5
+                },
+                optional: []
+            };
+            navigator.webkitGetUserMedia({
+                    audio: false,
+                    video: vid_constraint
+                },
+                function(stream) {
+
+                    console.log(stream, typeof URL.createObjectURL(stream));
+
+                    video.src = URL.createObjectURL(stream);
+                },
+                function(error) {
+                    console.log('failure', error);
+                });
+        });
+
+    // var canvas = document.getElementById("my-canvas");
+    // console.log(canvas);
+    // context = canvas.getContext("2d"),
+    // img = document.createElement("img"),
+    // mouseDown = false,
+    // brushColor = "rgb(0, 0, 0)",
+    // hasText = true,
+    // clearCanvas = function () {
+    //     if (hasText) {
+    //         context.clearRect(0, 0, canvas.width, canvas.height);
+    //         hasText = false;
+    //     }
+    // };
+    //     // Adding instructions
+    // context.fillText("Drop an image onto the canvas", 240, 200);
+    // context.fillText("Click a spot to set as brush color", 240, 220);
+
+    // // Image for loading 
+    // img.addEventListener("load", function () {
+    //     clearCanvas();
+    //     context.drawImage(img, 0, 0);
+    // }, false);
+
+    //         // To enable drag and drop
+    // canvas.addEventListener("dragover", function (evt) {
+    //     evt.preventDefault();
+    // }, false);
+
+    // // Handle dropped image file - only Firefox and Google Chrome
+    // canvas.addEventListener("drop", function (evt) {
+    //     var files = evt.dataTransfer.files;
+    //     if (files.length > 0) {
+    //         var file = files[0];
+    //         if (typeof FileReader !== "undefined" && file.type.indexOf("image") != -1) {
+    //             var reader = new FileReader();
+    //             // Note: addEventListener doesn't work in Google Chrome for this event
+    //             reader.onload = function (evt) {
+    //                 img.src = evt.target.result;
+    //             };
+    //             reader.readAsDataURL(file);
+    //         }
+    //     }
+    //     evt.preventDefault();
+    // }, false);    
+    //         // Detect mousedown
+    // canvas.addEventListener("mousedown", function (evt) {
+    //     clearCanvas();
+    //     mouseDown = true;
+    //     context.beginPath();
+    // }, false);
+
+    // // Detect mouseup
+    // canvas.addEventListener("mouseup", function (evt) {
+    //     mouseDown = false;
+    //     // var colors = context.getImageData(evt.layerX, evt.layerY, 1, 1).data;
+    //     var colors =[255,0,255];
+    //     brushColor = "rgb(" + colors[0] + ", " + colors[1] + ", " + colors[2] + ")";
+    // }, false);
+
+    // // Draw, if mouse button is pressed
+    // canvas.addEventListener("mousemove", function (evt) {
+    //     if (mouseDown) {
+    //         context.strokeStyle = brushColor;                                
+    //         context.lineWidth = 5;
+    //         context.lineJoin = "round";
+    //         context.lineTo(evt.layerX+1, evt.layerY+1);
+    //         context.stroke();
+    //     }
+    // }, false);   
+
+    // var __slice = Array.prototype.slice;
+    </script>
 </body>
+
 </html>
