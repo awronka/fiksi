@@ -1,12 +1,12 @@
 app.controller('VideoCtrl', function($state, $scope){
-        var photoButton = document.createElement('button');
-    var saveButton = document.createElement('button');
-    saveButton.innerText = 'Save Image';
-    saveButton.addEventListener('click', savePhoto, true);
-    photoButton.innerText = 'Take Screenshot';
-    photoButton.addEventListener('click', takePhoto, true);
-    document.body.appendChild(photoButton);
-    document.body.appendChild(saveButton);
+    //     var photoButton = document.createElement('button');
+    // var saveButton = document.createElement('button');
+    // saveButton.innerText = 'Save Image';
+    // saveButton.addEventListener('click', savePhoto, true);
+    // photoButton.innerText = 'Take Screenshot';
+    // photoButton.addEventListener('click', takePhoto, true);
+    // document.body.appendChild(photoButton);
+    // document.body.appendChild(saveButton);
 
 
     var gui = require('nw.gui');
