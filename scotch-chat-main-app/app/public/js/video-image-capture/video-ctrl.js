@@ -1,12 +1,3 @@
-app.config(function ($stateProvider) {
-    $stateProvider.state('home', {
-        url: '/',
-        templateUrl: 'js/video-image-capture/video.html',
-        controller: 'VideoCtrl'
-    });
-});
-
-
 app.controller('VideoCtrl', function($state, $scope){
         var photoButton = document.createElement('button');
     var saveButton = document.createElement('button');
@@ -30,6 +21,13 @@ app.controller('VideoCtrl', function($state, $scope){
     var canvas = document.getElementById('my-canvas');
     var context = canvas.getContext('2d');
 
+// first steps in the angular transition
+    $scope.takePhoto = function() {
+        console.log("draw")
+        context.drawImage(video, 0, 0, 600, 400);
+    };
+  
+//legacy for smooth transition  
     function takePhoto() {
         context.drawImage(video, 0, 0, 600, 400);
     };
