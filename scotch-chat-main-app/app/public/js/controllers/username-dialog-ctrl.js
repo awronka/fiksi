@@ -32,7 +32,7 @@ function UsernameDialogController($scope, $mdDialog, SignUp, AuthService) {
     
     $scope.answer = function (answer) {
          SignUp.signup(answer).then(function(data){
-             console.log(data);
+             console.log("This is the data" + data);
          });
         $mdDialog.hide(answer);
     };

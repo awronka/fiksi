@@ -23,11 +23,12 @@
         "position": "center",
         "fullscreen": false,
         "resizable": false,
-        "width": 800,
+        "width": 1200,
         "height": 700,
         "min_width": 600,
         "min_height": 400,
          "icon": "app/public/img/wrench.png"
     },
-    "node-remote": "<local>"
+    "node-remote": "<local>",
+    "chromium-args": "--auto-select-desktop-capture-source='Entire screen'"
 }
