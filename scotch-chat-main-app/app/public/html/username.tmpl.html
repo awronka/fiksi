@@ -1,54 +1,58 @@
 <md-dialog aria-label="Mango">
-    <form ng-show="!userStatus">
+<!--     <form ng-show="!userStatus">
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>Enter your chat username</h2>
+                <h2>Start Your Chat Session</h2>
                 <span flex></span>
             </div>
         </md-toolbar>
         <md-dialog-content>
             <md-input-container>
                 <label>New User Enter Name</label>
-                <input ng-model="username.displayName" type="text">
+                <input ng-model="user.displayName" type="text">
             </md-input-container>
             <md-input-container>
                 <label>Enter Password</label>
-                <input ng-model="username.password" type="text">
+                <input ng-model="user.password" type="text">
             </md-input-container>
             <md-input-container>
                 <label>Re-Enter Password</label>
-                <input ng-model="username.password" type="text">
+                <input ng-model="user.password" type="text">
             </md-input-container>
         </md-dialog-content>
         <div class="md-actions" layout="row">
-            <md-button ng-click="answer(username)" class="md-primary" ng-disabled="!username">
+            <md-button ng-click="answer(user)" class="md-primary" ng-disabled="!user">
                 New User
             </md-button>
         </div>
-    </form>
-        <form ng-show="userStatus">
+    </form> -->
+        <form>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>Enter your chat username</h2>
+                <h2>Start Your Chat Session</h2>
                 <span flex></span>
             </div>
         </md-toolbar>
-        <md-dialog-content ng-show="userStatus">
+        <md-dialog-content>
             <md-input-container>
-                <label>New User Enter Name</label>
-                <input ng-model="username.displayName" type="text">
+                <label>Enter Your Name</label>
+                <input ng-model="user.displayName" type="text">
             </md-input-container>
             <md-input-container>
+                <label>Chat Room Name</label>
+                <input ng-model="user.chatRoom" type="text">
+            </md-input-container>
+<!--             <md-input-container>
                 <label>Enter Password</label>
-                <input ng-model="username.password" type="text">
-            </md-input-container>
+                <input ng-model="user.password" type="text">
+            </md-input-container> -->
         </md-dialog-content>
         <div class="md-actions" layout="row">
-            <md-button ng-click="sendLogin(username)" class="md-primary" ng-disabled="!username">
-               Login
+            <md-button ng-click="answer(user)" class="md-primary" ng-disabled="!user">
+               Start Session
             </md-button>
         </div>
     </form>
-    <button ng-show="!userStatus" class="login-btn btn" ng-click ="newUser()">returning user</button>
-    <button ng-show="userStatus" class="login-btn btn"  ng-click ="returningUser()">new user</button>
+    <!-- <button ng-show="!userStatus" class="login-btn btn" ng-click ="newUser()">returning user</button> -->
+    <!-- <button ng-show="userStatus" class="login-btn btn"  ng-click ="returningUser()">new user</button> -->
 </md-dialog>

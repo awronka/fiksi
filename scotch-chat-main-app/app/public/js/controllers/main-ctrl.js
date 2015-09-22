@@ -75,15 +75,13 @@ app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog
                     username: answer.displayName
                 });
                 //Set room to general;
-                $scope.room = 'GENERAL';
+                $scope.room = answer.displayName+'*'+answer.chatRoom.split(' ').join('-');
                 
                 //set up to get user from the server
                 // $http.get(serverBaseUrl + '/user').then(function(user){
                 //    console.log(user.data)
                 //    return user
                 // });
-
-                
                 
                 //Fetch chat messages in GENERAL
                 $http.get(serverBaseUrl + '/msg?room=' + $scope.room).success(function (msgs) {
@@ -117,6 +115,7 @@ app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog
     });
     //Send a new message
     $scope.send = function (msg) {
+        console.log("sss");
         //Notify the server that there is a new message with the message as packet
         socket.emit('new message', {
             room: $scope.room,

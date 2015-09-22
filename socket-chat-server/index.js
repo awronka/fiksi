@@ -30,7 +30,7 @@ var ChatSchema = mongoose.Schema({
   room: String
 });
 
-var UserSchema = new mongoose.Schema({
+/*var UserSchema = new mongoose.Schema({
       refresh:{type:Boolean, default: false},
       isAdmin: {type: Boolean, default: true},   
       firstName: String,
@@ -56,7 +56,7 @@ var UserSchema = new mongoose.Schema({
       //   chatHistory:[{type: mongoose.Schema.Types.ObjectId, ref:"Chat"}]
 });
 
-var User = mongoose.model('User', UserSchema);
+var User = mongoose.model('User', UserSchema);*/
 
 
 //Create a model from the chat schema
@@ -136,6 +136,7 @@ app.get('/msg', function(req, res) {
   Chat.find({
     'room': req.query.room.toLowerCase()
   }).exec(function(err, msgs) {
+    console.log(err, msgs);
     //Send
     res.json(msgs);
   });
