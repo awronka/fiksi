@@ -2,7 +2,7 @@
 <html ng-app="Fiksi">
 
 <head>
-      <base href="/" />
+    <base href="/" />
     <title>Fiksi</title>
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/animate.css">
@@ -31,15 +31,31 @@
     <script src="js/Auth/session.js"></script>
     <script src="js/video-image-capture/video-state.js"></script>
     <script src="js/video-image-capture/video-ctrl.js"></script>
+    <script src="https://cdn.webrtc-experiment.com/RTCMultiConnection.js"></script>
+    <!--<script src="text/javascript" src="libs/RTCPeerConnection/RTCPeerConnection-v1.5.js"></script>-->
+    <script src="js/webrtctest.js"></script>
 </head>
 
 <body>
-    <div ng-controller="MainCtrl" ng-init="usernameModal()">
-    <div class="col-xs-6">
-    <div id="main" ui-view></div>
-    </div>
-    <div class="col-xs-6">
-     <!--<div class='col-xs-6'>
+    <!-- TO DO: Remember to put this back in below: ng-init="usernameModal()" -->
+    <div ng-controller="MainCtrl">
+        <div class="col-xs-6">
+            <div id="main" ui-view></div>
+        </div>
+        <hr />
+        <button id="openRoom">Open Room</button>
+        <button id="joinRoom">Join Room</button>
+        <hr />
+        <script>
+        document.getElementById('openRoom').onclick = function() {
+            (new RTCMultiConnection).open();
+        };
+        document.getElementById('joinRoom').onclick = function() {
+            (new RTCMultiConnection).connect();
+        };
+        </script>
+        <div class="col-xs-6">
+            <!--<div class='col-xs-6'>
             <div class="canvas-container">
                 <canvas id="my-canvas" width="400" height="600" autoplay>I am canvas</canvas>
             </div>
@@ -51,6 +67,7 @@
                 <canvas id="my-canvas" id="color-sketch" width="400" height="600">I am canvas</canvas>
             </div> 
         </div>-->
+
         <div class='col-xs-6'>
             <md-content>
                 <section>
@@ -74,9 +91,11 @@
                     </md-input-container>
                 </div>
             </md-content>
+                </div>
+                </md-content>
+            </div>
         </div>
-    </div>
-    <!--<div style="width:352px; height:625px; margin:0 auto; background-color:#fff;">
+        <!--<div style="width:352px; height:625px; margin:0 auto; background-color:#fff;">
         <div>
             <video id="camFeed" width="320" height="240" autoplay>
             </video>

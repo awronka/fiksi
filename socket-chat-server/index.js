@@ -19,8 +19,8 @@ app.use(bodyParser.json())
 
 //Connect to mongo DB database
 //use the below local mongodb for developement
-//mongoose.connect("mongodb://127.0.0.1:27017/scotch-chat");
-mongoose.connect(uriUtil.formatMongoose("mongodb://heroku_qz5f9n32:gkr920qlmmbh94uet9p0491c00@ds051543.mongolab.com:51543/heroku_qz5f9n32"));
+mongoose.connect("mongodb://127.0.0.1:27017/scotch-chat");
+// mongoose.connect(uriUtil.formatMongoose("mongodb://heroku_qz5f9n32:gkr920qlmmbh94uet9p0491c00@ds051543.mongolab.com:51543/heroku_qz5f9n32"));
 
 //Create a schema for chat
 var ChatSchema = mongoose.Schema({
@@ -74,12 +74,31 @@ app.all('/*', function(req, res, next) {
   }
 });
 
-//start to login user
-app.post('/user', function(req,res, next){
-  User.findOne({password: req.body.password}).exec().then(function(user){
-    console.log("hit " + user)
-    res.json(user)
+
+// //start to login user
+// app.post('/user', function(req,res, next){
+//   User.findOne({password: req.body.password}).exec().then(function(user){
+//     console.log("hit " + user)
+//     res.json(user)
+//   }, next);
+// });
+
+
+//This route gets all the users from the data base
+app.get('/user', function(req,res, next){
+  User.find().exec().then(function(users){
+    console.log("hit " + users)
+    res.json(users)
   }, next);
+});
+
+//Create a new user with a post request
+app.post('/user', function(req,res,next){
+  console.log(req.body)
+		User.create(req.body).then(function(user){
+			res.status(201).json(user);
+		})
+		.then(null,next);
 });
 
 /*||||||||||||||||||||||||||||||||||||||ROUTES||||||||||||||||||||||||||||||||||||||*/
@@ -143,22 +162,7 @@ app.get('/msg', function(req, res) {
 
 /*------------------------------------User Routes--------------------------------------*/
 
-//This route gets all the users from the data base
-app.get('/user', function(req,res, next){
-  User.find().exec().then(function(users){
-    console.log("hit " + users)
-    res.json(users)
-  }, next);
-});
 
-//Create a new user with a post request
-app.post('/user', function(req,res,next){
-  console.log(req.body)
-		User.create(req.body).then(function(user){
-			res.status(201).json(user);
-		})
-		.then(null,next);
-});
 
 /*||||||||||||||||||||||||||||||||||||||END ROUTES||||||||||||||||||||||||||||||||||||||*/
 
@@ -212,5 +216,5 @@ io.on('connection', function(socket) {
 });
 /*||||||||||||||||||||||||||||||||||||||END SOCKETS||||||||||||||||||||||||||||||||||||||*/
 
-server.listen(process.env.PORT || 5000);
+server.listen(process.env.PORT || 2015);
 console.log('It\'s going down in 2015');
