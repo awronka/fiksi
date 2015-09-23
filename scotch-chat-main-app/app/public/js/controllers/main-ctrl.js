@@ -82,6 +82,10 @@ app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog
                 //    return user
                 // });
 
+                /*socket.emit('createRoom',{
+                    room:$scope.room
+                });
+*/
                 //Fetch chat messages in GENERAL
                 $http.get(serverBaseUrl + '/msg?room=' + $scope.room).success(function (msgs) {
                     $scope.messages = msgs;

@@ -169,11 +169,19 @@ io.on('connection', function(socket) {
   //Globals
   var defaultRoom = 'general';
   var rooms = ["General", "angular", "socket.io", "express", "node", "mongo", "PHP", "laravel"];
+  // var defaultRoom,rooms=[];
 
+  /*socket.on('createRoom',function(room){
+    defaultRoom=room;
+    rooms.push(room);
+*/
   //Emit the rooms array
   socket.emit('setup', {
     rooms: rooms
   });
+
+  //})
+
 
   //Listens for new user
   socket.on('new user', function(data) {
