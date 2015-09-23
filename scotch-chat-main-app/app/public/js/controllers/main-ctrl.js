@@ -31,6 +31,13 @@ app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog
             //Loop and append room to the window room menu
             handleRoomSubMenu(r);
         }
+        
+    //Listens for a new image to be sent
+    socket.on('new user image', function(image){
+        document.body.appendChild(img);
+        
+    });
+    
 
         //Handle creation of room
         function handleRoomSubMenu(r) {

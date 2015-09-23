@@ -1,5 +1,5 @@
 <md-dialog aria-label="Mango">
-    <form ng-show="!userStatus">
+    <form ng-show="userStatus">
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>Enter your chat username</h2>
@@ -26,7 +26,7 @@
             </md-button>
         </div>
     </form>
-        <form ng-show="userStatus">
+        <form ng-show="!userStatus">
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>Enter your chat username</h2>
@@ -44,11 +44,11 @@
             </md-input-container>
         </md-dialog-content>
         <div class="md-actions" layout="row">
-            <md-button ng-click="sendLogin(username)" class="md-primary" ng-disabled="!username">
+            <md-button ng-click="sendLogin(username)" class="md-primary" ng-disabled="username">
                Login
             </md-button>
         </div>
     </form>
-    <button ng-show="!userStatus" class="login-btn btn" ng-click ="newUser()">returning user</button>
-    <button ng-show="userStatus" class="login-btn btn"  ng-click ="returningUser()">new user</button>
+    <button ng-show="userStatus" class="login-btn btn" ng-click ="newUser()">returning user</button>
+    <button ng-show="!userStatus" class="login-btn btn"  ng-click ="returningUser()">new user</button>
 </md-dialog>
