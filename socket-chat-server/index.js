@@ -197,15 +197,17 @@ io.on('connection', function(socket) {
 
   //Listens for a new chat message
   socket.on('new message', function(data) {
+    
     //Create message
     var newMsg = new Chat({
       username: data.username,
       content: data.message,
-      room: data.room.toLowerCase(),
+      room: data.room,
       created: new Date()
     });
     //Save it to database
     newMsg.save(function(err, msg){
+      socket.emit('stellatest',msg);
       //Send message to those connected in the room
       io.in(msg.room).emit('message created', msg);
     });
@@ -214,4 +216,4 @@ io.on('connection', function(socket) {
 /*||||||||||||||||||||||||||||||||||||||END SOCKETS||||||||||||||||||||||||||||||||||||||*/
 
 server.listen(process.env.PORT || 5000);
-console.log('It\'s going down in 2015');
+//console.log('It\'s going down in 2015');

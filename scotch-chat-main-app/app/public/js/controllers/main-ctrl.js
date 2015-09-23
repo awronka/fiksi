@@ -67,7 +67,6 @@ app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog
                 targetEvent: ev
             })
             .then(function (answer) {
- 
                 //Set username with the value returned from the modal
                 $scope.username = answer.displayName;
                 //Tell the server there is a new user
@@ -82,7 +81,7 @@ app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog
                 //    console.log(user.data)
                 //    return user
                 // });
-                
+
                 //Fetch chat messages in GENERAL
                 $http.get(serverBaseUrl + '/msg?room=' + $scope.room).success(function (msgs) {
                     $scope.messages = msgs;
@@ -93,6 +92,7 @@ app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog
     };
     //Listen for new messages
     socket.on('message created', function (data) {
+        console.log('listened');
         //Push to new message to our $scope.messages
         $scope.messages.push(data);
         //Empty the textarea
@@ -113,9 +113,11 @@ app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog
         }
 
     });
+    socket.on('stellatest',function(data){
+        console.log(data);
+    })
     //Send a new message
     $scope.send = function (msg) {
-        console.log("sss");
         //Notify the server that there is a new message with the message as packet
         socket.emit('new message', {
             room: $scope.room,
