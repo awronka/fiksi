@@ -2,11 +2,12 @@
 <html ng-app="Fiksi">
 
 <head>
-      <base href="/" />
+    <base href="/" />
     <title>Fiksi</title>
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/animate.css">
     <link rel="stylesheet" href="css/bootstrap.css">
+     <link rel="stylesheet" href="css/canvas-style.css">
     <link rel="stylesheet" href="libs/angular-material/angular-material.css">
     <script src="libs/angular/angular.js"></script>
     <script src="http://localhost:2015/socket.io/socket.io.js"></script>
@@ -29,17 +30,93 @@
     <script src="js/Auth/authInterceptor.js"></script>
     <script src="js/Auth/authService.js"></script>
     <script src="js/Auth/session.js"></script>
+    <!-- jquery -->
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script src="js/video-image-capture/video-state.js"></script>
     <script src="js/video-image-capture/video-ctrl.js"></script>
+    <script src="https://cdn.webrtc-experiment.com/RTCMultiConnection.js"></script>
+    <!--<script src="text/javascript" src="libs/RTCPeerConnection/RTCPeerConnection-v1.5.js"></script>-->
+    <!--<script src="js/webrtctest.js"></script>-->
+    <!--<script src="js/webScreenTest.js"></script>-->
+    
+    
+    <!-- drawing tools -->
+    <!--<script src="js/Canvas-Designer/arc-handler.js"></script>
+    <script src="js/Canvas-Designer/bezier-handler.js"></script>
+    <script src="js/Canvas-Designer/canvas-designer-widget.js"></script>
+    <script src="js/Canvas-Designer/common.js"></script>
+    <script src="js/Canvas-Designer/decorator.js"></script>
+    <script src="js/Canvas-Designer/drag-helper.js"></script>
+    <script src="js/Canvas-Designer/draw-helper.js"></script>
+    <script src="js/Canvas-Designer/eraser-handler.js"></script>
+    <script src="js/Canvas-Designer/events-handler.js"></script>
+    <script src="js/Canvas-Designer/line-handler.js"></script>
+    <script src="js/Canvas-Designer/pencil-handler.js"></script>
+    <script src="js/Canvas-Designer/quadratic-handler.js"></script>
+    <script src="js/Canvas-Designer/rect-handler.js"></script>
+    <script src="js/Canvas-Designer/share-drawings.js"></script>
+    <script src="js/Canvas-Designer/text-handler.js"></script>-->
+<script>
+	       
+	
+</script>
 </head>
 
 <body>
+    <!-- TO DO: Remember to put this back in below: ng-init="usernameModal()" -->
     <div ng-controller="MainCtrl" ng-init="usernameModal()">
-    <div class="col-xs-6">
-    <div id="main" ui-view></div>
-    </div>
-    <div class="col-xs-6">
-     <!--<div class='col-xs-6'>
+        <div class="col-xs-6">
+            <!-- from video.html --->
+            <div class='col-xs-12' ng-controller="VideoCtrl">
+                <div class ="video-window" ng-show="!draw">
+                <video id="my-video" autoplay></video>
+                <!--<canvas id="my-canvas" width="600" height="400" autoplay>I am canvas</canvas>-->
+                <img id="my-img" />
+                <button ng-click="takePhoto()" class="btn btn-success">Take Photo</button>
+                </div>
+                <!--<div class='col-xs-6'>
+                </div>-->
+                <div id="draw-window" ng-show="draw">
+                    <div id="canvas-window">
+                    <section class="design-surface">
+                        <!--<canvas id="temp-canvas"></canvas>-->
+                        <canvas id="first-canvas" width="600" height="400"></canvas>
+                    </section>
+                    </div>
+                    <!------------------------------------------>
+                    <button ng-click="goToVideo()" class="btn btn-success">Back to Video</button>
+                </div>
+                
+                        <hr />
+                        <button id="openRoom">Open Room</button>
+                        <button id="joinRoom">Join Room</button>
+                        <hr />
+                        <script>
+                        document.getElementById('openRoom').onclick = function() {
+                            (new RTCMultiConnection).open();
+                        };
+                        document.getElementById('joinRoom').onclick = function() {
+                            (new RTCMultiConnection).connect();
+                        };
+                        </script>
+                </div>
+            <!-- from video.html ---->
+        </div>
+        <!--<hr />
+        <button id="openRoom">Open Room</button>
+        <button id="joinRoom">Join Room</button>
+        <hr />
+        <script>
+        document.getElementById('openRoom').onclick = function() {
+            (new RTCMultiConnection).open();
+        };
+        document.getElementById('joinRoom').onclick = function() {
+            (new RTCMultiConnection).connect();
+        };
+        </script>-->
+        <div class="col-xs-6">
+            <!--<div class='col-xs-6'>
             <div class="canvas-container">
                 <canvas id="my-canvas" width="400" height="600" autoplay>I am canvas</canvas>
             </div>
@@ -51,6 +128,7 @@
                 <canvas id="my-canvas" id="color-sketch" width="400" height="600">I am canvas</canvas>
             </div> 
         </div>-->
+
         <div class='col-xs-6'>
             <md-content>
                 <section>
@@ -74,9 +152,11 @@
                     </md-input-container>
                 </div>
             </md-content>
+                </div>
+                </md-content>
+            </div>
         </div>
-    </div>
-    <!--<div style="width:352px; height:625px; margin:0 auto; background-color:#fff;">
+        <!--<div style="width:352px; height:625px; margin:0 auto; background-color:#fff;">
         <div>
             <video id="camFeed" width="320" height="240" autoplay>
             </video>
@@ -90,8 +170,11 @@
         </div> 
     </div>-->
     </div>
-    <script>
-    </script>
+    
+    <!--<script>
+  var canvasTest = document.getElementById("main")
+        CanvasDesigner.appendTo(document.body)
+    </script>-->
 </body>
 
 </html>
