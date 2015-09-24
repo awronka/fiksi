@@ -1,0 +1,41 @@
+app.factory('SignUp', function ($http) {
+	var serverBaseUrl = 'http://localhost:2015';
+<<<<<<< HEAD
+	//var serverBaseUrl = 'https://frozen-sea-6880.herokuapp.com';
+=======
+	// var serverBaseUrl = 'https://frozen-sea-6880.herokuapp.com';
+>>>>>>> 3593bee3cd2fd7112133fde6b46843f5bb66c59a
+
+	return{
+		signup: function (credentials) {
+		return $http.post(serverBaseUrl+'/user', credentials).then(function (res) {
+			console.log(res.data)
+			return res.data;
+		});
+		},
+
+        getUsers: function(){
+            return $http.get(serverBaseUrl + '/user').then(function(response){
+                return response.data;
+            })
+        },
+		update: function (credentials) {
+		return $http.put('/user/update/', credentials).then(function (res) {
+			console.log(res.data)
+			return res.data;
+		});
+		},
+		pass: function (credentials) {
+		return $http.put('/user/newpassword', credentials).then(function (res) {
+			console.log(res.data)
+			return res.data;
+		});
+		},
+		deleteUser: function(creds){
+			return $http.delete('/user/'+ creds).then(function(res){
+				console.log("this user is gone" + res.data)
+				return res.data;
+			})
+		}
+	}
+});

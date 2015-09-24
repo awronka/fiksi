@@ -6,6 +6,6 @@ app.factory('socket', function (socketFactory) {
     var socket = socketFactory({
         ioSocket: myIoSocket
     });
-
+    
     return socket;
 });
