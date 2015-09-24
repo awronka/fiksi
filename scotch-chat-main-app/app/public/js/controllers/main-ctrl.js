@@ -117,7 +117,12 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
           var img = new Image();
           img.src = data.buffer.buffer;
           //should test if the box is working
-          document.getElementById('img-test-div').appendChild(img);
+          var imgFrame = document.getElementById("img-test-div");   // Get the <ul> element with id="myList"
+          if (imgFrame.hasChildNodes()) {
+            // It has at least one
+            imgFrame.removeChild(imgFrame.childNodes[0]); 
+          }
+          imgFrame.appendChild(img);
           // ctx.drawImage(img, 450, 250);
           }
     })
