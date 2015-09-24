@@ -1,5 +1,5 @@
 //Our Contrller 
-app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog, SignUp, socket, $http) {
+app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialog, SignUp, socket, $http, $rootScope) {
     //Global Scope
     $scope.messages = [];
     $scope.room = "";
@@ -99,6 +99,30 @@ app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog
 
             });
     };
+    
+    // catch and send new image to the server
+    $rootScope.$on('imageToSocket', function(event, imgData){
+       console.log("stage 2", imgData.imageForEmit) 
+       var img = imgData.imageForEmit
+       socket.emit('new image', { image: true, buffer: img.toString('base64') })
+    });
+
+ 
+    //Listen for new images
+    socket.on('image created', function(data){
+        console.log("stage 4", data.buffer.buffer)
+          if (data.image) {
+           //mini canvas test
+          var ctx = document.getElementById('test-canvas').getContext('2d');
+          var img = new Image();
+          img.src = data.buffer.buffer;
+          // document.body.appendChild(img)
+          console.log(ctx)
+          ctx.drawImage(img, 450, 250);
+          }
+    })
+        
+    
     //Listen for new messages
     socket.on('message created', function (data) {
         console.log('listened');
