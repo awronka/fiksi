@@ -87,7 +87,7 @@ app.all('/*', function(req, res, next) {
 //This route gets all the users from the data base
 app.get('/user', function(req,res, next){
   User.find().exec().then(function(users){
-    console.log("hit " + users)
+    // console.log("hit " + users)
     res.json(users)
   }, next);
 });
@@ -197,6 +197,12 @@ io.on('connection', function(socket) {
     io.in(data.newRoom).emit('user joined', data);
 
   });
+
+//Listens for new image
+socket.on('user image', function (msg) {
+      console.log(msg);
+      socket.broadcast.emit('user image', socket.nickname, msg);
+    });
 
   //Listens for a new chat message
   socket.on('new message', function(data) {
