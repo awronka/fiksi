@@ -26,6 +26,8 @@ canvas{
     border-bottom: 2px solid grey;
     padding: 2%;
     margin-left: -5%;
+     cursor: crosshair;
+
 }
 
 .user-enter-box{
@@ -39,3 +41,26 @@ canvas{
     color: white;
 }
 
+.canvas-btn{
+    width: 8%;
+    height: 40px;
+    margin: 1%;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 1%;
+}
+
+#purple-btn{
+    background-color: #cb3594;
+}
+
+#green-btn{
+    background-color: #659b41;
+}
+
+#brown-btn{
+    background-color: #986928;
+}
+#yellow-btn{
+    background-color: #ffcf33;
+}
