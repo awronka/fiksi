@@ -108,6 +108,7 @@ app.directive('dynamicCanvas', function () {
         var __slice = Array.prototype.slice;
 
         var parent = document.getElementById("canvas-container");
+        console.log("parent is: ", parent);
         parent.appendChild(canvas);
 
     }
@@ -115,7 +116,7 @@ app.directive('dynamicCanvas', function () {
     return {
         restrict: 'E',
         scope: {},
-        templateUrl: 'html/canvas.html',
+        templateUrl: '../../html/canvas.html',
         controller: CanvasCtrl
     };
 });

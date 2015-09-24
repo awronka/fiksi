@@ -68,67 +68,20 @@
     <div ng-controller="MainCtrl" ng-init="usernameModal()">
         <div class="col-xs-6">
             <!-- from video.html --->
-            <div class='col-xs-12' ng-controller="VideoCtrl">
-                <div class ="video-window" ng-show="!draw">
-                <video id="my-video" autoplay></video>
-                <!--<canvas id="my-canvas" width="600" height="400" autoplay>I am canvas</canvas>-->
-                <img id="my-img" />
-                <button ng-click="takePhoto()" class="btn btn-success">Take Photo</button>
-                </div>
-                <!--<div class='col-xs-6'>
-                </div>-->
-                <div id="draw-window" ng-show="draw">
+            <div class='col-xs-12'>
+                <div id="draw-window">
                     <div id="canvas-window">
                     <section class="design-surface">
-                        <!--<canvas id="temp-canvas"></canvas>-->
-                        <canvas id="first-canvas" width="600" height="400"></canvas>
+                        <!--- draw canvas -->
+                        <dynamic-canvas></dynamic-canvas>
                     </section>
                     </div>
                     <!------------------------------------------>
                     <button ng-click="goToVideo()" class="btn btn-success">Back to Video</button>
                 </div>
-                
-                        <hr />
-                        <button id="openRoom">Open Room</button>
-                        <button id="joinRoom">Join Room</button>
-                        <hr />
-                        <script>
-                        document.getElementById('openRoom').onclick = function() {
-                            (new RTCMultiConnection).open();
-                        };
-                        document.getElementById('joinRoom').onclick = function() {
-                            (new RTCMultiConnection).connect();
-                        };
-                        </script>
-                </div>
+            </div>
             <!-- from video.html ---->
         </div>
-        <!--<hr />
-        <button id="openRoom">Open Room</button>
-        <button id="joinRoom">Join Room</button>
-        <hr />
-        <script>
-        document.getElementById('openRoom').onclick = function() {
-            (new RTCMultiConnection).open();
-        };
-        document.getElementById('joinRoom').onclick = function() {
-            (new RTCMultiConnection).connect();
-        };
-        </script>-->
-        <div class="col-xs-6">
-            <!--<div class='col-xs-6'>
-            <div class="canvas-container">
-                <canvas id="my-canvas" width="400" height="600" autoplay>I am canvas</canvas>
-            </div>
-            <button onclick="getInfo()">log</button>
-            <div class="tools">
-                <a href="#colors_sketch" data-download="png" style="float: right; width: 100px;">Download</a>
-            </div>
-            <div class="canvas-container">
-                <canvas id="my-canvas" id="color-sketch" width="400" height="600">I am canvas</canvas>
-            </div> 
-        </div>-->
-
         <div class='col-xs-6'>
             <md-content>
                 <section>
@@ -152,7 +105,7 @@
                     </md-input-container>
                 </div>
             </md-content>
-                </div>
+        </div>
                 </md-content>
             </div>
         </div>
