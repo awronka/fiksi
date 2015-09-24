@@ -11,7 +11,11 @@ app.config(function($urlRouterProvider, $locationProvider) {
 
     //Set our server url
 var serverBaseUrl = 'http://localhost:2015';
+<<<<<<< HEAD
 //var serverBaseUrl = 'https://frozen-sea-6880.herokuapp.com';
+=======
+// var serverBaseUrl = 'https://frozen-sea-6880.herokuapp.com';
+>>>>>>> 3593bee3cd2fd7112133fde6b46843f5bb66c59a
 
 
 

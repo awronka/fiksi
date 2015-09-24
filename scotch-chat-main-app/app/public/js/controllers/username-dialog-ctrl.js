@@ -1,7 +1,7 @@
 //Dialog controller
 function UsernameDialogController($scope, $mdDialog, SignUp, AuthService) {
     //show and hide the depending on the userStatus being new or returning
-    $scope.userStatus = true;
+/*    $scope.userStatus = true;
     
 
     
@@ -16,7 +16,7 @@ function UsernameDialogController($scope, $mdDialog, SignUp, AuthService) {
         $scope.userStatus = false;
     }
     
-   $scope.sendLogin = function (answer) {
+   $scope.Login = function (answer) {
 
         $scope.error = null;
 
@@ -27,7 +27,7 @@ function UsernameDialogController($scope, $mdDialog, SignUp, AuthService) {
         });
 
     };
-    
+    */
     
     
     $scope.answer = function (answer) {

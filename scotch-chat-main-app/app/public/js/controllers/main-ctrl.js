@@ -44,10 +44,10 @@ app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog
                 var clickedRoom = rooms[r];
                 //Append each room to the menu
                 roomsMenu.append(new GUI.MenuItem({
-                    label: clickedRoom.toUpperCase(),
+                    label: clickedRoom,
                     click: function () {
                         //What happens on clicking the rooms? Swtich room.
-                        $scope.room = clickedRoom.toUpperCase();
+                        $scope.room = clickedRoom;
                         //Notify the server that the user changed his room
                         socket.emit('switch room', {
                             newRoom: clickedRoom,
@@ -61,6 +61,9 @@ app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog
                 }));
             }
             //Attach menu
+        windowMenu.createMacBuiltin('Fiksi',{
+            hideWindow: true
+        });
         GUI.Window.get().menu = windowMenu;
     });
 
@@ -74,7 +77,6 @@ app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog
                 targetEvent: ev
             })
             .then(function (answer) {
- 
                 //Set username with the value returned from the modal
                 $scope.username = answer.displayName;
                 //Tell the server there is a new user
@@ -82,16 +84,13 @@ app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog
                     username: answer.displayName
                 });
                 //Set room to general;
-                $scope.room = 'GENERAL';
+                $scope.room = answer.displayName+'*'+answer.chatRoom.split(' ').join('-');
                 
-                //set up to get user from the server
-                // $http.get(serverBaseUrl + '/user').then(function(user){
-                //    console.log(user.data)
-                //    return user
-                // });
 
-                
-                
+                socket.emit('createRoom',{
+                    newRoom:$scope.room
+                });
+
                 //Fetch chat messages in GENERAL
                 $http.get(serverBaseUrl + '/msg?room=' + $scope.room).success(function (msgs) {
                     $scope.messages = msgs;
@@ -102,6 +101,7 @@ app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog
     };
     //Listen for new messages
     socket.on('message created', function (data) {
+        console.log('listened');
         //Push to new message to our $scope.messages
         $scope.messages.push(data);
         //Empty the textarea
@@ -122,6 +122,9 @@ app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog
         }
 
     });
+    socket.on('stellatest',function(data){
+        console.log(data);
+    })
     //Send a new message
     $scope.send = function (msg) {
         //Notify the server that there is a new message with the message as packet
