@@ -82,3 +82,13 @@
     border: 2px solid grey;
     background-color:lightgrey;
 }
+
+#test-box{
+    width:450px;
+    height:250px;
+}
+
+#img-test-div img{
+    max-width:100%;
+    max-height:100%;
+}

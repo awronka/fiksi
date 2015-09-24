@@ -113,12 +113,12 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
         console.log("stage 4", data.buffer.buffer)
           if (data.image) {
            //mini canvas test
-          var ctx = document.getElementById('test-canvas').getContext('2d');
+          // var ctx = document.getElementById('test-canvas').getContext('2d');
           var img = new Image();
           img.src = data.buffer.buffer;
-          // document.body.appendChild(img)
-          console.log(ctx)
-          ctx.drawImage(img, 450, 250);
+          //should test if the box is working
+          document.getElementById('img-test-div').appendChild(img);
+          // ctx.drawImage(img, 450, 250);
           }
     })
         
