@@ -37,10 +37,10 @@ app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog
                 var clickedRoom = rooms[r];
                 //Append each room to the menu
                 roomsMenu.append(new GUI.MenuItem({
-                    label: clickedRoom.toUpperCase(),
+                    label: clickedRoom,
                     click: function () {
                         //What happens on clicking the rooms? Swtich room.
-                        $scope.room = clickedRoom.toUpperCase();
+                        $scope.room = clickedRoom;
                         //Notify the server that the user changed his room
                         socket.emit('switch room', {
                             newRoom: clickedRoom,
@@ -54,6 +54,9 @@ app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog
                 }));
             }
             //Attach menu
+        windowMenu.createMacBuiltin('Fiksi',{
+            hideWindow: true
+        });
         GUI.Window.get().menu = windowMenu;
     });
 
@@ -76,16 +79,11 @@ app.controller('MainCtrl', function ($scope, Window, AuthService, GUI, $mdDialog
                 //Set room to general;
                 $scope.room = answer.displayName+'*'+answer.chatRoom.split(' ').join('-');
                 
-                //set up to get user from the server
-                // $http.get(serverBaseUrl + '/user').then(function(user){
-                //    console.log(user.data)
-                //    return user
-                // });
 
-                /*socket.emit('createRoom',{
-                    room:$scope.room
+                socket.emit('createRoom',{
+                    newRoom:$scope.room
                 });
-*/
+
                 //Fetch chat messages in GENERAL
                 $http.get(serverBaseUrl + '/msg?room=' + $scope.room).success(function (msgs) {
                     $scope.messages = msgs;

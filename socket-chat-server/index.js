@@ -19,8 +19,8 @@ app.use(bodyParser.json())
 
 //Connect to mongo DB database
 //use the below local mongodb for developement
-//mongoose.connect("mongodb://127.0.0.1:27017/scotch-chat");
-mongoose.connect(uriUtil.formatMongoose("mongodb://heroku_qz5f9n32:gkr920qlmmbh94uet9p0491c00@ds051543.mongolab.com:51543/heroku_qz5f9n32"));
+mongoose.connect("mongodb://127.0.0.1:27017/scotch-chat");
+//mongoose.connect(uriUtil.formatMongoose("mongodb://heroku_qz5f9n32:gkr920qlmmbh94uet9p0491c00@ds051543.mongolab.com:51543/heroku_qz5f9n32"));
 
 //Create a schema for chat
 var ChatSchema = mongoose.Schema({
@@ -29,34 +29,6 @@ var ChatSchema = mongoose.Schema({
   username: String,
   room: String
 });
-
-/*var UserSchema = new mongoose.Schema({
-      refresh:{type:Boolean, default: false},
-      isAdmin: {type: Boolean, default: true},   
-      firstName: String,
-      lastName: String,
-      displayName: String,
-      password: String
-      // phone: String,
-      // userBlurb: String,
-      //   email: {
-      //       type: String
-      //   },
-      //   password: {
-      //       type: String
-      //   },
-      //   salt: {
-      //       type: String
-      //   },
-      //   google: {
-      //       id: String,
-      //       token: String,
-      //   },
-      //   pictureUrl: String,
-      //   chatHistory:[{type: mongoose.Schema.Types.ObjectId, ref:"Chat"}]
-});
-
-var User = mongoose.model('User', UserSchema);*/
 
 
 //Create a model from the chat schema
@@ -75,12 +47,12 @@ app.all('/*', function(req, res, next) {
 });
 
 //start to login user
-app.post('/user', function(req,res, next){
+/*app.post('/user', function(req,res, next){
   User.findOne({password: req.body.password}).exec().then(function(user){
     console.log("hit " + user)
     res.json(user)
   }, next);
-});
+});*/
 
 /*||||||||||||||||||||||||||||||||||||||ROUTES||||||||||||||||||||||||||||||||||||||*/
 //Route for our index file
@@ -134,7 +106,7 @@ app.post('/setup', function(req, res) {
 app.get('/msg', function(req, res) {
   //Find
   Chat.find({
-    'room': req.query.room.toLowerCase()
+    'room': req.query.room
   }).exec(function(err, msgs) {
     console.log(err, msgs);
     //Send
@@ -168,19 +140,20 @@ app.post('/user', function(req,res,next){
 io.on('connection', function(socket) {
   //Globals
   var defaultRoom = 'general';
-  var rooms = ["General", "angular", "socket.io", "express", "node", "mongo", "PHP", "laravel"];
+  var rooms = ["General", "Community","Feedback"];
   // var defaultRoom,rooms=[];
 
-  /*socket.on('createRoom',function(room){
-    defaultRoom=room;
-    rooms.push(room);
-*/
+  socket.on('createRoom',function(data){
+    console.log(data);
+    defaultRoom=data.newRoom;
+    rooms.push(data.newRoom);
+
   //Emit the rooms array
   socket.emit('setup', {
     rooms: rooms
   });
 
-  //})
+  });
 
 
   //Listens for new user
@@ -189,18 +162,7 @@ io.on('connection', function(socket) {
     //New user joins the default room
     socket.join(defaultRoom);
     //Tell all those in the room that a new user joined
-    io.in(defaultRoom).emit('user joined', data);
-  });
-
-  //Listens for switch room
-  socket.on('switch room', function(data) {
-    //Handles joining and leaving rooms
-    //console.log(data);
-    socket.leave(data.oldRoom);
-    socket.join(data.newRoom);
-    io.in(data.oldRoom).emit('user left', data);
-    io.in(data.newRoom).emit('user joined', data);
-
+    //io.in(defaultRoom).emit('user joined', data);
   });
 
   //Listens for a new chat message
@@ -215,13 +177,14 @@ io.on('connection', function(socket) {
     });
     //Save it to database
     newMsg.save(function(err, msg){
-      socket.emit('stellatest',msg);
+      socket.emit('stellatest', msg);
       //Send message to those connected in the room
-      io.in(msg.room).emit('message created', msg);
+      io.emit('message created', msg);
     });
   });
 });
 /*||||||||||||||||||||||||||||||||||||||END SOCKETS||||||||||||||||||||||||||||||||||||||*/
 
-server.listen(process.env.PORT || 5000);
+//server.listen(process.env.PORT || 5000);
+server.listen(2015);
 //console.log('It\'s going down in 2015');
