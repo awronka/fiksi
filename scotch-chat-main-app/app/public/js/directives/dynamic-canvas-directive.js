@@ -1,9 +1,10 @@
 /**
  * Created by GalenWeber on 9/19/15.
+ * Edited Brilliantly by AlexiusWronka on 9/24/15
  */
 app.directive('dynamicCanvas', function () {
 
-    function CanvasCtrl($scope) {
+    function CanvasCtrl($scope, $rootScope) {
 
 
         var PIXEL_RATIO = (function () {
@@ -33,7 +34,7 @@ app.directive('dynamicCanvas', function () {
         //Create canvas with the device resolution.
 
         var canvasWidth = 450;
-        var canvasHeight = 500;
+        var canvasHeight = 250;
         var canvas = createHiDPICanvas(canvasWidth, canvasHeight);
 
 
@@ -158,7 +159,16 @@ app.directive('dynamicCanvas', function () {
 
 			context.clearRect(0, 0, canvasWidth, canvasHeight);
 		}
-
+        
+        //turn image data to 64bit encoded
+        var imageForEmit = canvas.toDataURL();
+        
+        // send the image from the canvas to all users
+        $scope.sendImage = function(){
+            console.log("stage 1", imageForEmit)
+            imageForEmit = canvas.toDataURL();
+            $rootScope.$broadcast('imageToSocket', {imageForEmit});
+        }
 
         var __slice = Array.prototype.slice;
 

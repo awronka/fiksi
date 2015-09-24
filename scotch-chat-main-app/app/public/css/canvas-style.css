@@ -71,3 +71,14 @@
     padding-bottom: 25px;
     padding-top: -5px;
 }
+
+.image-message{
+   display: flex;
+   align-content: center;
+}
+
+.btn-send{
+    margin: auto;   
+    border: 2px solid grey;
+    background-color:lightgrey;
+}

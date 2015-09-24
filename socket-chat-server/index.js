@@ -146,9 +146,9 @@ io.on('connection', function(socket) {
   });
 
 //Listens for new image
-socket.on('user image', function (msg) {
-      console.log(msg);
-      socket.broadcast.emit('user image', socket.nickname, msg);
+socket.on('new image', function (img) {
+      console.log("stage 3", img);
+      io.emit('image created', { image: true, buffer: img });
     });
 
   //Listens for a new chat message
