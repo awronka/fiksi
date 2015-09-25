@@ -1,8 +1,17 @@
 'use strict';
 
 var app = angular.module('scotch-chat', ['ngMaterial', 'ngAnimate', 'ngMdIcons', 'btford.socket-io'])
-//var serverBaseUrl = 'http://localhost:2015';
-var serverBaseUrl = 'https://frozen-sea-6880.herokuapp.com';
+var serverBaseUrl = 'http://localhost:2015';
+// app.config(function($routeProvider,$locationProvider){
+//     $routeProvider.when('/:room',{
+//         templateUrl:'./views/index.ejs',
+//         controller:'MainCtrl'
+//     });
+
+//     $locationProvider.html5Mode(true);
+// });
+
+//var serverBaseUrl = 'https://frozen-sea-6880.herokuapp.com';
 app.factory('socket', function (socketFactory) {
     var myIoSocket = io.connect(serverBaseUrl);
 
@@ -34,9 +43,9 @@ app.controller('MainCtrl', function ($scope, $mdDialog, socket, $http) {
                function handleRoomSubMenu(r) {
                    var clickedRoom = rooms[r];
                    roomsMenu.append(new GUI.MenuItem({
-                       label: clickedRoom.toUpperCase(),
+                       label: clickedRoom,
                        click: function () {
-                           $scope.room = clickedRoom.toUpperCase();
+                           $scope.room = clickedRoom;
                            socket.emit('switch room', {
                                newRoom: clickedRoom,
                                username: $scope.username
@@ -51,7 +60,7 @@ app.controller('MainCtrl', function ($scope, $mdDialog, socket, $http) {
         GUI.Window.get().menu = windowMenu;
     });
     $scope.changeRoom = function (clickedRoom) {
-        $scope.room = clickedRoom.toUpperCase();
+        $scope.room = clickedRoom;
         socket.emit('switch room', {
             newRoom: clickedRoom,
             username: $scope.username
@@ -74,7 +83,9 @@ app.controller('MainCtrl', function ($scope, $mdDialog, socket, $http) {
                 socket.emit('new user', {
                     username: answer
                 });
-                $scope.room = 'GENERAL';
+                $scope.room = 'General';
+                //$scope.room=$routeParams.room;
+                console.log($routeParams);
                 $http.get(serverBaseUrl + '/msg?room=' + $scope.room).success(function (msgs) {
                     $scope.messages = msgs;
                 });
