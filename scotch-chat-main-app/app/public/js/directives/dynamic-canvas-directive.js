@@ -151,6 +151,8 @@ app.directive('dynamicCanvas', function () {
                 context.lineJoin = "round";
                 context.lineTo(evt.layerX+1, evt.layerY+1);
                 context.stroke();
+                imageForEmit = canvas.toDataURL();
+                $rootScope.$broadcast('imageToSocket', {imageForEmit});
             }
         }, false);
         
