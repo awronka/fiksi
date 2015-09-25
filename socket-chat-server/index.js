@@ -47,31 +47,6 @@ app.all('/*', function(req, res, next) {
 });
 
 
-// //start to login user
-// app.post('/user', function(req,res, next){
-//   User.findOne({password: req.body.password}).exec().then(function(user){
-//     console.log("hit " + user)
-//     res.json(user)
-//   }, next);
-// });
-
-
-//This route gets all the users from the data base
-/*app.get('/user', function(req,res, next){
-  User.find().exec().then(function(users){
-    // console.log("hit " + users)
-    res.json(users)
-  }, next);
-});*/
-
-//Create a new user with a post request
-app.post('/user', function(req,res,next){
-  console.log(req.body)
-		User.create(req.body).then(function(user){
-			res.status(201).json(user);
-		})
-		.then(null,next);
-});
 
 /*||||||||||||||||||||||||||||||||||||||ROUTES||||||||||||||||||||||||||||||||||||||*/
 //Route for our index file
@@ -169,21 +144,10 @@ io.on('connection', function(socket) {
     //io.in(defaultRoom).emit('user joined', data);
   });
 
-  //Listens for switch room
-  socket.on('switch room', function(data) {
-    //Handles joining and leaving rooms
-    //console.log(data);
-    socket.leave(data.oldRoom);
-    socket.join(data.newRoom);
-    io.in(data.oldRoom).emit('user left', data);
-    io.in(data.newRoom).emit('user joined', data);
-
-  });
-
 //Listens for new image
-socket.on('user image', function (msg) {
-      console.log(msg);
-      socket.broadcast.emit('user image', socket.nickname, msg);
+socket.on('new image', function (img) {
+      console.log("stage 3", img);
+      io.emit('image created', { image: true, buffer: img });
     });
 
   //Listens for a new chat message
@@ -205,6 +169,7 @@ socket.on('user image', function (msg) {
   });
 });
 /*||||||||||||||||||||||||||||||||||||||END SOCKETS||||||||||||||||||||||||||||||||||||||*/
+
 
 server.listen(process.env.PORT || 2015);
 console.log('It\'s going down in 2015');

@@ -63,7 +63,7 @@
 </script>
 </head>
 
-<body>
+<body class="wrapper">
     <!-- TO DO: Remember to put this back in below: ng-init="usernameModal()" -->
     <div ng-controller="MainCtrl" ng-init="usernameModal()">
         <div class="col-xs-6">
@@ -73,11 +73,14 @@
                     <div id="canvas-window">
                     <section class="design-surface">
                         <!--- draw canvas -->
+                        <div id="test-box"><div id="img-test-div"></div></div>
+                        <!--<canvas id="test-canvas" width="450" height="250" style="border:1px solid #000000;">
+</canvas>-->
                         <dynamic-canvas></dynamic-canvas>
                     </section>
                     </div>
                     <!------------------------------------------>
-                    <button ng-click="goToVideo()" class="btn btn-success">Back to Video</button>
+                    <!--<button ng-click="goToVideo()" class="btn btn-success">Back to Video</button>-->
                 </div>
             </div>
             <!-- from video.html ---->
