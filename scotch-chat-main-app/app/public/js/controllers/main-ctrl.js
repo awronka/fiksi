@@ -102,7 +102,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
     
     // catch and send new image to the server
     $rootScope.$on('imageToSocket', function(event, imgData){
-       console.log("stage 2", imgData.imageForEmit) 
+       // console.log("stage 2", imgData.imageForEmit) 
        var img = imgData.imageForEmit
        socket.emit('new image', { image: true, buffer: img.toString('base64') })
     });
@@ -110,7 +110,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
  
     //Listen for new images
     socket.on('image created', function(data){
-        console.log("stage 4", data.buffer.buffer)
+        // console.log("stage 4", data.buffer.buffer)
           if (data.image) {
            //mini canvas test
           // var ctx = document.getElementById('test-canvas').getContext('2d');

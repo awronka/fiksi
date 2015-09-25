@@ -132,6 +132,8 @@ app.directive('dynamicCanvas', function () {
         canvas.addEventListener("mousedown", function (evt) {
             clearCanvas();
             mouseDown = true;
+           var colors =curColor;
+            brushColor = colors;
             context.beginPath();
         }, false);
 
@@ -139,8 +141,6 @@ app.directive('dynamicCanvas', function () {
         canvas.addEventListener("mouseup", function (evt) {
             mouseDown = false;
             // var colors = context.getImageData(evt.layerX, evt.layerY, 1, 1).data;
-            var colors =curColor;
-            brushColor = colors;
         }, false);
 
         // Draw, if mouse button is pressed
@@ -167,7 +167,7 @@ app.directive('dynamicCanvas', function () {
         
         // send the image from the canvas to all users
         $scope.sendImage = function(){
-            console.log("stage 1", imageForEmit)
+            // console.log("stage 1", imageForEmit)
             imageForEmit = canvas.toDataURL();
             $rootScope.$broadcast('imageToSocket', {imageForEmit});
         }
