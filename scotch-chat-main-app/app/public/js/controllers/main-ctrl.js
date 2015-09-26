@@ -109,6 +109,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
 
     // catch and send new image to server to display in chat
     $rootScope.$on('imageToChat', function(event, imgData) {
+        $rootScope.$broadcast("update canvas", {imgData});
         var img = imgData.imageForEmit;
         console.log(imgData);
         $scope.messages.push(imgData);
