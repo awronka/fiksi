@@ -7,6 +7,8 @@ app.directive('dynamicCanvas', function () {
     function CanvasCtrl($scope, $rootScope) {
 
 
+        // We need to have the pixel density of the canvas reflect the pixel density of the users screen
+        // PIXEL_RATIO is an automatically invoked function that returns the relevant ratio
         var PIXEL_RATIO = (function () {
             var ctx = document.createElement("canvas").getContext("2d"),
                 dpr = window.devicePixelRatio || 1,
@@ -20,7 +22,8 @@ app.directive('dynamicCanvas', function () {
         })();
 
 
-        createHiDPICanvas = function(w, h, ratio) {
+
+        var createHiDPICanvas = function(w, h, ratio) {
             if (!ratio) { ratio = PIXEL_RATIO; }
             var can = document.createElement("canvas");
             can.width = w * ratio;
@@ -31,33 +34,28 @@ app.directive('dynamicCanvas', function () {
             return can;
         };
 
-        //Create canvas with the device resolution.
 
+        // Here we set the width and height of the canvas, then create one with our function
         var canvasWidth = 450;
         var canvasHeight = 250;
         var canvas = createHiDPICanvas(canvasWidth, canvasHeight);
 
 
-        var context = canvas.getContext("2d"),
-            img = document.createElement("img"),
-            mouseDown = false,
-            brushColor = "rgb(0, 0, 0)",
-            hasText = true,
-            clearCanvas = function () {
-                if (hasText) {
-                    context.clearRect(0, 0, canvasWidth, canvasHeight);
-                    hasText = false;
-                }
-            };
+        var context = canvas.getContext("2d");
+        var mouseDown = false;
+        var hasText = true;
+        var brushColor = "rgb(0, 0, 0)";
+        var image = document.createElement("img");
+
+        var clearCanvas = function () {
+                context.clearRect(0, 0, canvasWidth, canvasHeight);
+        };
+
         // Adding instructions
         context.fillText("Drop an image onto the canvas", canvasWidth/2, canvasHeight/2);
         context.fillText("Click a spot to set as brush color", canvasWidth/2, canvasHeight/2+20);
 
-        // Image for loading
-        img.addEventListener("load", function () {
-            clearCanvas();
-            context.drawImage(img, 0, 0);
-        }, false);
+
 
         // To enable drag and drop
         canvas.addEventListener("dragover", function (evt) {
@@ -66,6 +64,8 @@ app.directive('dynamicCanvas', function () {
 
         // Handle dropped image file - only Firefox and Google Chrome
         canvas.addEventListener("drop", function(e){
+            clearCanvas();
+            hasText = false;
             e.preventDefault(); 
             console.log("dropped!", e.dataTransfer.files[0])
             loadImage(e.dataTransfer.files[0]);
@@ -75,41 +75,34 @@ app.directive('dynamicCanvas', function () {
         //load image
         function loadImage(src){
         //	Prevent any non-image file type from being read.
-                if(!src.type.match(/image.*/)){
-                    console.log("The dropped file is not an image: ", src.type);
-                    return;
-                }
-            
-                //	Create our FileReader and run the results through the render function.
-                var reader = new FileReader();
-                reader.onload = function(e){
-                    console.log(e.target.result);
-                    render(e.target.result);
-                };
-                reader.readAsDataURL(src);
+            console.log("in the load image function");
+            if(!src.type.match(/image.*/)){
+                console.log("The dropped file is not an image: ", src.type);
+                return;
             }
-        
-        // shrink image;
-        var MAX_HEIGHT = 500;
-        var render = function(src){
-            img.src = src;
-            var image = new Image();
-            console.log("The height is ",src.height)
-            image.onload = function(){
-                var canvas = canvas;
-                console.log(canvas)
-                if(image.height > MAX_HEIGHT) {
-                    image.width *= MAX_HEIGHT / image.height;
-                    image.height = MAX_HEIGHT;
-                }
-                 var ctx = canvas.getContext();
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                canvas.width = image.width;
-                canvas.height = image.height;
-                ctx.drawImage(image, 0, 0, image.width, image.height);
+
+            //	Create our FileReader and run the results through the render function.
+            var reader = new FileReader();
+            reader.onload = function(e){
+                img.src = e.target.result;
             };
-          
-        };
+            reader.readAsDataURL(src);
+
+
+            var img = document.createElement("img");
+
+            // Image for loading
+            img.addEventListener("load", function () {
+                console.log("in the img on load function");
+                //clearCanvas();
+                if(img.height > canvasHeight) {
+                    img.width *= canvasHeight / img.height;
+                    img.height = canvasHeight;
+                }
+                context.drawImage(img, 0, 0, img.width, img.height);
+            }, false);
+        }
+
         //set colors
         $scope.colorPurple = "#cb3594";
         $scope.colorGreen = "#659b41";
@@ -120,17 +113,20 @@ app.directive('dynamicCanvas', function () {
 
         $scope.setColor= function(color){
             curColor = color;
-        }
+        };
         //Initialize brush size
         var brushSize = 10;
         
         //Set Brush Size
         $scope.setBrush = function(num){
             brushSize = num;
-        }
+        };
         // Detect mousedown
         canvas.addEventListener("mousedown", function (evt) {
-            clearCanvas();
+            if (hasText) {
+                clearCanvas();
+                hasText = false;
+            }
             mouseDown = true;
            var colors =curColor;
             brushColor = colors;
