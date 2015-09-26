@@ -1,23 +1,31 @@
 app.factory("UndoRedo", function(){
-	var picCache = [];
+	var undoCache = [];
+	var redoCache = [];
 	// picCache close over array to save image values
 	return {
 		saveImageState : function(img){
 			// console.log(img);
-			picCache.push(img)
-			console.log(picCache)
-			if(picCache.length > 10){
-				picCache.shift();
+			if(redoCache.length){
+				redoCache = [];
+			}
+			
+			undoCache.push(img)
+			// console.log(undoCache)
+			if(undoCache.length > 10){
+				undoCache.shift();
 			}
 		},
 		redo : function(img){
+			if(!redoCache.length) return;
+			var redoMove = redoCache.pop();
+			undoCache.push(redoMove);
+			return redoMove;
 			
-			picCache.push(img);
 		},
 		undo : function(){
-			if(!picCache.length) return;
-			console.log(picCache[picCache.legnth-1])
-			return picCache[picCache.length-2];
+			if(!undoCache.length) return;
+			redoCache.push(undoCache.pop())
+			return undoCache[undoCache.length-1];
 		}
 	}
 	
