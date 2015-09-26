@@ -12,7 +12,9 @@ app.use(express.static(__dirname + '/public'));
 
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({
+    extended: false
+}))
 
 // parse application/json
 app.use(bodyParser.json())
@@ -24,10 +26,11 @@ mongoose.connect("mongodb://127.0.0.1:27017/scotch-chat");
 
 //Create a schema for chat
 var ChatSchema = mongoose.Schema({
-  created: Date,
-  content: String,
-  username: String,
-  room: String
+    created: Date,
+    content: String,
+    imageData: String,
+    username: String,
+    room: String
 });
 
 
@@ -36,14 +39,14 @@ var Chat = mongoose.model('Chat', ChatSchema);
 
 //Allow CORS
 app.all('/*', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-type,Accept,X-Access-Token,X-Key');
-  if (req.method == 'OPTIONS') {
-    res.status(200).end();
-  } else {
-    next();
-  }
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-type,Accept,X-Access-Token,X-Key');
+    if (req.method == 'OPTIONS') {
+        res.status(200).end();
+    } else {
+        next();
+    }
 });
 
 
@@ -51,61 +54,61 @@ app.all('/*', function(req, res, next) {
 /*||||||||||||||||||||||||||||||||||||||ROUTES||||||||||||||||||||||||||||||||||||||*/
 //Route for our index file
 app.get('/', function(req, res) {
-  //send the index.html in our public directory
-  res.sendfile('index.html');
+    //send the index.html in our public directory
+    res.sendfile('index.html');
 });
 
 
 //This route is simply run only on first launch just to generate some chat history
 app.post('/setup', function(req, res) {
-  //Array of chat data. Each object properties must match the schema object properties
-  var chatData = [{
-    created: new Date(),
-    content: 'Hi',
-    username: 'Chris',
-    room: 'php'
-  }, {
-    created: new Date(),
-    content: 'Hello',
-    username: 'Obinna',
-    room: 'laravel'
-  }, {
-    created: new Date(),
-    content: 'Ait',
-    username: 'Bill',
-    room: 'angular'
-  }, {
-    created: new Date(),
-    content: 'Amazing room',
-    username: 'Patience',
-    room: 'socet.io'
-  }];
+    //Array of chat data. Each object properties must match the schema object properties
+    var chatData = [{
+        created: new Date(),
+        content: 'Hi',
+        username: 'Chris',
+        room: 'php'
+    }, {
+        created: new Date(),
+        content: 'Hello',
+        username: 'Obinna',
+        room: 'laravel'
+    }, {
+        created: new Date(),
+        content: 'Ait',
+        username: 'Bill',
+        room: 'angular'
+    }, {
+        created: new Date(),
+        content: 'Amazing room',
+        username: 'Patience',
+        room: 'socet.io'
+    }];
 
-  //Loop through each of the chat data and insert into the database
-  for (var c = 0; c < chatData.length; c++) {
-    //Create an instance of the chat model
-    var newChat = new Chat(chatData[c]);
-    //Call save to insert the chat
-    newChat.save(function(err, savedChat) {
-      console.log(savedChat);
-    });
-  }
-  //Send a resoponse so the serve would not get stuck
-  res.send('created');
+    //Loop through each of the chat data and insert into the database
+    for (var c = 0; c < chatData.length; c++) {
+        //Create an instance of the chat model
+        var newChat = new Chat(chatData[c]);
+        //Call save to insert the chat
+        newChat.save(function(err, savedChat) {
+            console.log(savedChat);
+        });
+    }
+    //Send a resoponse so the serve would not get stuck
+    res.send('created');
 });
 
 
 
 //This route produces a list of chat as filterd by 'room' query
 app.get('/msg', function(req, res) {
-  //Find
-  Chat.find({
-    'room': req.query.room
-  }).exec(function(err, msgs) {
-    console.log(err, msgs);
-    //Send
-    res.json(msgs);
-  });
+    //Find
+    Chat.find({
+        'room': req.query.room
+    }).exec(function(err, msgs) {
+        console.log(err, msgs);
+        //Send
+        res.json(msgs);
+    });
 });
 
 /*------------------------------------User Routes--------------------------------------*/
@@ -148,25 +151,67 @@ io.on('connection', function(socket) {
 socket.on('new image', function (img) {
       // console.log("stage 3", img);
       io.emit('image created', { image: true, buffer: img });
+
+
     });
 
-  //Listens for a new chat message
-  socket.on('new message', function(data) {
-    
-    //Create message
-    var newMsg = new Chat({
-      username: data.username,
-      content: data.message,
-      room: data.room,
-      created: new Date()
+
+    //Listens for new user
+    socket.on('new user', function(data) {
+        data.room = defaultRoom;
+        //New user joins the default room
+        socket.join(defaultRoom);
+        //Tell all those in the room that a new user joined
+        //io.in(defaultRoom).emit('user joined', data);
     });
-    //Save it to database
-    newMsg.save(function(err, msg){
-      socket.emit('stellatest', msg);
-      //Send message to those connected in the room
-      io.emit('message created', msg);
+
+    //Listens for new image
+    socket.on('new image', function(img) {
+        console.log("stage 3", img);
+        io.emit('image created', {
+            image: true,
+            buffer: img
+        });
     });
-  });
+
+    //Listen for new chat image 
+    socket.on('new chat image', function(img) {
+      //create chat message
+      var newImg = new Chat({
+        username: img.username,
+        content: img.message,
+        room: img.room,
+        imageData: img.imageData,
+        created: new Date()
+      });
+
+      //save image to db
+      newImg.save(function(err, img) {
+        //emit to connected users in room
+        io.emit('chat image created', {
+          image: true,
+          buffer: img
+        });
+      });
+    });
+
+    //Listens for a new chat message
+    socket.on('new message', function(data) {
+
+        //Create message
+        var newMsg = new Chat({
+            username: data.username,
+            content: data.message,
+            room: data.room,
+            created: new Date()
+        });
+        //Save it to database
+        newMsg.save(function(err, msg) {
+            socket.emit('stellatest', msg);
+            //Send message to those connected in the room
+            io.emit('message created', msg);
+        });
+    });
 });
 /*||||||||||||||||||||||||||||||||||||||END SOCKETS||||||||||||||||||||||||||||||||||||||*/
 

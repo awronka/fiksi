@@ -65,7 +65,6 @@
 </head>
 
 <body class="wrapper">
-    <!-- TO DO: Remember to put this back in below: ng-init="usernameModal()" -->
     <div ng-controller="MainCtrl" ng-init="usernameModal()">
         <div class="col-xs-6">
             <!-- from video.html --->
@@ -97,6 +96,7 @@
                                 <div class="md-list-item-text">
                                     <h3>{{ m.username }}</h3>
                                     <p>{{m.content}}</p>
+                                    <img ng-src="{{ m.imageData }}" />
                                 </div>
                             </md-list-item>
                         </md-whiteframe>

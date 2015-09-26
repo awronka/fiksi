@@ -182,11 +182,12 @@ app.directive('dynamicCanvas', function ($rootScope, UndoRedo) {
         //turn image data to 64bit encoded
         var imageForEmit = canvas.toDataURL();
         
-        // send the image from the canvas to all users
+        // send the image from the canvas to all users in chat
         $scope.sendImage = function(){
             // console.log("stage 1", imageForEmit)
             imageForEmit = canvas.toDataURL();
-            $rootScope.$broadcast('imageToSocket', {imageForEmit: imageForEmit});
+
+            $rootScope.$broadcast('imageToChat', {imageForEmit: imageForEmit});
         }
 
         var __slice = Array.prototype.slice;
