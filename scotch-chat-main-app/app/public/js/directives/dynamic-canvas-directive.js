@@ -172,7 +172,6 @@ app.directive('dynamicCanvas', function ($rootScope, UndoRedo) {
                 context.drawImage(image, 0,0, 450, 200);
             };
             
-            //$scope.$evalAsync();
         }
         
         // clear the canvas
