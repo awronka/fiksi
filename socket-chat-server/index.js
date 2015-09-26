@@ -22,7 +22,6 @@ app.use(bodyParser.json())
 mongoose.connect("mongodb://127.0.0.1:27017/scotch-chat");
 //mongoose.connect(uriUtil.formatMongoose("mongodb://heroku_qz5f9n32:gkr920qlmmbh94uet9p0491c00@ds051543.mongolab.com:51543/heroku_qz5f9n32"));
 
-
 //Create a schema for chat
 var ChatSchema = mongoose.Schema({
   created: Date,
