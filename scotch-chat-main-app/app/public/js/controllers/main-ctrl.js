@@ -109,7 +109,6 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
 
     // catch and send new image to server to display in chat
     $rootScope.$on('imageToChat', function(event, imgData) {
-        $rootScope.$broadcast("update canvas", {imgData});
         var img = imgData.imageForEmit;
         console.log(imgData);
         $scope.messages.push(imgData);
@@ -126,6 +125,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
     //Listen for new images
     socket.on('image created', function(data){
         // console.log("stage 4", data.buffer.buffer)
+          $rootScope.$broadcast("update canvas", {data});
           if (data.image) {
            //mini canvas test
           // var ctx = document.getElementById('test-canvas').getContext('2d');
