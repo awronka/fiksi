@@ -83,7 +83,7 @@ app.directive('dynamicCanvas', function () {
                 //	Create our FileReader and run the results through the render function.
                 var reader = new FileReader();
                 reader.onload = function(e){
-                    console.log(e.target.result)
+                    console.log(e.target.result);
                     render(e.target.result);
                 };
                 reader.readAsDataURL(src);
@@ -109,7 +109,7 @@ app.directive('dynamicCanvas', function () {
                 ctx.drawImage(image, 0, 0, image.width, image.height);
             };
           
-        }
+        };
         //set colors
         $scope.colorPurple = "#cb3594";
         $scope.colorGreen = "#659b41";
@@ -152,7 +152,7 @@ app.directive('dynamicCanvas', function () {
                 context.lineTo(evt.layerX+1, evt.layerY+1);
                 context.stroke();
                 imageForEmit = canvas.toDataURL();
-                $rootScope.$broadcast('imageToSocket', {imageForEmit});
+                $rootScope.$broadcast('imageToSocket', {imageForEmit:imageForEmit});
             }
         }, false);
         
@@ -169,7 +169,7 @@ app.directive('dynamicCanvas', function () {
         $scope.sendImage = function(){
             // console.log("stage 1", imageForEmit)
             imageForEmit = canvas.toDataURL();
-            $rootScope.$broadcast('imageToSocket', {imageForEmit});
+            $rootScope.$broadcast('imageToSocket', {imageForEmit: imageForEmit});
         }
 
         var __slice = Array.prototype.slice;
