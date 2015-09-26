@@ -209,6 +209,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
 
     //Listen for coordinates
     socket.on('coordinates created', function(data){
+        context.strokeStyle = data.color;
         context.lineTo(data.x+1, data.y+1);
         context.stroke();
         $rootScope.$broadcast('new coordinate', data)
