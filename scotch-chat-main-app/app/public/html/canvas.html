@@ -20,13 +20,16 @@
             <md-button class="md-fab md-raised md-mini" ng-click="setBrush(10)">M<md-icon md-svg-src="img/brush.svg" class="s24" aria-label="Medium"></md-button>
             <md-button class="md-fab md-raised md-mini" ng-click="setBrush(5)">S<md-icon md-svg-src="img/brush.svg" class="s24" aria-label="Small"></md-button>
             <md-button class="md-fab md-raised md-mini" id="clear-btn" ng-click="clearCanvas()"><md-icon md-svg-src="img/clear.svg" class="s24" aria-label="Clear Canvas"></md-icon></md-button>
+            <md-button class="md-fab md-raised md-mini" id="clear-btn" ng-click="sendImage()"><md-icon md-svg-src="img/send.svg" class="s24" aria-label="Send Canvas"></md-icon></md-button>
+            <md-button class="md-fab md-raised md-mini" id="clear-btn" ng-click="undoChanges()"><md-icon md-svg-src="img/undo.svg" class="s24" aria-label="Undo"></md-icon></md-button>
+            <md-button class="md-fab md-raised md-mini" id="clear-btn" ng-click="redoChanges()"><md-icon md-svg-src="img/redo.svg" class="s24" aria-label="Redo"></md-icon></md-button>
           </div>
         </md-fab-actions>
       </md-fab-speed-dial>
     </div>
 <!-- end angular material test -->
-<div class="image-message col-xs-12"layout-align="center center">
+<!-- <div class="image-message col-xs-12"layout-align="center center">
 <md-button ng-click="sendImage()"class="md-raised btn-send">Send Image</md-button>
 <md-button ng-click="undoChanges()"class="md-raised md-primary btn  btn-send">Undo</md-button>
-<md-button ng-click="redoChanges()"class="md-raised md-primary btn  btn-send">Redo</md-button>
+<md-button ng-click="redoChanges()"class="md-raised md-primary btn  btn-send">Redo</md-button> -->
 </div>
