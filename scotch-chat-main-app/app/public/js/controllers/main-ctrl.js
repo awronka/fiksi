@@ -147,13 +147,15 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
         img.src = data.buffer.buffer;
         img.id = "sharedImage";
         //should test if the box is working
-        var imgFrame = document.getElementById("img-test-div");   // Get the <ul> element with id="myList"
-        if (imgFrame.hasChildNodes()) {
-        // It has at least one
-        imgFrame.removeChild(imgFrame.lastChild);
-        }
-        imgFrame.appendChild(img);
-        createCanvas();
+        var imgFrame = document.getElementById("overlay-canvas");   // Get the <ul> element with id="myList"
+        var ctx = imgFrame.getContext('2d');
+        ctx.drawImage(img, 0,0,450,250);
+        // if (imgFrame.hasChildNodes()) {
+        // // It has at least one
+        // imgFrame.removeChild(imgFrame.lastChild);
+        // }
+        // imgFrame.appendChild(img);
+        // createCanvas();
         // ctx.drawImage(img, 450, 250);
 
     });

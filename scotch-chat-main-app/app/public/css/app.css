@@ -25,8 +25,14 @@ html, body {
     animation: zoomIn 1s;
 }
 
+#img-test-div{
+        /*padding: 2%;*/
+}
+
 #img-test-div img {
     position:absolute;
+    margin-right: 2%;
+
 }
 
 .coveringCanvas{
@@ -46,7 +52,7 @@ html, body {
 canvas{
     border-left: 1px solid grey;
     border-bottom: 2px solid grey;
-    padding: 2%;
+    /*padding: 2%;*/
     margin-left: -5%;
      cursor: crosshair;
 
