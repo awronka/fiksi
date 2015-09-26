@@ -23,19 +23,32 @@
   height: 24px;
 }
 
-#purple-btn{
-    background-color: #cb3594;
+#red-btn{
+    background-color: #FF0000;
+}
+
+#orange-btn{
+    background-color: #FF8D00;
+}
+
+#yellow-btn{
+    background-color: #FFFF00;
 }
 
 #green-btn{
-    background-color: #659b41;
+    background-color: #008000;
 }
 
-#brown-btn{
-    background-color: #986928;
+#blue-btn{
+    background-color: #0000FF;
 }
-#yellow-btn{
-    background-color: #ffcf33;
+
+#purple-btn{
+    background-color: #800080;
+}
+
+#black-btn{
+    background-color: #000000;
 }
 
 #lg-brush{
