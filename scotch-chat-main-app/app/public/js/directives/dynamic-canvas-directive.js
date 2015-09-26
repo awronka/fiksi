@@ -153,7 +153,7 @@ app.directive('dynamicCanvas', function ($rootScope, UndoRedo) {
                 context.lineJoin = "round";
                 context.lineTo(evt.layerX+1, evt.layerY+1);
                 context.stroke();
-                $rootScope.$broadcast('coordinateToSocket', {x:(evt.layerX+1), y:(evt.layerY+1)});
+                $rootScope.$broadcast('coordinateToSocket', {x:(evt.layerX+1), y:(evt.layerY+1), color: brushColor});
             }
         }, false);
 
