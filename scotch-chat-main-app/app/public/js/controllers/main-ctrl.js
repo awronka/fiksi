@@ -110,6 +110,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
     // catch and send new image to server to display in chat
     $rootScope.$on('imageToChat', function(event, imgData) {
         var img = imgData.imageForEmit;
+        console.log(imgData);
         $scope.messages.push(imgData);
         socket.emit('new chat image', { 
             image: true, 
@@ -138,6 +139,22 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
           imgFrame.appendChild(img);
           // ctx.drawImage(img, 450, 250);
           }
+    });
+
+    //Listen for chat images
+    socket.on('chat image created', function(data) {
+        console.log('image received');
+        $scope.messages.push(data);
+
+        var notification = new Notification("New image from " + data.username);        
+
+        notification.onshow = function () {
+            
+            // auto close after 2 second
+            setTimeout(function () {
+                notification.close();
+            }, 2000);
+        }
     })
         
     
