@@ -161,9 +161,7 @@ app.directive('dynamicCanvas', function ($rootScope, UndoRedo) {
         $scope.undoChanges = function(){
             var data = UndoRedo.undo();
             context.clearRect(0, 0, canvasWidth, canvasHeight);
-            console.log(img);
-            context.drawImage(img, 0,0, 450, 200);
-            
+
             var image = new Image();
             image.src = data;
 
