@@ -6,8 +6,8 @@
     <script>
 
     //heroku
-        var socket = io.connect('https://frozen-sea-6880.herokuapp.com');
-        //var socket = io.connect('localhost:2015');
+//        var socket = io.connect('https://frozen-sea-6880.herokuapp.com');
+        var socket = io.connect('localhost:2015');
         socket.on('news', function (data) {
             console.log(data);
             socket.emit('my other event', {

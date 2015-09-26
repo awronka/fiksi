@@ -2,6 +2,7 @@
 
 var app = angular.module('scotch-chat', ['ngMaterial', 'ngAnimate', 'ngMdIcons', 'btford.socket-io'])
 var serverBaseUrl = 'http://localhost:2015';
+//var serverBaseUrl = 'https://frozen-sea-6880.herokuapp.com';
 // app.config(function($routeProvider,$locationProvider){
 //     $routeProvider.when('/:room',{
 //         templateUrl:'./views/index.ejs',
