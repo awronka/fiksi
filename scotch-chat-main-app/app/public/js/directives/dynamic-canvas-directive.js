@@ -204,8 +204,7 @@ app.directive('dynamicCanvas', function ($rootScope, UndoRedo) {
         
         //update canvas
         $scope.$on("update canvas", function(event, imgData){
-            var data = imgData;
-            console.log(imgData)
+            var data = imgData.data.buffer.buffer;
             if(!data)return;
             // context.clearRect(0, 0, canvasWidth, canvasHeight);
             var image = new Image();
