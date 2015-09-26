@@ -91,7 +91,6 @@ app.post('/setup', function(req, res) {
         var newChat = new Chat(chatData[c]);
         //Call save to insert the chat
         newChat.save(function(err, savedChat) {
-
         });
     }
     //Send a resoponse so the serve would not get stuck
@@ -106,7 +105,7 @@ app.get('/msg', function(req, res) {
     Chat.find({
         'room': req.query.room
     }).exec(function(err, msgs) {
-        console.log(err, msgs);
+        console.log(err, "done");
         //Send
         res.json(msgs);
     });
@@ -176,23 +175,20 @@ io.on('connection', function(socket) {
     });
 
     //Listen for new chat image 
-    socket.on('new chat image', function(img) {
+    socket.on('new chat image', function(data) {
       //create chat message
       var newImg = new Chat({
-        username: img.username,
-        content: img.message,
-        room: img.room,
-        imageData: img.imageData,
+        username: data.username,
+        content: data.message,
+        room: data.room,
+        imageData: data.imageData,
         created: new Date()
       });
 
       //save image to db
-      newImg.save(function(err, img) {
+      newImg.save(function(err, data) {
         //emit to connected users in room
-        io.emit('chat image created', {
-          image: true,
-          buffer: img
-        });
+        io.emit('chat image created', data);
       });
     });
 
@@ -217,6 +213,7 @@ io.on('connection', function(socket) {
 /*||||||||||||||||||||||||||||||||||||||END SOCKETS||||||||||||||||||||||||||||||||||||||*/
 
 //heroku
-//server.listen(process.env.PORT || 5000);
-server.listen(process.env.PORT || 2015);
+
+server.listen(process.env.PORT || 5000);
+// server.listen(process.env.PORT || 2015);
 console.log('It\'s going down in 2015');

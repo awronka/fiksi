@@ -6,8 +6,6 @@ app.directive('dynamicCanvas', function ($rootScope, UndoRedo) {
 
     function CanvasLink($scope, element, attrs) {
         
-        console.log('link f');
-
 
         // We need to have the pixel density of the canvas reflect the pixel density of the users screen
         // PIXEL_RATIO is an automatically invoked function that returns the relevant ratio
@@ -163,6 +161,7 @@ app.directive('dynamicCanvas', function ($rootScope, UndoRedo) {
         //Undo changes to Canvas
         $scope.undoChanges = function(){
             var data = UndoRedo.undo();
+            if(!data)return;
             context.clearRect(0, 0, canvasWidth, canvasHeight);
 
             var image = new Image();
@@ -170,10 +169,25 @@ app.directive('dynamicCanvas', function ($rootScope, UndoRedo) {
 
             image.onload = function(){
                
-                context.drawImage(image, 0,0, 450, 200);
+                context.drawImage(image, 0,0, 450, 250);
             };
             
         };
+        
+        // redoChanges
+        $scope.redoChanges = function(){
+            var data = UndoRedo.redo();
+            if(!data)return;
+            context.clearRect(0, 0, canvasWidth, canvasHeight);
+
+            var image = new Image();
+            image.src = data;
+
+            image.onload = function(){
+               
+                context.drawImage(image, 0,0, 450, 250);
+            };
+        }
         
         // clear the canvas
        $scope.clearCanvas = function () {
@@ -191,6 +205,20 @@ app.directive('dynamicCanvas', function ($rootScope, UndoRedo) {
 
             $rootScope.$broadcast('imageToChat', {imageForEmit: imageForEmit});
         };
+        
+        //update canvas
+        $scope.$on("update canvas", function(event, imgData){
+            var data = imgData.data.buffer.buffer;
+            if(!data)return;
+            // context.clearRect(0, 0, canvasWidth, canvasHeight);
+            var image = new Image();
+            image.src = data;
+
+            image.onload = function(){
+               
+                context.drawImage(image, 0,0, 450, 250);
+            };
+        });
 
         var __slice = Array.prototype.slice;
 

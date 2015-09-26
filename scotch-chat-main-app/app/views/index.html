@@ -10,7 +10,7 @@
      <link rel="stylesheet" href="css/canvas-style.css">
     <link rel="stylesheet" href="libs/angular-material/angular-material.css">
     <script src="libs/angular/angular.js"></script>
-    <script src="http://localhost:2015/socket.io/socket.io.js"></script>
+    <!--<script src="http://localhost:2015/socket.io/socket.io.js"></script>-->
     <script src="https://frozen-sea-6880.herokuapp.com/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="libs/angular-animate/angular-animate.js"></script>
     <script type="text/javascript" src="libs/angular-aria/angular-aria.js"></script>
@@ -34,8 +34,6 @@
     <!-- jquery -->
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    <script src="js/video-image-capture/video-state.js"></script>
-    <script src="js/video-image-capture/video-ctrl.js"></script>
     <script src="https://cdn.webrtc-experiment.com/RTCMultiConnection.js"></script>
     <!--<script src="text/javascript" src="libs/RTCPeerConnection/RTCPeerConnection-v1.5.js"></script>-->
     <!--<script src="js/webrtctest.js"></script>-->
@@ -95,7 +93,6 @@
                         <md-subheader class="md-primary header">Room: {{room}} <span align="right">Userame: {{username}} </span> </md-subheader>
                         <md-whiteframe ng-repeat="m in messages" class="md-whiteframe-z2 message" layout layout-align="center center">
                             <md-list-item class="md-3-line">
-                                <img ng-src="img/user.png" class="md-avatar" alt="User" />
                                 <div class="md-list-item-text">
                                     <h3>{{ m.username }}</h3>
                                     <p>{{m.content}}</p>

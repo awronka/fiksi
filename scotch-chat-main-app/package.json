@@ -22,7 +22,7 @@
         "frame": true,
         "position": "center",
         "fullscreen": false,
-        "resizable": false,
+        "resizable": true,
         "width": 1000,
         "height": 700,
         "min_width": 600,

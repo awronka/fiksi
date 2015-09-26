@@ -125,6 +125,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
     // catch and send new image to server to display in chat
     $rootScope.$on('imageToChat', function(event, imgData) {
         var img = imgData.imageForEmit;
+        console.log(imgData);
         $scope.messages.push(imgData);
         socket.emit('new chat image', { 
             image: true, 
@@ -139,6 +140,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
     //Listen for new images
     socket.on('image created', function(data){
         // console.log("stage 4", data.buffer.buffer)
+        $rootScope.$broadcast("update canvas", {data:data});
         //mini canvas test
         // var ctx = document.getElementById('test-canvas').getContext('2d');
         var img = new Image();
@@ -221,6 +223,26 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
         var img = document.getElementById("sharedImage");
         img.remove(img.selectedIndex);
     });
+
+
+
+
+    //Listen for chat images
+    socket.on('chat image created', function(data) {
+        console.log('image received');
+        $scope.messages.push(data);
+
+        var notification = new Notification("New image from " + data.username);        
+
+        notification.onshow = function () {
+            
+            // auto close after 2 second
+            setTimeout(function () {
+                notification.close();
+            }, 2000);
+        }
+    });
+
     
     //Listen for new messages
     socket.on('message created', function (data) {
@@ -247,7 +269,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
     });
     socket.on('stellatest',function(data){
         console.log(data);
-    })
+    });
     //Send a new message
     $scope.send = function (msg) {
         //Notify the server that there is a new message with the message as packet
@@ -257,5 +279,5 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
             username: $scope.username
         });
 
-    };
+    }
 });
