@@ -103,8 +103,23 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
     // catch and send new image to the server
     $rootScope.$on('imageToSocket', function(event, imgData){
        // console.log("stage 2", imgData.imageForEmit) 
-       var img = imgData.imageForEmit
+       var img = imgData.imageForEmit;
        socket.emit('new image', { image: true, buffer: img.toString('base64') })
+    });
+
+    // catch a new coordinate and send to server
+    $rootScope.$on('coordinateToSocket', function(event, coordinates){
+        socket.emit('new coordinates', coordinates)
+    });
+
+    // catch a new coordinate and send to server
+    $rootScope.$on('newLine', function(event, obj){
+        socket.emit('newLine', obj)
+    });
+
+    // catch a clear and send to server
+    $rootScope.$on('clearCanvas', function(event, obj){
+        socket.emit('clearCanvas', obj)
     });
 
     // catch and send new image to server to display in chat
@@ -125,22 +140,92 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
     //Listen for new images
     socket.on('image created', function(data){
         // console.log("stage 4", data.buffer.buffer)
-          $rootScope.$broadcast("update canvas", {data});
-          if (data.image) {
-           //mini canvas test
-          // var ctx = document.getElementById('test-canvas').getContext('2d');
-          var img = new Image();
-          img.src = data.buffer.buffer;
-          //should test if the box is working
-          var imgFrame = document.getElementById("img-test-div");   // Get the <ul> element with id="myList"
-          if (imgFrame.hasChildNodes()) {
-            // It has at least one
-            imgFrame.removeChild(imgFrame.childNodes[0]); 
-          }
-          imgFrame.appendChild(img);
-          // ctx.drawImage(img, 450, 250);
-          }
+        $rootScope.$broadcast("update canvas", {data:data});
+        //mini canvas test
+        // var ctx = document.getElementById('test-canvas').getContext('2d');
+        var img = new Image();
+        img.src = data.buffer.buffer;
+        img.id = "sharedImage";
+        //should test if the box is working
+        var imgFrame = document.getElementById("img-test-div");   // Get the <ul> element with id="myList"
+        if (imgFrame.hasChildNodes()) {
+        // It has at least one
+        imgFrame.removeChild(imgFrame.lastChild);
+        }
+        imgFrame.appendChild(img);
+        createCanvas();
+        // ctx.drawImage(img, 450, 250);
+
     });
+
+    // We need to have the pixel density of the canvas reflect the pixel density of the users screen
+    // PIXEL_RATIO is an automatically invoked function that returns the relevant ratio
+    var PIXEL_RATIO = (function () {
+        var ctx = document.createElement("canvas").getContext("2d"),
+            dpr = window.devicePixelRatio || 1,
+            bsr = ctx.webkitBackingStorePixelRatio ||
+                ctx.mozBackingStorePixelRatio ||
+                ctx.msBackingStorePixelRatio ||
+                ctx.oBackingStorePixelRatio ||
+                ctx.backingStorePixelRatio || 1;
+
+        return dpr / bsr;
+    })();
+
+
+
+    var createHiDPICanvas = function(w, h, ratio) {
+        if (!ratio) { ratio = PIXEL_RATIO; }
+        var can = document.createElement("canvas");
+        can.width = w * ratio;
+        can.height = h * ratio;
+        can.style.width = w + "px";
+        can.style.height = h + "px";
+        can.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0);
+        return can;
+    };
+
+    // Here we set the width and height of the canvas, then create one with our function
+    var canvasWidth = 450;
+    var canvasHeight = 250;
+    var context = null;
+
+    var createCanvas = function() {
+        var canvas = createHiDPICanvas(canvasWidth, canvasHeight);
+        canvas.id = 'overlay-canvas';
+        canvas.setAttribute('class','coveringCanvas');
+        var imgFrame = document.getElementById("img-test-div");
+        imgFrame.appendChild(canvas);
+        context = canvas.getContext("2d");
+        context.strokeStyle = "#cb3594";
+        context.lineWidth = 10;
+        context.lineJoin = "round";
+    };
+
+    createCanvas();
+
+
+
+
+    //Listen for coordinates
+    socket.on('coordinates created', function(data){
+        context.lineTo(data.x+1, data.y+1);
+        context.stroke();
+        $rootScope.$broadcast('new coordinate', data)
+    });
+
+    socket.on('newLine', function(data) {
+        context.beginPath();
+    });
+
+    socket.on('clearCanvas', function(data) {
+        context.clearRect(0, 0, canvasWidth, canvasHeight);
+        var img = document.getElementById("sharedImage");
+        img.remove(img.selectedIndex);
+    });
+
+
+
 
     //Listen for chat images
     socket.on('chat image created', function(data) {
@@ -156,8 +241,8 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
                 notification.close();
             }, 2000);
         }
-    })
-        
+    });
+
     
     //Listen for new messages
     socket.on('message created', function (data) {
@@ -184,7 +269,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
     });
     socket.on('stellatest',function(data){
         console.log(data);
-    })
+    });
     //Send a new message
     $scope.send = function (msg) {
         //Notify the server that there is a new message with the message as packet
@@ -194,5 +279,5 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
             username: $scope.username
         });
 
-    };
+    }
 });

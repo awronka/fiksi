@@ -91,7 +91,6 @@ app.post('/setup', function(req, res) {
         var newChat = new Chat(chatData[c]);
         //Call save to insert the chat
         newChat.save(function(err, savedChat) {
-            console.log("done");
         });
     }
     //Send a resoponse so the serve would not get stuck
@@ -127,7 +126,6 @@ io.on('connection', function(socket) {
   // var defaultRoom,rooms=[];
 
   socket.on('createRoom',function(data){
-    console.log("done");
     defaultRoom=data.newRoom;
     rooms.push(data.newRoom);
 
@@ -148,12 +146,22 @@ io.on('connection', function(socket) {
     //io.in(defaultRoom).emit('user joined', data);
   });
 
-//Listens for new image
-socket.on('new image', function (img) {
-      // console.log("stage 3", img);
-      io.emit('image created', { image: true, buffer: img });
+    //Listens for new image
+    socket.on('new image', function (img) {
+        // console.log("stage 3", img);
+        io.emit('image created', { image: true, buffer: img });
+    });
 
+    socket.on('new coordinates', function(coordinates) {
+        io.emit('coordinates created', coordinates)
+    });
 
+    socket.on('newLine', function(obj) {
+        io.emit('newLine', obj);
+    });
+
+    socket.on('clearCanvas', function(obj) {
+        io.emit('clearCanvas', obj);
     });
 
 
@@ -164,15 +172,6 @@ socket.on('new image', function (img) {
         socket.join(defaultRoom);
         //Tell all those in the room that a new user joined
         //io.in(defaultRoom).emit('user joined', data);
-    });
-
-    //Listens for new image
-    socket.on('new image', function(img) {
-        // console.log("stage 3", img);
-        io.emit('image created', {
-            image: true,
-            buffer: img
-        });
     });
 
     //Listen for new chat image 
@@ -214,6 +213,7 @@ socket.on('new image', function (img) {
 /*||||||||||||||||||||||||||||||||||||||END SOCKETS||||||||||||||||||||||||||||||||||||||*/
 
 //heroku
+
 server.listen(process.env.PORT || 5000);
 // server.listen(process.env.PORT || 2015);
 console.log('It\'s going down in 2015');
