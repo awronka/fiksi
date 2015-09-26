@@ -146,7 +146,7 @@ io.on('connection', function(socket) {
 
 //Listens for new image
 socket.on('new image', function (img) {
-      console.log("stage 3", img);
+      // console.log("stage 3", img);
       io.emit('image created', { image: true, buffer: img });
     });
 
