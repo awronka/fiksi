@@ -91,7 +91,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
                     newRoom:$scope.room
                 });
 
-                //Fetch chat messages in GENERAL
+                //Fetch chat messages in room
                 $http.get(serverBaseUrl + '/msg?room=' + $scope.room).success(function (msgs) {
                     $scope.messages = msgs;
                 });
@@ -105,6 +105,19 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
        // console.log("stage 2", imgData.imageForEmit) 
        var img = imgData.imageForEmit
        socket.emit('new image', { image: true, buffer: img.toString('base64') })
+    });
+
+    // catch and send new image to server to display in chat
+    $rootScope.$on('imageToChat', function(event, imgData) {
+        var img = imgData.imageForEmit;
+        $scope.messages.push(imgData);
+        socket.emit('new chat image', { 
+            image: true, 
+            buffer: img.toString('base64'),
+            room: $scope.room,
+            message: "",
+            imageData: img,
+            username: $scope.username });
     });
 
  
