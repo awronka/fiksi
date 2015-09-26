@@ -25,6 +25,16 @@ html, body {
     animation: zoomIn 1s;
 }
 
+#img-test-div img {
+    position:absolute;
+}
+
+.coveringCanvas{
+    position:absolute;
+    z-index: 5;
+    width: 100%;
+}
+
 .col-xs-6{
     height:100px;
 }

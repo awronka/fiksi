@@ -102,6 +102,8 @@ app.directive('dynamicCanvas', function ($rootScope, UndoRedo) {
                     img.height = canvasHeight;
                 }
                 context.drawImage(img, 0, 0, img.width, img.height);
+                imageForEmit = canvas.toDataURL();
+                $rootScope.$broadcast('imageToSocket', {imageForEmit:imageForEmit});
             }, false);
         }
 
@@ -133,6 +135,7 @@ app.directive('dynamicCanvas', function ($rootScope, UndoRedo) {
            var colors =curColor;
             brushColor = colors;
             context.beginPath();
+            $rootScope.$broadcast('newLine', {});
         }, false);
 
         // Detect mouseup
@@ -152,11 +155,11 @@ app.directive('dynamicCanvas', function ($rootScope, UndoRedo) {
                 context.lineJoin = "round";
                 context.lineTo(evt.layerX+1, evt.layerY+1);
                 context.stroke();
-                imageForEmit = canvas.toDataURL();
-                $rootScope.$broadcast('imageToSocket', {imageForEmit:imageForEmit});
+                $rootScope.$broadcast('coordinateToSocket', {x:(evt.layerX+1), y:(evt.layerY+1)});
             }
         }, false);
-        
+
+
         //Undo changes to Canvas
         $scope.undoChanges = function(){
             var data = UndoRedo.undo();
@@ -170,12 +173,13 @@ app.directive('dynamicCanvas', function ($rootScope, UndoRedo) {
                 context.drawImage(image, 0,0, 450, 200);
             };
             
-        }
+        };
         
         // clear the canvas
        $scope.clearCanvas = function () {
 			context.clearRect(0, 0, canvasWidth, canvasHeight);
-		}
+           $rootScope.$broadcast('clearCanvas', {});
+		};
         
         //turn image data to 64bit encoded
         var imageForEmit = canvas.toDataURL();
@@ -186,7 +190,7 @@ app.directive('dynamicCanvas', function ($rootScope, UndoRedo) {
             imageForEmit = canvas.toDataURL();
 
             $rootScope.$broadcast('imageToChat', {imageForEmit: imageForEmit});
-        }
+        };
 
         var __slice = Array.prototype.slice;
 
