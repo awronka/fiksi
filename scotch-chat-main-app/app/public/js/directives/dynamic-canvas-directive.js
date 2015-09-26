@@ -2,9 +2,11 @@
  * Created by GalenWeber on 9/19/15.
  * Edited Brilliantly by AlexiusWronka on 9/24/15
  */
-app.directive('dynamicCanvas', function () {
+app.directive('dynamicCanvas', function ($rootScope, UndoRedo) {
 
-    function CanvasCtrl($scope, $rootScope) {
+    function CanvasLink($scope, element, attrs) {
+        
+        console.log('link f');
 
 
         // We need to have the pixel density of the canvas reflect the pixel density of the users screen
@@ -136,6 +138,9 @@ app.directive('dynamicCanvas', function () {
         // Detect mouseup
         canvas.addEventListener("mouseup", function (evt) {
             mouseDown = false;
+            var imageToUndo = canvas.toDataURL();
+            // send image for undo/redo
+            UndoRedo.saveImageState(imageToUndo);
             // var colors = context.getImageData(evt.layerX, evt.layerY, 1, 1).data;
         }, false);
 
@@ -152,9 +157,26 @@ app.directive('dynamicCanvas', function () {
             }
         }, false);
         
+        //Undo changes to Canvas
+        $scope.undoChanges = function(){
+            var data = UndoRedo.undo();
+            context.clearRect(0, 0, canvasWidth, canvasHeight);
+            console.log(img);
+            context.drawImage(img, 0,0, 450, 200);
+            
+            var image = new Image();
+            image.src = data;
+
+            image.onload = function(){
+               
+                context.drawImage(image, 0,0, 450, 200);
+            };
+            
+            //$scope.$evalAsync();
+        }
+        
         // clear the canvas
        $scope.clearCanvas = function () {
-
 			context.clearRect(0, 0, canvasWidth, canvasHeight);
 		}
         
@@ -172,6 +194,7 @@ app.directive('dynamicCanvas', function () {
 
         var parent = document.getElementById("canvas-container");
         console.log("parent is: ", parent);
+        canvas.setAttribute('id', 'main-canvas');
         parent.appendChild(canvas);
 
     }
@@ -180,6 +203,6 @@ app.directive('dynamicCanvas', function () {
         restrict: 'E',
         scope: {},
         templateUrl: '../../html/canvas.html',
-        controller: CanvasCtrl
+        link: CanvasLink
     };
 });
