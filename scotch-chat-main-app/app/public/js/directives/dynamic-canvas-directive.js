@@ -171,6 +171,7 @@ app.directive('dynamicCanvas', function ($rootScope, UndoRedo) {
             
         }
         
+        // redoChanges
         $scope.redoChanges = function(){
             var data = UndoRedo.redo();
             if(!data)return;
@@ -200,6 +201,21 @@ app.directive('dynamicCanvas', function ($rootScope, UndoRedo) {
 
             $rootScope.$broadcast('imageToChat', {imageForEmit: imageForEmit});
         }
+        
+        //update canvas
+        $scope.$on("update canvas", function(event, imgData){
+            var data = imgData;
+            if(!data)return;
+            context.clearRect(0, 0, canvasWidth, canvasHeight);
+
+            var image = new Image();
+            image.src = data;
+
+            image.onload = function(){
+               
+                context.drawImage(image, 0,0, 450, 250);
+            };
+        })
 
         var __slice = Array.prototype.slice;
 
