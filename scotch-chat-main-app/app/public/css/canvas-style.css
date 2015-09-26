@@ -91,6 +91,7 @@
 #test-box{
     width:450px;
     height:250px;
+    padding:none;
 }
 
 #img-test-div img{
