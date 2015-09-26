@@ -29,6 +29,10 @@ html, body {
     height:100px;
 }
 
+.full-width {
+    width: 100%;
+}
+
 canvas{
     border-left: 1px solid grey;
     border-bottom: 2px solid grey;
