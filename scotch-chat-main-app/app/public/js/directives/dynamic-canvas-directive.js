@@ -165,7 +165,8 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo) {
                 $rootScope.$broadcast('coordinateToSocket', {
                     x: (evt.layerX + 1),
                     y: (evt.layerY + 1),
-                    color: brushColor
+                    color: brushColor,
+                    brush: brushSize
                 });
             }
         }, false);
