@@ -133,6 +133,14 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo) {
             brushSize = num;
         };
         
+        //draw a dot
+        function point(x, y, canvas){
+        canvas.beginPath();
+        canvas.arc(x, y, 1, 0, 2 * Math.PI, true);
+        canvas.stroke();
+        }
+        
+        
         // Detect mousedown
         canvas.addEventListener("mousedown", function(evt) {
             if (hasText) {
@@ -150,6 +158,7 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo) {
             context.stroke();
             context.shadowBlur = 2;
             context.shadowColor = brushColor;
+            point(evt.layerX, evt.layerY, context)
             $rootScope.$broadcast('newLine', {});
         }, false);
 
