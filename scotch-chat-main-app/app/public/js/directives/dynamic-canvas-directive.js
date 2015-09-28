@@ -133,6 +133,14 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo) {
             brushSize = num;
         };
         
+        //draw a dot
+        function point(x, y, canvas){
+        canvas.beginPath();
+        canvas.arc(x, y, 1, 0, 2 * Math.PI, true);
+        canvas.stroke();
+        }
+        
+        
         // Detect mousedown
         canvas.addEventListener("mousedown", function(evt) {
             if (hasText) {
@@ -143,13 +151,10 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo) {
             var colors = curColor;
             brushColor = colors;
             context.beginPath();
-            context.strokeStyle = brushColor;
             context.lineWidth = brushSize;
+            context.strokeStyle = brushColor;
             context.lineJoin = context.lineCap = "round";
-            context.lineTo(evt.layerX + 1, evt.layerY + 1);
-            context.stroke();
-            context.shadowBlur = 2;
-            context.shadowColor = brushColor;
+            point(evt.layerX, evt.layerY, context)
             $rootScope.$broadcast('newLine', {});
         }, false);
 
@@ -164,10 +169,7 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo) {
 
         // Draw, if mouse button is pressed
         canvas.addEventListener("mousemove", function(evt) {
-            if (mouseDown) {
-                context.strokeStyle = brushColor;
-                context.lineWidth = brushSize;
-                context.lineJoin = context.lineCap = "round";
+            if (mouseDown) {                               
                 context.lineTo(evt.layerX + 1, evt.layerY + 1);
                 context.stroke();
                 context.shadowBlur = 2;
