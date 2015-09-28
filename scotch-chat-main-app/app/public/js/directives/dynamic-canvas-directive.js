@@ -132,6 +132,7 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo) {
         $scope.setBrush = function(num) {
             brushSize = num;
         };
+        
         // Detect mousedown
         canvas.addEventListener("mousedown", function(evt) {
             if (hasText) {
@@ -142,6 +143,13 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo) {
             var colors = curColor;
             brushColor = colors;
             context.beginPath();
+            context.strokeStyle = brushColor;
+            context.lineWidth = brushSize;
+            context.lineJoin = context.lineCap = "round";
+            context.lineTo(evt.layerX + 1, evt.layerY + 1);
+            context.stroke();
+            context.shadowBlur = 2;
+            context.shadowColor = brushColor;
             $rootScope.$broadcast('newLine', {});
         }, false);
 
@@ -159,9 +167,11 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo) {
             if (mouseDown) {
                 context.strokeStyle = brushColor;
                 context.lineWidth = brushSize;
-                context.lineJoin = "round";
+                context.lineJoin = context.lineCap = "round";
                 context.lineTo(evt.layerX + 1, evt.layerY + 1);
                 context.stroke();
+                context.shadowBlur = 2;
+                context.shadowColor = brushColor;
                 $rootScope.$broadcast('coordinateToSocket', {
                     x: (evt.layerX + 1),
                     y: (evt.layerY + 1),
