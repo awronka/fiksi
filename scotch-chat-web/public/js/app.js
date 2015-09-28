@@ -1,16 +1,21 @@
 'use strict';
 
-var app = angular.module('scotch-chat', ['ngMaterial', 'ngAnimate', 'ngMdIcons', 'btford.socket-io'])
+var app = angular.module('scotch-chat', ['ngMaterial', 'ngAnimate', 'ngRoute', 'ngMdIcons', 'btford.socket-io'])
 var serverBaseUrl = 'http://localhost:2015';
 //var serverBaseUrl = 'https://frozen-sea-6880.herokuapp.com';
-// app.config(function($routeProvider,$locationProvider){
-//     $routeProvider.when('/:room',{
-//         templateUrl:'./views/index.ejs',
-//         controller:'MainCtrl'
-//     });
+app.config(function($routeProvider, $locationProvider){
 
-//     $locationProvider.html5Mode(true);
-// });
+    $routeProvider
+        .when('/:room',{
+            templateUrl: './partials/chart-room.html',
+            controller: 'MainCtrl'
+        })
+        .otherwise({
+            redirectTo: '/General'
+        })
+
+    $locationProvider.html5Mode(true);
+});
 
 //var serverBaseUrl = 'https://frozen-sea-6880.herokuapp.com';
 app.factory('socket', function (socketFactory) {
@@ -22,7 +27,7 @@ app.factory('socket', function (socketFactory) {
 
     return socket;
 });
-app.controller('MainCtrl', function ($scope, $mdDialog, socket, $http) {
+app.controller('MainCtrl', function ($scope, $mdDialog, socket, $http, $routeParams) {
     $scope.messages = [];
     $scope.room = "";
 
@@ -84,8 +89,8 @@ app.controller('MainCtrl', function ($scope, $mdDialog, socket, $http) {
                 socket.emit('new user', {
                     username: answer
                 });
-                $scope.room = 'General';
-                //$scope.room=$routeParams.room;
+                //$scope.room = 'General';
+                $scope.room =  $routeParams.room;
                 console.log($routeParams);
                 $http.get(serverBaseUrl + '/msg?room=' + $scope.room).success(function (msgs) {
                     $scope.messages = msgs;
