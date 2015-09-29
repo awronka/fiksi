@@ -201,7 +201,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
         context = canvas.getContext("2d");
         context.strokeStyle = "#cb3594";
         context.lineWidth = 10;
-        context.lineJoin = "round";
+        context.lineJoin = context.lineCap  = "round";
     };
 
     createCanvas();
@@ -212,6 +212,9 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
     //Listen for coordinates
     socket.on('coordinates created', function(data){
         context.strokeStyle = data.color;
+        context.lineWidth = data.brush;
+        context.shadowBlur = 2;
+        context.shadowColor = data.color;
         context.lineTo(data.x+1, data.y+1);
         context.stroke();
         $rootScope.$broadcast('new coordinate', data)

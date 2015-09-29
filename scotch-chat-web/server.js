@@ -15,8 +15,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 
-app.get('/', routes.index);
+app.get('/*', routes.index);
 
 app.set('port', process.env.PORT || 4000);
 

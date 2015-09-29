@@ -1,0 +1,44 @@
+<md-content ng-init="usernameModal()">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" aria-label="Settings">
+                    <img src="img/scotch.png" alt="">
+                </md-button>
+                <h2>
+          <span>Fiksi Web</span>
+        </h2>
+                <span flex></span>
+                <md-select placeholder="Rooms" ng-model="room" ng-change="changeRoom(room)">
+                    <md-option ng-repeat="r in rooms" value="{{r}}">{{r}}</md-option>
+                </md-select>
+            </div>
+        </md-toolbar>
+        <section>
+            <md-list>
+                <md-subheader class="md-primary header">Room: {{room}} <span align="right">Userame: {{username}} </span> </md-subheader>
+                
+                <md-whiteframe ng-repeat="m in messages" class="md-whiteframe-z2 message" layout layout-align="center center">
+                    <md-list-item class="md-3-line">
+                        <img ng-src="img/user.png" class="md-avatar" alt="User" />
+                        <div class="md-list-item-text">
+                            <h3>{{ m.username }}</h3>
+                            <p>{{m.content}}</p>
+                        </div>
+                    </md-list-item>
+                </md-whiteframe>
+
+            </md-list>
+        </section>
+
+        <div class="footer">
+
+
+            <md-input-container>
+                <label>Message</label>
+                <textarea ng-model="message" columns="1" md-maxlength="100" ng-enter="send(message)"></textarea>
+            </md-input-container>
+
+
+        </div>
+
+    </md-content>
