@@ -45,6 +45,11 @@ html, body {
     height:100px;
 }
 
+.can-scroll{
+    overflow: auto;
+    height: 100vh;
+}
+
 .full-width {
     width: 100%;
 }
