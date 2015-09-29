@@ -22,8 +22,8 @@ app.use(bodyParser.json())
 //Connect to mongo DB database
 //use the below local mongodb for developement
 //heroku
-//mongoose.connect("mongodb://127.0.0.1:27017/scotch-chat");
-mongoose.connect(uriUtil.formatMongoose("mongodb://heroku_qz5f9n32:gkr920qlmmbh94uet9p0491c00@ds051543.mongolab.com:51543/heroku_qz5f9n32"));
+mongoose.connect("mongodb://127.0.0.1:27017/scotch-chat");
+//mongoose.connect(uriUtil.formatMongoose("mongodb://heroku_qz5f9n32:gkr920qlmmbh94uet9p0491c00@ds051543.mongolab.com:51543/heroku_qz5f9n32"));
 
 //Create a schema for chat
 var ChatSchema = mongoose.Schema({
@@ -139,6 +139,7 @@ io.on('connection', function(socket) {
 
   //Listens for new user
   socket.on('new user', function(data) {
+    console.log('There is a new user!!!')
     data.room = defaultRoom;
     //New user joins the default room
     socket.join(defaultRoom);
@@ -204,7 +205,7 @@ io.on('connection', function(socket) {
         });
         //Save it to database
         newMsg.save(function(err, msg) {
-            socket.emit('stellatest', msg);
+            //socket.emit('stellatest', msg);
             //Send message to those connected in the room
             io.emit('message created', msg);
         });
@@ -214,6 +215,6 @@ io.on('connection', function(socket) {
 
 //heroku
 
-server.listen(process.env.PORT || 5000);
-// server.listen(process.env.PORT || 2015);
+//server.listen(process.env.PORT || 5000);
+server.listen(process.env.PORT || 2015);
 console.log('It\'s going down in 2015');

@@ -236,7 +236,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
     //Listen for chat images
     socket.on('chat image created', function(data) {
         console.log('image received');
-        $scope.messages.push(data);
+        //$scope.messages.push(data);
 
         var notification = new Notification("New image from " + data.username);        
 
@@ -273,9 +273,9 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
         }
 
     });
-    socket.on('stellatest',function(data){
+/*    socket.on('stellatest',function(data){
         console.log(data);
-    });
+    });*/
     //Send a new message
     $scope.send = function (msg) {
         //Notify the server that there is a new message with the message as packet
