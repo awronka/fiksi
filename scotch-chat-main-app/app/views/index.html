@@ -31,6 +31,7 @@
     <script src="js/Auth/authInterceptor.js"></script>
     <script src="js/Auth/authService.js"></script>
     <script src="js/Auth/session.js"></script>
+    <script src="js/factories/webrtc-factory.js"></script>
     <!-- jquery -->
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
@@ -45,6 +46,15 @@
 </head>
 
 <body class="wrapper">
+    <div class='col-xs-12'>
+<video id="my-video" autoplay></video>
+<canvas id="my-canvas" width="600" height="400" autoplay>I am canvas</canvas>
+<img id="my-img" />
+<button ng-click="takePhoto()" class="btn btn-success">Take Photo</button>
+</div>
+<!--<div class='col-xs-6'>
+</div>-->
+
     <div ng-controller="MainCtrl" ng-init="usernameModal()">
         <div class="col-xs-6">
             <!-- from video.html --->
