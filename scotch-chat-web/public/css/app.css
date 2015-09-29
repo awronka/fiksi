@@ -23,3 +23,8 @@ body {
 md-select .md-select-label.md-placeholder{
 color: #fff;
 }
+
+#chatHistory{
+    height:63vh;
+    overflow-y:scroll;
+}

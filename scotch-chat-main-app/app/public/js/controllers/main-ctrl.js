@@ -84,8 +84,10 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
                     username: answer.displayName
                 });
                 //Set room to general;
-                $scope.room = answer.displayName+'*'+answer.chatRoom.split(' ').join('-');
+                $scope.room = answer.displayName.split(' ').join('-')+'*'+answer.chatRoom.split(' ').join('-');
                 
+                $scope.inviteLink="localhost:4000/"+$scope.room;
+                //$scope.inviteLink=herokulink
 
                 socket.emit('createRoom',{
                     newRoom:$scope.room
@@ -273,9 +275,9 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
         }
 
     });
-    socket.on('stellatest',function(data){
+/*    socket.on('stellatest',function(data){
         console.log(data);
-    });
+    });*/
     //Send a new message
     $scope.send = function (msg) {
         //Notify the server that there is a new message with the message as packet
