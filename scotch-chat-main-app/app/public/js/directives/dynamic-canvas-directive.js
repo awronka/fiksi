@@ -183,6 +183,15 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo) {
             }
         }, false);
 
+        //get other users drawings 
+        $rootScope.$on('new coordinate', function(evt, data){
+                context.strokeStyle = data.color;
+                context.lineWidth = data.brush;
+                context.shadowBlur = 2;
+                context.shadowColor = data.color;
+                context.lineTo(data.x+1, data.y+1);
+                context.stroke();  
+        })
 
         //Undo changes to Canvas
         $scope.undoChanges = function() {
