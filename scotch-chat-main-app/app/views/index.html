@@ -68,11 +68,11 @@
             </div>
             <!-- from video.html ---->
         </div>
-        <div class='col-xs-6 can-scroll'>
+        <div class='col-xs-6'>
             <md-content>
                 <section>
-                    <md-list>
-                        <md-subheader class="md-primary header">Room: {{room}} <span align="right">Userame: {{username}} </span> </md-subheader>
+                    <md-subheader class="md-primary header static-header">Room: {{room}} <span align="right">Userame: {{username}} </span> </md-subheader>
+                    <md-list class="can-scroll">
                         <md-whiteframe ng-repeat="m in messages" class="md-whiteframe-z2 message" layout layout-align="center center">
                             <md-list-item class="md-3-line">
                                 <div class="md-list-item-text">
