@@ -84,8 +84,10 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
                     username: answer.displayName
                 });
                 //Set room to general;
-                $scope.room = answer.displayName+'*'+answer.chatRoom.split(' ').join('-');
+                $scope.room = answer.displayName.split(' ').join('-')+'*'+answer.chatRoom.split(' ').join('-');
                 
+                $scope.inviteLink="localhost:4000/"+$scope.room;
+                //$scope.inviteLink=herokulink
 
                 socket.emit('createRoom',{
                     newRoom:$scope.room
@@ -236,7 +238,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
     //Listen for chat images
     socket.on('chat image created', function(data) {
         console.log('image received');
-        //$scope.messages.push(data);
+        $scope.messages.push(data);
 
         var notification = new Notification("New image from " + data.username);        
 

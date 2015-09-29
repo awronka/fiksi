@@ -72,7 +72,11 @@
             <md-content>
                 <section>
                     <md-list>
-                        <md-subheader class="md-primary header">Room: {{room}} <span align="right">Userame: {{username}} </span> </md-subheader>
+                        <md-subheader class="md-primary header">Room: {{room}} <span align="right">Userame: {{username}} </span> 
+                        </md-subheader>
+                        <md-subheader>
+                            <span>Invite anyone to chat instantly: <a ng-href="{{inviteLink}}">{{inviteLink}}</a></span>
+                        </md-subheader>
                         <md-whiteframe ng-repeat="m in messages" class="md-whiteframe-z2 message" layout layout-align="center center">
                             <md-list-item class="md-3-line">
                                 <div class="md-list-item-text">

@@ -105,7 +105,7 @@ app.get('/msg', function(req, res) {
     Chat.find({
         'room': req.query.room
     }).exec(function(err, msgs) {
-        console.log(err, "done");
+        //console.log(err, "done");
         //Send
         res.json(msgs);
     });
@@ -139,7 +139,6 @@ io.on('connection', function(socket) {
 
   //Listens for new user
   socket.on('new user', function(data) {
-    console.log('There is a new user!!!')
     data.room = defaultRoom;
     //New user joins the default room
     socket.join(defaultRoom);
@@ -149,7 +148,7 @@ io.on('connection', function(socket) {
 
     //Listens for new image
     socket.on('new image', function (img) {
-        console.log("stage 3", img);
+        //console.log("stage 3", img);
         io.emit('image created', { image: true, buffer: img });
     });
 
