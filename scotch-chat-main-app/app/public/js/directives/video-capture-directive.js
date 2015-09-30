@@ -15,9 +15,13 @@ app.directive('videoCapture', function($rootScope, UndoRedo) {
 
     console.log(gui);
 
-
+    // $rootScope.$on("change to video", function(event, data){
+    //     console.log(data)
+    // })
     
     gui.Screen.Init();
+    
+    // console.log(gui.Screen.Init())
 
     var video = document.querySelector('video');
     var canvas = document.getElementById('my-canvas');
@@ -26,11 +30,8 @@ app.directive('videoCapture', function($rootScope, UndoRedo) {
 
 // first steps in the angular transition
     $scope.takePhoto = function() {
-        console.log("draw")
-        context.drawImage(video, 0, 0, 900, 600);
-        var sendVid = canvas.toDataURL();
-        $rootScope.$broadcast("send video data", {show: false, videoImage : sendVid})
-        gui.Screen.DesktopCaptureMonitor.stop();
+
+        
     };
   
 //legacy for smooth transition  
@@ -72,6 +73,10 @@ app.directive('videoCapture', function($rootScope, UndoRedo) {
                     console.log(stream, typeof URL.createObjectURL(stream));
 
                     video.src = URL.createObjectURL(stream);
+                    console.log("draw")
+                    context.drawImage(video, 0, 0, 900, 600);
+                    var sendVid = canvas.toDataURL();
+                    $rootScope.$broadcast("send video data", {show: false, videoImage : sendVid})
                 },
                 function(error) {
                     console.log('failure', error);
