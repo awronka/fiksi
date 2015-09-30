@@ -169,8 +169,11 @@ io.on('connection', function(socket) {
     });
 
     socket.on('draw', function(obj) {
-        console.log("server recieveing");
         io.emit('drawLine', obj);
+    });
+
+    socket.on('newImage', function(img) {
+        io.emit('drawImage', img);
     });
 
 
