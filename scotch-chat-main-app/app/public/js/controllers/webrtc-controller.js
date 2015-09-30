@@ -29,7 +29,7 @@ app.controller('VideoCtrl', function($state, $scope){
 // first steps in the angular transition
     $scope.takePhoto = function() {
         console.log("draw")
-        context.drawImage(video, 0, 0, 600, 400);
+        context.drawImage(video, 0, 0, 1200, 800);
     };
   
 //legacy for smooth transition  
@@ -55,8 +55,8 @@ app.controller('VideoCtrl', function($state, $scope){
                 mandatory: {
                     chromeMediaSource: 'desktop',
                     chromeMediaSourceId: streamId,
-                    maxWidth: 600,
-                    maxHeight: 400,
+                    maxWidth: 1200,
+                    maxHeight: 800,
                     minFrameRate: 1,
                     maxFrameRate: 5
                 },
