@@ -164,6 +164,15 @@ io.on('connection', function(socket) {
         io.emit('clearCanvas', obj);
     });
 
+    socket.on('beginPath', function(obj) {
+       io.emit('newPath', obj);
+    });
+
+    socket.on('draw', function(obj) {
+        console.log("server recieveing");
+        io.emit('drawLine', obj);
+    });
+
 
     //Listens for new user
     socket.on('new user', function(data) {
@@ -174,7 +183,7 @@ io.on('connection', function(socket) {
         //io.in(defaultRoom).emit('user joined', data);
     });
 
-    //Listen for new chat image 
+    //Listen for new chat image
     socket.on('new chat image', function(data) {
       //create chat message
       var newImg = new Chat({
