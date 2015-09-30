@@ -10,8 +10,8 @@
      <link rel="stylesheet" href="css/canvas-style.css">
     <link rel="stylesheet" href="libs/angular-material/angular-material.css">
     <script src="libs/angular/angular.js"></script>
-    <script src="http://localhost:2015/socket.io/socket.io.js"></script>
-    <!-- <script src="https://frozen-sea-6880.herokuapp.com/socket.io/socket.io.js"></script>     -->
+     <!--<script src="http://localhost:2015/socket.io/socket.io.js"></script> -->
+    <script src="https://frozen-sea-6880.herokuapp.com/socket.io/socket.io.js"></script>    
     <script type="text/javascript" src="libs/angular-animate/angular-animate.js"></script>
     <script type="text/javascript" src="libs/angular-aria/angular-aria.js"></script>
     <script type="text/javascript" src="libs/angular-material/angular-material.js"></script>
@@ -31,6 +31,9 @@
     <script src="js/Auth/authInterceptor.js"></script>
     <script src="js/Auth/authService.js"></script>
     <script src="js/Auth/session.js"></script>
+    <script src="js/controllers/webrtc-controller.js"></script>
+    <script src="js/directives/video-capture-directive.js"></script>
+    <script src="js/controllers/view-controller.js"></script>
     <!-- jquery -->
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
@@ -44,9 +47,12 @@
 </script>
 </head>
 
-<body class="wrapper">
+<body class="wrapper" ng-controller="ViewCtrl">
+    <video-capture ng-if="captureVideo"></video-capture>
     <div ng-controller="MainCtrl" ng-init="usernameModal()">
+        <span ng-show="!captureVideo">
         <div class="col-xs-6">
+            
             <!-- from video.html --->
             <div class='col-xs-12'>
                 <div id="draw-window">
@@ -72,7 +78,10 @@
             <md-content>
                 <section>
                     <md-subheader class="md-primary header static-header">Room: {{room}} <span align="right">Userame: {{username}} </span> </md-subheader>
-                    <md-list class="can-scroll">
+					<md-subheader>
+                        <span>Invite anyone to chat instantly: <a ng-href="{{inviteLink}}">{{inviteLink}}</a></span>
+                    </md-subheader>                    
+					<md-list class="can-scroll">
                         <md-whiteframe ng-repeat="m in messages" class="md-whiteframe-z2 message" layout layout-align="center center">
                             <md-list-item class="md-3-line">
                                 <div class="md-list-item-text">
@@ -92,28 +101,8 @@
                 </div>
             </md-content>
         </div>
-                </md-content>
-            </div>
+        </span>
         </div>
-        <!--<div style="width:352px; height:625px; margin:0 auto; background-color:#fff;">
-        <div>
-            <video id="camFeed" width="320" height="240" autoplay>
-            </video>
-        </div>
-        <div>
-            <canvas id="photo" width="320" height="240">
-            </canvas>
-        </div>
-        <div style="margin:0 auto; width:82px;">
-            <input type="button" value="Take Photo" onclick="takePhoto();">
-        </div> 
-    </div>-->
-    </div>
-    
-    <!--<script>
-  var canvasTest = document.getElementById("main")
-        CanvasDesigner.appendTo(document.body)
-    </script>-->
 </body>
 
 </html>

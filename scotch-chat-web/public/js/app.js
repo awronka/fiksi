@@ -2,6 +2,7 @@
 
 var app = angular.module('scotch-chat', ['ngMaterial', 'ngAnimate', 'ngRoute', 'ngMdIcons', 'btford.socket-io'])
 var serverBaseUrl = 'http://localhost:2015';
+//heroku
 //var serverBaseUrl = 'https://frozen-sea-6880.herokuapp.com';
 app.config(function($routeProvider, $locationProvider){
 
@@ -101,7 +102,14 @@ app.controller('MainCtrl', function ($scope, $mdDialog, socket, $http, $routePar
     };
     socket.on('message created', function (data) {
         $scope.messages.push(data);
+        $scope.message = "";
+        setTimeout(function(){
+            var chatwindow=document.getElementById('chatHistory');
+            chatwindow.scrollTop=chatwindow.scrollHeight;
+        },500)
+        
     });
+
     $scope.send = function (msg) {
         socket.emit('new message', {
             room: $scope.room,
