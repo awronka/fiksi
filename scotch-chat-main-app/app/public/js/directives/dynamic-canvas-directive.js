@@ -256,6 +256,28 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo) {
                 context.drawImage(image, 0, 0, 450, 250);
             };
         });
+        
+        //switch to video
+        $scope.switchToVideo = function(){
+            console.log('clear')
+            $rootScope.$broadcast("change to video", {show: true})
+        }
+        
+        //get video image
+        $rootScope.$on("send video data", function(event, imgData) {
+            console.log("This is the image data: ", imgData)
+            var data = imgData.videoImage;
+            
+            if (!data) return;
+            // context.clearRect(0, 0, canvasWidth, canvasHeight);
+            var image = new Image();
+            image.src = data;
+
+            image.onload = function() {
+
+                context.drawImage(image, 0, 0, 450, 250);
+            };
+        });
 
         var __slice = Array.prototype.slice;
 
