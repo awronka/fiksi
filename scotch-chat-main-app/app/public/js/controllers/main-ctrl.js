@@ -33,10 +33,10 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
         }
         
     //Listens for a new image to be sent
-    socket.on('new user image', function(image){
-        document.body.appendChild(img);
-        
-    });
+    //socket.on('new user image', function(image){
+    //    document.body.appendChild(img);
+    //
+    //});
     
 
         //Handle creation of room
@@ -199,7 +199,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
         canvas.id = 'overlay-canvas';
         canvas.setAttribute('class','coveringCanvas');
         var imgFrame = document.getElementById("img-test-div");
-        imgFrame.appendChild(canvas);
+        //imgFrame.appendChild(canvas);
         context = canvas.getContext("2d");
         context.strokeStyle = "#cb3594";
         context.lineWidth = 10;
