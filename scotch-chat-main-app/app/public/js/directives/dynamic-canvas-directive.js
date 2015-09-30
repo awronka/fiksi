@@ -2,9 +2,9 @@
  * Created by GalenWeber on 9/19/15.
  * Edited Brilliantly by AlexiusWronka on 9/24/15
  */
-app.directive('dynamicCanvas', function($rootScope, UndoRedo) {
+app.directive('dynamicCanvas', function($rootScope, UndoRedo, socket) {
 
-    function CanvasLink($scope, element, attrs) {
+    function CanvasLink($scope) {
 
 
         // We need to have the pixel density of the canvas reflect the pixel density of the users screen
@@ -156,7 +156,16 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo) {
             context.lineJoin = context.lineCap = "round";
             point(evt.layerX, evt.layerY, context)
             $rootScope.$broadcast('newLine', {});
+            socket.emit('beginPath',{});
         }, false);
+
+        socket.emit('test',{});
+
+
+
+        socket.on('testReceived', function(data) {
+            console.log("test success")
+        });
 
         // Detect mouseup
         canvas.addEventListener("mouseup", function(evt) {
@@ -170,11 +179,17 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo) {
         // Draw, if mouse button is pressed
         canvas.addEventListener("mousemove", function(evt) {
             if (mouseDown) {                               
-                context.lineTo(evt.layerX + 1, evt.layerY + 1);
-                context.stroke();
+                //context.lineTo(evt.layerX + 1, evt.layerY + 1);
+                //context.stroke();
                 context.shadowBlur = 2;
                 context.shadowColor = brushColor;
-                $rootScope.$broadcast('coordinateToSocket', {
+                //$rootScope.$broadcast('coordinateToSocket', {
+                //    x: (evt.layerX + 1),
+                //    y: (evt.layerY + 1),
+                //    color: brushColor,
+                //    brush: brushSize
+                //});
+                socket.emit('draw',{
                     x: (evt.layerX + 1),
                     y: (evt.layerY + 1),
                     color: brushColor,
@@ -183,14 +198,29 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo) {
             }
         }, false);
 
-        //get other users drawings 
+        socket.on('newPath', function(data) {
+            context.beginPath();
+        });
+
+        socket.on('drawLine', function(data) {
+            console.log("browser recieveing from server");
+            context.strokeStyle = data.color;
+            context.lineWidth = data.brush;
+            context.shadowBlur = 2;
+            context.shadowColor = data.color;
+            context.lineJoin = context.lineCap = "round";
+            context.lineTo(data.x+1, data.y+1);
+            context.stroke();
+        });
+
+        //get other users drawings
         $rootScope.$on('new coordinate', function(evt, data){
                 context.strokeStyle = data.color;
                 context.lineWidth = data.brush;
                 context.shadowBlur = 2;
                 context.shadowColor = data.color;
                 context.lineTo(data.x+1, data.y+1);
-                context.stroke();  
+                context.stroke();
         })
 
         //Undo changes to Canvas

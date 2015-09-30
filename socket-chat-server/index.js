@@ -22,8 +22,8 @@ app.use(bodyParser.json())
 //Connect to mongo DB database
 //use the below local mongodb for developement
 //heroku
-mongoose.connect("mongodb://127.0.0.1:27017/scotch-chat");
-//mongoose.connect(uriUtil.formatMongoose("mongodb://heroku_qz5f9n32:gkr920qlmmbh94uet9p0491c00@ds051543.mongolab.com:51543/heroku_qz5f9n32"));
+//mongoose.connect("mongodb://127.0.0.1:27017/scotch-chat");
+mongoose.connect(uriUtil.formatMongoose("mongodb://heroku_qz5f9n32:gkr920qlmmbh94uet9p0491c00@ds051543.mongolab.com:51543/heroku_qz5f9n32"));
 
 //Create a schema for chat
 var ChatSchema = mongoose.Schema({
@@ -214,6 +214,6 @@ io.on('connection', function(socket) {
 
 //heroku
 
-//server.listen(process.env.PORT || 5000);
-server.listen(process.env.PORT || 2015);
+server.listen(process.env.PORT || 5000);
+//server.listen(process.env.PORT || 2015);
 console.log('It\'s going down in 2015');
