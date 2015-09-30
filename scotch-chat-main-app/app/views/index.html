@@ -48,7 +48,7 @@
 </head>
 
 <body class="wrapper" ng-controller="ViewCtrl">
-    <video-capture ng-if="captureVideo"></video-capture>
+    <video-capture ng-show="captureVideo"></video-capture>
     <div ng-controller="MainCtrl" ng-init="usernameModal()">
         <span ng-show="!captureVideo">
         <div class="col-xs-6">
