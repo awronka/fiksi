@@ -106,8 +106,23 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, socket) {
                 $rootScope.$broadcast('imageToSocket', {
                     imageForEmit: imageForEmit
                 });
+                socket.emit('newImage',{ image: true, buffer: imageForEmit.toString('base64') });
             }, false);
         }
+
+        socket.on('drawImage', function(data){
+
+            if (!data.buffer) return;
+            // context.clearRect(0, 0, canvasWidth, canvasHeight);
+            var image = new Image();
+            image.src = data;
+
+            image.onload = function() {
+
+                context.drawImage(image, 0, 0, 450, 250);
+            };
+
+        });
 
         //set colors
         $scope.colorRed =    "#FF0000";
@@ -203,7 +218,6 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, socket) {
         });
 
         socket.on('drawLine', function(data) {
-            console.log("browser recieveing from server");
             context.strokeStyle = data.color;
             context.lineWidth = data.brush;
             context.shadowBlur = 2;
