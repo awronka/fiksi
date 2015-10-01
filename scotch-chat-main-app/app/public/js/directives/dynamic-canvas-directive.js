@@ -4,6 +4,9 @@
  */
 app.directive('dynamicCanvas', function($rootScope, UndoRedo, socket) {
 
+
+
+
     function CanvasLink($scope) {
 
 
@@ -39,7 +42,7 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, socket) {
 
         // Here we set the width and height of the canvas, then create one with our function
         var canvasWidth = 450;
-        var canvasHeight = 250;
+        var canvasHeight = 450;
         var canvas = createHiDPICanvas(canvasWidth, canvasHeight);
 
 
@@ -162,6 +165,7 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, socket) {
                 clearCanvas();
                 hasText = false;
             }
+            console.log("the room object is: ", $rootScope.room);
             mouseDown = true;
             var colors = curColor;
             brushColor = colors;
@@ -171,7 +175,7 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, socket) {
             context.lineJoin = context.lineCap = "round";
             point(evt.layerX, evt.layerY, context)
             $rootScope.$broadcast('newLine', {});
-            socket.emit('beginPath',{});
+            socket.emit('beginPath',{room: $rootScope.room});
         }, false);
 
         socket.emit('test',{});
@@ -205,6 +209,7 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, socket) {
                 //    brush: brushSize
                 //});
                 socket.emit('draw',{
+                    room: $rootScope.room,
                     x: (evt.layerX + 1),
                     y: (evt.layerY + 1),
                     color: brushColor,
@@ -213,11 +218,11 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, socket) {
             }
         }, false);
 
-        socket.on('newPath', function(data) {
+        socket.on('newPath'+$rootScope.room, function(data) {
             context.beginPath();
         });
 
-        socket.on('drawLine', function(data) {
+        socket.on('drawLine'+$rootScope.room, function(data) {
             context.strokeStyle = data.color;
             context.lineWidth = data.brush;
             context.shadowBlur = 2;
