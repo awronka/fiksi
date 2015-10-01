@@ -78,6 +78,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
                 targetEvent: ev
             })
             .then(function (answer) {
+                console.log("newSession:",answer.newSession);
                 //Set username with the value returned from the modal
                 $scope.username = answer.displayName;
                 //Tell the server there is a new user
@@ -85,8 +86,11 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
                     username: answer.displayName
                 });
                 //Set room to general;
-                $scope.room = answer.displayName.split(' ').join('-')+'*'+answer.chatRoom.split(' ').join('-');
-                
+                if(answer.newSession){
+                    $scope.room = answer.displayName.split(' ').join('-')+'*'+answer.chatRoom.split(' ').join('-');
+                }else{
+                    $scope.room = answer.oldChatRoom;
+                }     
                 $scope.inviteLink="localhost:4000/"+$scope.room;
                 //$scope.inviteLink=herokulink
 
