@@ -218,18 +218,25 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, socket) {
             }
         }, false);
 
-        socket.on('newPath'+$rootScope.room, function(data) {
-            context.beginPath();
+
+
+        socket.on('newPath', function(data) {
+            if (data.room == $rootScope.room) {
+                context.beginPath();
+            }
         });
 
-        socket.on('drawLine'+$rootScope.room, function(data) {
-            context.strokeStyle = data.color;
-            context.lineWidth = data.brush;
-            context.shadowBlur = 2;
-            context.shadowColor = data.color;
-            context.lineJoin = context.lineCap = "round";
-            context.lineTo(data.x+1, data.y+1);
-            context.stroke();
+
+        socket.on('drawLine', function(data) {
+            if (data.room == $rootScope.room) {
+                context.strokeStyle = data.color;
+                context.lineWidth = data.brush;
+                context.shadowBlur = 2;
+                context.shadowColor = data.color;
+                context.lineJoin = context.lineCap = "round";
+                context.lineTo(data.x+1, data.y+1);
+                context.stroke();
+            }
         });
 
         //get other users drawings
