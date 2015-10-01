@@ -100,15 +100,15 @@ app.controller('MainCtrl', function ($scope, $mdDialog, socket, $http, $routePar
 
             });
     };
-    socket.on('message created'+$routeParams.room, function (data) {
-        //if($scope.room==data.room){
+    socket.on('message created', function (data) {
+        if($scope.room==data.room){
             $scope.messages.push(data);
             $scope.message = "";
             setTimeout(function(){
                 var chatwindow=document.getElementById('chatHistory');
                 chatwindow.scrollTop=chatwindow.scrollHeight;
-            },500)
-        //}       
+            },300);
+        }       
     });
 
     $scope.send = function (msg) {
@@ -117,7 +117,7 @@ app.controller('MainCtrl', function ($scope, $mdDialog, socket, $http, $routePar
             message: msg,
             username: $scope.username
         });
-        //$scope.message = "";
+        $scope.message = "";
 
     };
 });

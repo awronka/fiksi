@@ -94,29 +94,6 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
                     newRoom:$scope.room
                 });
 
-                socket.on('message created'+$scope.room, function (data) {
-                //if(data.room==$scope.room){
-                //Push to new message to our $scope.messages
-               $scope.messages.push(data);
-                //Empty the textarea
-                //$scope.message = "";
-
-                var options = {
-                    body: data.content
-                };
-
-            var notification = new Notification("Message from: "+data.username, options);        
-
-            notification.onshow = function () {
-                
-                // auto close after 1 second
-                setTimeout(function () {
-                    notification.close();
-                }, 2000);
-            } 
-        //}
-    });
-
                 //Fetch chat messages in room
                 $http.get(serverBaseUrl + '/msg?room=' + $scope.room).success(function (msgs) {
                     $scope.messages = msgs;
@@ -287,8 +264,36 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
             message: msg,
             username: $scope.username
         });
-        $scope.message="";
+        //$scope.message="";
 
-    }
+    } 
+    socket.on('message created', function (data) {
+        if(data.room==$scope.room){
+        //Push to new message to our $scope.messages
+           $scope.messages.push(data);
+            //Empty the textarea
+            $scope.message = "";
+
+            setTimeout(function(){
+                var chatwindow=document.getElementById('can-scroll');
+                chatwindow.scrollTop=chatwindow.scrollHeight;
+            },300);
+
+            var options = {
+                body: data.content
+            };
+
+            var notification = new Notification("Message from: "+data.username, options);        
+
+            notification.onshow = function () {
+            
+                // auto close after 1 second
+                setTimeout(function () {
+                    notification.close();
+                }, 2000);
+            }
+        } 
+    });
+  
 });
 
