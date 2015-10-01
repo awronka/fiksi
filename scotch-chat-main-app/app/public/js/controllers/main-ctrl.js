@@ -48,6 +48,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
                     click: function () {
                         //What happens on clicking the rooms? Swtich room.
                         $scope.room = clickedRoom;
+                        $scope.inviteLink="localhost:4000/"+$scope.room;
                         //Notify the server that the user changed his room
                         socket.emit('switch room', {
                             newRoom: clickedRoom,
@@ -93,9 +94,33 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
                     newRoom:$scope.room
                 });
 
+                socket.on('message created'+$scope.room, function (data) {
+                //if(data.room==$scope.room){
+                //Push to new message to our $scope.messages
+               $scope.messages.push(data);
+                //Empty the textarea
+                //$scope.message = "";
+
+                var options = {
+                    body: data.content
+                };
+
+            var notification = new Notification("Message from: "+data.username, options);        
+
+            notification.onshow = function () {
+                
+                // auto close after 1 second
+                setTimeout(function () {
+                    notification.close();
+                }, 2000);
+            } 
+        //}
+    });
+
                 //Fetch chat messages in room
                 $http.get(serverBaseUrl + '/msg?room=' + $scope.room).success(function (msgs) {
                     $scope.messages = msgs;
+                    console.log(msg);
                 });
             }, function () {
 
@@ -253,31 +278,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
 
     
     //Listen for new messages
-    socket.on('message created', function (data) {
-        console.log('listened');
-        //Push to new message to our $scope.messages
-        $scope.messages.push(data);
-        //Empty the textarea
-        $scope.message = "";
 
-        var options = {
-            body: data.content
-        };
-
-        var notification = new Notification("Message from: "+data.username, options);        
-
-        notification.onshow = function () {
-            
-            // auto close after 1 second
-            setTimeout(function () {
-                notification.close();
-            }, 2000);
-        }
-
-    });
-/*    socket.on('stellatest',function(data){
-        console.log(data);
-    });*/
     //Send a new message
     $scope.send = function (msg) {
         //Notify the server that there is a new message with the message as packet
@@ -286,6 +287,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
             message: msg,
             username: $scope.username
         });
+        $scope.message="";
 
     }
 });

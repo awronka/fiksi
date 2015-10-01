@@ -104,7 +104,7 @@ app.get('/msg', function(req, res) {
     //Find
     Chat.find({
         'room': req.query.room
-    }).exec(function(err, msgs) {
+    }).sort('created').exec(function(err, msgs) {
         //console.log(err, "done");
         //Send
         res.json(msgs);
@@ -192,6 +192,9 @@ io.on('connection', function(socket) {
       });
     });
 
+    socket.on('switch room',function(data){
+        defaultRoom=data.newRoom;
+    })
     //Listens for a new chat message
     socket.on('new message', function(data) {
 
@@ -206,7 +209,7 @@ io.on('connection', function(socket) {
         newMsg.save(function(err, msg) {
             //socket.emit('stellatest', msg);
             //Send message to those connected in the room
-            io.emit('message created', msg);
+            io.emit('message created'+msg.room, msg);
         });
     });
 });

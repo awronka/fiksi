@@ -30,7 +30,7 @@ app.factory('socket', function (socketFactory) {
 });
 app.controller('MainCtrl', function ($scope, $mdDialog, socket, $http, $routeParams) {
     $scope.messages = [];
-    $scope.room = "";
+    $scope.room="";
 
 
 
@@ -40,7 +40,7 @@ app.controller('MainCtrl', function ($scope, $mdDialog, socket, $http, $routePar
         console.log(data.username + ' has joined');
     });
     socket.on('setup', function (data) {
-        var rooms = data.rooms;;
+        var rooms = data.rooms;
         console.log(rooms);
         $scope.rooms = rooms;
                for (var r = 0; r < rooms.length; r++) {
@@ -100,14 +100,15 @@ app.controller('MainCtrl', function ($scope, $mdDialog, socket, $http, $routePar
 
             });
     };
-    socket.on('message created', function (data) {
-        $scope.messages.push(data);
-        $scope.message = "";
-        setTimeout(function(){
-            var chatwindow=document.getElementById('chatHistory');
-            chatwindow.scrollTop=chatwindow.scrollHeight;
-        },500)
-        
+    socket.on('message created'+$routeParams.room, function (data) {
+        //if($scope.room==data.room){
+            $scope.messages.push(data);
+            $scope.message = "";
+            setTimeout(function(){
+                var chatwindow=document.getElementById('chatHistory');
+                chatwindow.scrollTop=chatwindow.scrollHeight;
+            },500)
+        //}       
     });
 
     $scope.send = function (msg) {
@@ -116,6 +117,7 @@ app.controller('MainCtrl', function ($scope, $mdDialog, socket, $http, $routePar
             message: msg,
             username: $scope.username
         });
+        //$scope.message = "";
 
     };
 });
