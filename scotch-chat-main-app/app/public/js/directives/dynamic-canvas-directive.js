@@ -119,6 +119,7 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, socket) {
             // context.clearRect(0, 0, canvasWidth, canvasHeight);
             var image = new Image();
             image.src = data;
+            console.log("image is: ", image);
 
             image.onload = function() {
 
@@ -240,23 +241,27 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, socket) {
         });
 
         socket.on('roomRequest', function(data) {
+            console.log("getting the room request");
             if (data.room == $rootScope.room) {
+                console.log("in the if statement");
                 imageForEmit = canvas.toDataURL();
                 socket.emit('roomImage',{ image: true, buffer: imageForEmit.toString('base64') });
             }
         });
 
-        socket.on('canvasUpdate', function(data) {
-            if (!data.buffer) return;
-            // context.clearRect(0, 0, canvasWidth, canvasHeight);
-            var image = new Image();
-            image.src = data;
-
-            image.onload = function() {
-
-                context.drawImage(image, 0, 0, 450, 450);
-            };
-        });
+        //socket.on('canvasUpdate', function(data) {
+        //    console.log("getting back from the server");
+        //    if (!data.buffer) return;
+        //    // context.clearRect(0, 0, canvasWidth, canvasHeight);
+        //    var image = new Image();
+        //    image.src = data;
+        //    console.log("image: ", image);
+        //
+        //    image.onload = function() {
+        //
+        //        context.drawImage(image, 0, 0, 450, 450);
+        //    };
+        //});
 
         //get other users drawings
         $rootScope.$on('new coordinate', function(evt, data){
