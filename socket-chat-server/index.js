@@ -209,7 +209,7 @@ io.on('connection', function(socket) {
         newMsg.save(function(err, msg) {
             //socket.emit('stellatest', msg);
             //Send message to those connected in the room
-            io.emit('message created'+msg.room, msg);
+            io.emit('message created', msg);
         });
     });
 });
