@@ -239,6 +239,10 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, socket) {
             }
         });
 
+        socket.on('roomRequest', function(data) {
+            console.log("room request received");
+        });
+
         //get other users drawings
         $rootScope.$on('new coordinate', function(evt, data){
                 context.strokeStyle = data.color;
