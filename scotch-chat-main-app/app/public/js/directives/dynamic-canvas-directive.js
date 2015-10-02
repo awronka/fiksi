@@ -2,7 +2,7 @@
  * Created by GalenWeber on 9/19/15.
  * Edited Brilliantly by AlexiusWronka on 9/24/15
  */
-app.directive('dynamicCanvas', function($rootScope, UndoRedo) {
+app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw) {
 
     function CanvasLink($scope, element, attrs) {
 
@@ -133,14 +133,6 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo) {
             brushSize = num;
         };
         
-        //draw a dot
-        function point(x, y, canvas){
-        canvas.beginPath();
-        canvas.arc(x, y, 1, 0, 2 * Math.PI, true);
-        canvas.stroke();
-        }
-        
-        
         // Detect mousedown
         canvas.addEventListener("mousedown", function(evt) {
             if (hasText) {
@@ -148,13 +140,7 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo) {
                 hasText = false;
             }
             mouseDown = true;
-            var colors = curColor;
-            brushColor = colors;
-            context.beginPath();
-            context.lineWidth = brushSize;
-            context.strokeStyle = brushColor;
-            context.lineJoin = context.lineCap = "round";
-            point(evt.layerX, evt.layerY, context)
+            CanvasDraw.downDraw(curColor, brushSize, evt.layerX, evt.layerY, context)
             $rootScope.$broadcast('newLine', {});
         }, false);
 
@@ -170,28 +156,25 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo) {
         // Draw, if mouse button is pressed
         canvas.addEventListener("mousemove", function(evt) {
             if (mouseDown) {                               
-                context.lineTo(evt.layerX + 1, evt.layerY + 1);
-                context.stroke();
-                context.shadowBlur = 2;
-                context.shadowColor = brushColor;
+                CanvasDraw.moveDraw(curColor, evt.layerX, evt.layerY, context)
                 $rootScope.$broadcast('coordinateToSocket', {
                     x: (evt.layerX + 1),
                     y: (evt.layerY + 1),
-                    color: brushColor,
+                    color: curColor,
                     brush: brushSize
                 });
             }
         }, false);
 
         //get other users drawings 
-        $rootScope.$on('new coordinate', function(evt, data){
-                context.strokeStyle = data.color;
-                context.lineWidth = data.brush;
-                context.shadowBlur = 2;
-                context.shadowColor = data.color;
-                context.lineTo(data.x+1, data.y+1);
-                context.stroke();  
-        })
+        // $rootScope.$on('new coordinate', function(evt, data){
+        //         context.strokeStyle = data.color;
+        //         context.lineWidth = data.brush;
+        //         context.shadowBlur = 2;
+        //         context.shadowColor = data.color;
+        //         context.lineTo(data.x+1, data.y+1);
+        //         context.stroke();  
+        // })
 
         //Undo changes to Canvas
         $scope.undoChanges = function() {
