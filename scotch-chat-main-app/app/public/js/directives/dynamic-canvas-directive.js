@@ -6,36 +6,7 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw) {
 
     function CanvasLink($scope, element, attrs) {
 
-
-        // We need to have the pixel density of the canvas reflect the pixel density of the users screen
-        // PIXEL_RATIO is an automatically invoked function that returns the relevant ratio
-        var PIXEL_RATIO = (function() {
-            var ctx = document.createElement("canvas").getContext("2d"),
-                dpr = window.devicePixelRatio || 1,
-                bsr = ctx.webkitBackingStorePixelRatio ||
-                ctx.mozBackingStorePixelRatio ||
-                ctx.msBackingStorePixelRatio ||
-                ctx.oBackingStorePixelRatio ||
-                ctx.backingStorePixelRatio || 1;
-
-            return dpr / bsr;
-        })();
-
-
-
-        var createHiDPICanvas = function(w, h, ratio) {
-            if (!ratio) {
-                ratio = PIXEL_RATIO;
-            }
-            var can = document.createElement("canvas");
-            can.width = w * ratio;
-            can.height = h * ratio;
-            can.style.width = w + "px";
-            can.style.height = h + "px";
-            can.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0);
-            return can;
-        };
-
+        var createHiDPICanvas = CanvasDraw.pixelRatioCanvas;
 
         // Here we set the width and height of the canvas, then create one with our function
         var canvasWidth = 450;
@@ -46,8 +17,6 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw) {
         var context = canvas.getContext("2d");
         var mouseDown = false;
         var hasText = true;
-        var brushColor = "rgb(0, 0, 0)";
-        var image = document.createElement("img");
 
         var clearCanvas = function() {
             context.clearRect(0, 0, canvasWidth, canvasHeight);
