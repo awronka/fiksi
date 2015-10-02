@@ -1,5 +1,5 @@
 //Our Contrller 
-app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialog, SignUp, socket, $http, $rootScope) {
+app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, ChatRoomRoute, $mdDialog, SignUp, socket, $rootScope) {
     //Global Scope
     $scope.messages = [];
     $scope.room = "";
@@ -55,9 +55,10 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
                             username: $scope.username
                         });
                         //Fetch the new rooms messages
-                        $http.get(serverBaseUrl + '/msg?room=' + clickedRoom).success(function (msgs) {
-                            $scope.messages = msgs;
-                        });
+                        ChatRoomRoute.getRoom(serverBaseUrl + '/msg?room=' + clickedRoom).then(function(msgs){
+                            $scope.messages = msgs.data;
+                        })
+                        
                     }
                 }));
             }
@@ -99,10 +100,9 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
                 });
 
                 //Fetch chat messages in room
-                $http.get(serverBaseUrl + '/msg?room=' + $scope.room).success(function (msgs) {
-                    $scope.messages = msgs;
-                    console.log(msg);
-                });
+                ChatRoomRoute.getRoom(serverBaseUrl + '/msg?room=' + $scope.room).then(function(msgs){
+                    $scope.messages = msgs.data;
+                })
             }, function () {
 
             });
