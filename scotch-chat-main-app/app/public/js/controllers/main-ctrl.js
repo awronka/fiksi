@@ -22,18 +22,21 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
 
     // Get the minimize event
     win.on('minimize', function() {
-      // Hide window
-      this.hide();
+        // Hide window
+        this.hide();
 
-      // Show tray
-      tray = new GUI.Tray({ title: 'Fiksi', icon: 'wrenchGreen.png' });
+        // Show tray
+        tray = new GUI.Tray({
+            title: 'Fiksi',
+            icon: 'wrenchGreen.png'
+        });
 
-      // Show window and remove tray when clicked
-      tray.on('click', function() {
-        win.show();
-        this.remove();
-        tray = null;
-      });
+        // Show window and remove tray when clicked
+        tray.on('click', function() {
+            win.show();
+            this.remove();
+            tray = null;
+        });
     });
 
     //Build the window menu for our app using the GUI and Window service
@@ -103,8 +106,8 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
                                 $scope.room = answer.chatRoom.split(' ').join('-');
                                 $rootScope.room = $scope.room;
 
-                                $scope.inviteLink = "localhost:4000/" + $scope.room;
-                                //$scope.inviteLink=herokulink
+                                // $scope.inviteLink = "localhost:4000/" + $scope.room;
+                                $scope.inviteLink="https://frozen-sea-6880.herokuapp.com/"+$scope.room;
 
                                 // socket.emit('new room created', {
                                 //     newRoom: $scope.room,
@@ -118,7 +121,7 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
                                         $scope.room = clickedRoom;
                                         $rootScope.room = $scope.room;
 
-                                        $scope.inviteLink = "localhost:4000/" + $scope.room;
+                                        $scope.inviteLink = $scope.inviteLink="https://frozen-sea-6880.herokuapp.com/"+$scope.room;
                                         //Notify the server that the user changed his room
                                         socket.emit('switch room', {
                                             newRoom: clickedRoom,
@@ -150,10 +153,12 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
                         //What happens on clicking the rooms? Swtich room.
                         $scope.room = clickedRoom;
                         $rootScope.room = $scope.room;
-                        socket.emit("requestRoom",{room:$rootScope.room});
+                        socket.emit("requestRoom", {
+                            room: $rootScope.room
+                        });
 
                         //$scope.inviteLink="localhost:4000/"+$scope.room;
-                        $scope.inviteLink="https://powerful-caverns-6918.herokuapp.com"+$scope.room;
+                        $scope.inviteLink = "https://frozen-sea-6880.herokuapp.com/" + $scope.room;
                         //Notify the server that the user changed his room
                         socket.emit('switch room', {
                             newRoom: clickedRoom,
@@ -194,11 +199,13 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
                 });
                 $scope.room = answer.chatRoom.split(' ').join('-');
                 $rootScope.room = $scope.room;
-                socket.emit("requestRoom",{room:$rootScope.room});
-                
-                // $scope.inviteLink="localhost:4000/"+$scope.room;
-                $scope.inviteLink="https://powerful-caverns-6918.herokuapp.com"+$scope.room;
+                socket.emit("requestRoom", {
+                    room: $rootScope.room
+                });
 
+
+                // $scope.inviteLink="localhost:4000/"+$scope.room;
+                $scope.inviteLink = "https://frozen-sea-6880.herokuapp.com/" + $scope.room;
                 socket.emit('createRoom', {
                     newRoom: $scope.room
                 });
@@ -357,16 +364,16 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
     //Listen for chat images
     socket.on('chat image created', function(data) {
         console.log('image received');
-        if(data.room==$scope.room){
-        $scope.messages.push(data);
+        if (data.room == $scope.room) {
+            $scope.messages.push(data);
 
 
-        setTimeout(function(){
-            var chatwindow=document.getElementById('can-scroll');
-            chatwindow.scrollTop=chatwindow.scrollHeight;
-        },150);
+            setTimeout(function() {
+                var chatwindow = document.getElementById('can-scroll');
+                chatwindow.scrollTop = chatwindow.scrollHeight;
+            }, 150);
 
-        var notification = new Notification("New image from " + data.username);        
+            var notification = new Notification("New image from " + data.username);
 
             // auto close after 2 second
             setTimeout(function() {
