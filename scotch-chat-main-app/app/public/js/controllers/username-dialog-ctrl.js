@@ -1,5 +1,5 @@
 //Dialog controller
-function UsernameDialogController($scope, $mdDialog, SignUp, AuthService) {
+function UsernameDialogController($scope, $mdDialog, AuthService) {
     //show and hide the depending on the userStatus being new or returning
    $scope.newSession = true;
     
@@ -28,10 +28,8 @@ function UsernameDialogController($scope, $mdDialog, SignUp, AuthService) {
     
     
     $scope.answer = function (answer) {
+        console.log("anything");
         answer.newSession=$scope.newSession;
-         SignUp.signup(answer).then(function(data){
-             console.log("This is the data" + data);
-         });
         $mdDialog.hide(answer);
     };
 }
