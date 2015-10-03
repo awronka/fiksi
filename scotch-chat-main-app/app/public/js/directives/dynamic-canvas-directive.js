@@ -127,7 +127,6 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
             }
             console.log("the room object is: ", $rootScope.room);
             mouseDown = true;
-            CanvasDraw.downDraw(curColor, brushSize, evt.layerX, evt.layerY, context)
             $rootScope.$broadcast('newLine', {});
             socket.emit('beginPath',{room: $rootScope.room});
         }, false);
