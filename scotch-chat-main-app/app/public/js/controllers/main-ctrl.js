@@ -50,7 +50,9 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, ChatRoom
                         $scope.room = clickedRoom;
                         $rootScope.room = $scope.room;
 
-                        $scope.inviteLink="localhost:4000/"+$scope.room;
+                        //heroku
+                        //$scope.inviteLink="localhost:4000/"+$scope.room;
+                        $scope.inviteLink="https://powerful-caverns-6918.herokuapp.com"+$scope.room;
                         //Notify the server that the user changed his room
                         socket.emit('switch room', {
                             newRoom: clickedRoom,
@@ -250,7 +252,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, ChatRoom
         setTimeout(function(){
             var chatwindow=document.getElementById('can-scroll');
             chatwindow.scrollTop=chatwindow.scrollHeight;
-        },300);
+        },150);
 
         var notification = new Notification("New image from " + data.username);        
 
