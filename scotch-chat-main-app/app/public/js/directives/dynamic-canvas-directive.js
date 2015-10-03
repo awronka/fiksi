@@ -201,10 +201,23 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
         });
 
         socket.on('roomRequest', function(data) {
+            console.log("recieving room request");
             if (data.room == $rootScope.room) {
                 imageForEmit = canvas.toDataURL();
                 socket.emit('roomImage',{ image: true, buffer: imageForEmit.toString('base64') });
             }
+        });
+
+        socket.on('sentRoomImage', function(data) {
+            if (!data.buffer) return;
+            // context.clearRect(0, 0, canvasDim, canvasDim);
+            var image = new Image();
+            image.src = data;
+
+            image.onload = function() {
+
+                context.drawImage(image, 0, 0, canvasDim, canvasDim);
+            };
         });
 
         socket.on('canvasUpdate', function(data) {
