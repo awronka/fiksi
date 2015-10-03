@@ -203,6 +203,7 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
                     room: $rootScope.room
                 });
 
+
                 // $scope.inviteLink="localhost:4000/"+$scope.room;
                 $scope.inviteLink = "https://frozen-sea-6880.herokuapp.com/" + $scope.room;
                 socket.emit('createRoom', {
