@@ -107,7 +107,7 @@ app.controller('MainCtrl', function ($scope, $mdDialog, socket, $http, $routePar
             setTimeout(function(){
                 var chatwindow=document.getElementById('chatHistory');
                 chatwindow.scrollTop=chatwindow.scrollHeight;
-            },300);
+            },150);
         }       
     });
 
@@ -117,7 +117,7 @@ app.controller('MainCtrl', function ($scope, $mdDialog, socket, $http, $routePar
             setTimeout(function(){
                 var chatwindow=document.getElementById('chatHistory');
                 chatwindow.scrollTop=chatwindow.scrollHeight;
-            },300);
+            },150);
         }       
     });    
 

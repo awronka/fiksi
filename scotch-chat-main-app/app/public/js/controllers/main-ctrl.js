@@ -290,7 +290,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, ChatRoom
             setTimeout(function(){
                 var chatwindow=document.getElementById('can-scroll');
                 chatwindow.scrollTop=chatwindow.scrollHeight;
-            },300);
+            },150);
 
             var options = {
                 body: data.content
