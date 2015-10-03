@@ -84,7 +84,7 @@ app.get('/msg', function(req, res) {
     //Find
     Chat.find({
         'room': req.query.room
-    }).exec(function(err, msgs) {
+    }).sort('created').exec(function(err, msgs) {
         //console.log(err, "done");
         //Send
         res.json(msgs);
@@ -156,8 +156,22 @@ io.on('connection', function(socket) {
         io.emit('drawLine', obj);
     });
 
+
+    socket.on('mouseUp', function(obj) {
+        io.emit('triggerMouseUp', obj);
+    });
+
     socket.on('newImage', function(img) {
         io.emit('drawImage', img);
+    });
+
+
+    socket.on('requestRoom', function(data) {
+        socket.broadcast.emit('roomRequest', data);
+    });
+
+    socket.on('roomImage', function(data) {
+        io.emit('sentRoomImage', data);
     });
 
 
@@ -188,6 +202,9 @@ io.on('connection', function(socket) {
       });
     });
 
+    socket.on('switch room',function(data){
+        defaultRoom=data.newRoom;
+    })
     //Listens for a new chat message
     socket.on('new message', function(data) {
 
@@ -210,6 +227,6 @@ io.on('connection', function(socket) {
 
 //heroku
 
-// server.listen(process.env.PORT || 5000);
-server.listen(process.env.PORT || 2015);
-console.log('It\'s going down in 2015');
+server.listen(process.env.PORT || 5000);
+// server.listen(process.env.PORT || 2015);
+console.log('It\'s going down in 5000');
