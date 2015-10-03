@@ -19,7 +19,8 @@ app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 
 app.get('/*', routes.index);
 
-app.set('port', process.env.PORT || 4000);
+//app.set('port', process.env.PORT || 4000);
+app.set('port', process.env.PORT || 5000);
 
 var server = app.listen(app.get('port'), function() {
 	// log a message to console!

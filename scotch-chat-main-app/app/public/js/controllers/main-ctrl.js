@@ -244,7 +244,13 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, ChatRoom
     //Listen for chat images
     socket.on('chat image created', function(data) {
         console.log('image received');
+        if(data.room==$scope.room){
         $scope.messages.push(data);
+
+        setTimeout(function(){
+            var chatwindow=document.getElementById('can-scroll');
+            chatwindow.scrollTop=chatwindow.scrollHeight;
+        },300);
 
         var notification = new Notification("New image from " + data.username);        
 
@@ -255,6 +261,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, ChatRoom
                 notification.close();
             }, 2000);
         }
+    }
     });
 
     
