@@ -107,7 +107,7 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
                                 $rootScope.room = $scope.room;
 
                                 // $scope.inviteLink = "localhost:4000/" + $scope.room;
-                                $scope.inviteLink="https://frozen-sea-6880.herokuapp.com/"+$scope.room;
+                                $scope.inviteLink="https://powerful-caverns-6918.herokuapp.com/"+$scope.room;
 
                                 // socket.emit('new room created', {
                                 //     newRoom: $scope.room,
@@ -121,7 +121,7 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
                                         $scope.room = clickedRoom;
                                         $rootScope.room = $scope.room;
 
-                                        $scope.inviteLink = $scope.inviteLink="https://frozen-sea-6880.herokuapp.com/"+$scope.room;
+                                        $scope.inviteLink = $scope.inviteLink="https://powerful-caverns-6918.herokuapp.com/"+$scope.room;
                                         //Notify the server that the user changed his room
                                         socket.emit('switch room', {
                                             newRoom: clickedRoom,
@@ -158,7 +158,7 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
                         });
 
                         //$scope.inviteLink="localhost:4000/"+$scope.room;
-                        $scope.inviteLink = "https://frozen-sea-6880.herokuapp.com/" + $scope.room;
+                        $scope.inviteLink = "https://powerful-caverns-6918.herokuapp.com/" + $scope.room;
                         //Notify the server that the user changed his room
                         socket.emit('switch room', {
                             newRoom: clickedRoom,
@@ -205,7 +205,7 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
 
 
                 // $scope.inviteLink="localhost:4000/"+$scope.room;
-                $scope.inviteLink = "https://frozen-sea-6880.herokuapp.com/" + $scope.room;
+                $scope.inviteLink = "https://powerful-caverns-6918.herokuapp.com/" + $scope.room;
                 socket.emit('createRoom', {
                     newRoom: $scope.room
                 });
@@ -363,7 +363,7 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
 
     //Listen for chat images
     socket.on('chat image created', function(data) {
-        console.log('image received');
+        console.log('image received data: ', data);
         if (data.room == $scope.room) {
             $scope.messages.push(data);
 
@@ -397,6 +397,7 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
 
     }
     socket.on('message created', function(data) {
+        console.log("message data: ", data)
         if (data.room == $scope.room) {
             //Push to new message to our $scope.messages
             $scope.messages.push(data);
