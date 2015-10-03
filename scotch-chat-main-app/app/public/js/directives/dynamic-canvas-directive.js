@@ -132,13 +132,6 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
             socket.emit('beginPath',{room: $rootScope.room});
         }, false);
 
-        socket.emit('test',{});
-
-
-
-        socket.on('testReceived', function(data) {
-            console.log("test success")
-        });
 
         // Detect mouseup
         canvas.addEventListener("mouseup", function(evt) {
@@ -152,8 +145,16 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
         // Draw, if mouse button is pressed
         canvas.addEventListener("mousemove", function(evt) {
             if (mouseDown) {                               
-                CanvasDraw.moveDraw(curColor, evt.layerX, evt.layerY, context)
-                $rootScope.$broadcast('coordinateToSocket', {
+                CanvasDraw.moveDraw(curColor, evt.layerX, evt.layerY, context);
+                //$rootScope.$broadcast('coordinateToSocket', {
+                //    x: (evt.layerX + 1),
+                //    y: (evt.layerY + 1),
+                //    color: curColor,
+                //    brush: brushSize
+                //});
+
+                socket.emit('draw',{
+                    room: $rootScope.room,
                     x: (evt.layerX + 1),
                     y: (evt.layerY + 1),
                     color: curColor,
@@ -170,6 +171,8 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
 
 
         socket.on('drawLine', function(data) {
+            console.log("data.room is: ", data.room);
+            console.log("rootscope.room is: ", $rootScope.room);
             if (data.room == $rootScope.room) {
                 context.strokeStyle = data.color;
                 context.lineWidth = data.brush;
@@ -200,15 +203,15 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
             };
         });
 
-        //get other users drawings
-        $rootScope.$on('new coordinate', function(evt, data){
-                context.strokeStyle = data.color;
-                context.lineWidth = data.brush;
-                context.shadowBlur = 2;
-                context.shadowColor = data.color;
-                context.lineTo(data.x+1, data.y+1);
-                context.stroke();
-        })
+        ////get other users drawings
+        //$rootScope.$on('new coordinate', function(evt, data){
+        //        context.strokeStyle = data.color;
+        //        context.lineWidth = data.brush;
+        //        context.shadowBlur = 2;
+        //        context.shadowColor = data.color;
+        //        context.lineTo(data.x+1, data.y+1);
+        //        context.stroke();
+        //});
 
         //Undo changes to Canvas
         $scope.undoChanges = function() {
@@ -239,7 +242,7 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
 
                 context.drawImage(image, 0, 0, canvasDim, canvasDim);
             };
-        }
+        };
 
         // clear the canvas
         $scope.clearCanvas = function() {
@@ -278,7 +281,7 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
         $scope.switchToVideo = function(){
             console.log('clear')
             $rootScope.$broadcast("change to video", {show: true})
-        }
+        };
         
         //get video image
         $rootScope.$on("send video data", function(event, imgData) {
