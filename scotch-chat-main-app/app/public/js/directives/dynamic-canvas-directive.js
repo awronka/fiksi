@@ -137,6 +137,7 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
             // send image for undo/redo
             UndoRedo.saveImageState(imageToUndo);
             // var colors = context.getImageData(evt.layerX, evt.layerY, 1, 1).data;
+            socket.emit('mouseUp',{user:$rootScope.username});
         }, false);
 
         // Draw, if mouse button is pressed
@@ -160,6 +161,17 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
                 });
             }
         }, false);
+
+        socket.on('triggerMouseUp', function(data) {
+            console.log("data.user: ", data.user);
+
+            if (usersObject[data.user]) {
+                console.log("in mouseup if");
+                usersObject[data.user] = {xArray: [], yArray:[]};
+            }
+        });
+
+
         var user;
         socket.on('drawLine', function(data) {
             if (data.room == $rootScope.room) {
@@ -173,11 +185,11 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
                     user = usersObject[data.user];
                     user.xArray.push(data.x);
                     user.yArray.push(data.y);
-                    console.log("first coordinate: ",user.xArray[user.xArray.length -1],user.yArray[user.yArray.length -1]);
-                    console.log("second coordinate: ",user.xArray[user.xArray.length],user.yArray[user.yArray.length]);
-                    context.moveTo(user.xArray[user.xArray.length -2],user.yArray[user.yArray.length -2]);
-                    context.lineTo(user.xArray[user.xArray.length-1],user.yArray[user.yArray.length-1]);
-                    context.stroke();
+                    if (user.xArray.length > 1) {
+                        context.moveTo(user.xArray[user.xArray.length -2],user.yArray[user.yArray.length -2]);
+                        context.lineTo(user.xArray[user.xArray.length-1],user.yArray[user.yArray.length-1]);
+                        context.stroke();
+                    }
                 } else {
                     usersObject[data.user] = {xArray: [], yArray:[]};
                     user = usersObject[data.user];

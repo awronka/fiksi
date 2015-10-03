@@ -172,6 +172,10 @@ io.on('connection', function(socket) {
         io.emit('drawLine', obj);
     });
 
+    socket.on('mouseUp', function(obj) {
+        io.emit('triggerMouseUp', obj);
+    });
+
     socket.on('newImage', function(img) {
         io.emit('drawImage', img);
     });
