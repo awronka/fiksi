@@ -82,17 +82,7 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
         }
 
         socket.on('drawImage', function(data){
-
-            if (!data.buffer) return;
-            // context.clearRect(0, 0, canvasDim, canvasDim);
-            var image = new Image();
-            image.src = data;
-
-            image.onload = function() {
-
-                context.drawImage(image, 0, 0, canvasDim, canvasDim);
-            };
-
+            CanvasDraw.renderImage(context, data, canvasDim);
         });
 
         //set colors
@@ -125,7 +115,6 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
                 clearCanvas();
                 hasText = false;
             }
-            console.log("the room object is: ", $rootScope.room);
             mouseDown = true;
         }, false);
 
@@ -163,10 +152,7 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
         }, false);
 
         socket.on('triggerMouseUp', function(data) {
-            console.log("data.user: ", data.user);
-
             if (usersObject[data.user]) {
-                console.log("in mouseup if");
                 usersObject[data.user] = {xArray: [], yArray:[]};
             }
         });
@@ -174,34 +160,10 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
 
         var user;
         socket.on('drawLine', function(data) {
-            if (data.room == $rootScope.room) {
-                context.strokeStyle = data.color;
-                context.lineWidth = data.brush;
-                context.shadowBlur = 2;
-                context.shadowColor = data.color;
-                context.lineJoin = context.lineCap = "round";
-                context.beginPath();
-                if (usersObject[data.user]) {
-                    user = usersObject[data.user];
-                    user.xArray.push(data.x);
-                    user.yArray.push(data.y);
-                    if (user.xArray.length > 1) {
-                        context.moveTo(user.xArray[user.xArray.length -2],user.yArray[user.yArray.length -2]);
-                        context.lineTo(user.xArray[user.xArray.length-1],user.yArray[user.yArray.length-1]);
-                        context.stroke();
-                    }
-                } else {
-                    usersObject[data.user] = {xArray: [], yArray:[]};
-                    user = usersObject[data.user];
-                    user.xArray.push(data.x);
-                    user.yArray.push(data.y);
-                    context.stroke();
-                }
-            }
+            CanvasDraw.renderCanvas(context, data, $rootScope.room, user, usersObject);
         });
 
         socket.on('roomRequest', function(data) {
-            console.log("recieving room request");
             if (data.room == $rootScope.room) {
                 imageForEmit = canvas.toDataURL();
                 socket.emit('roomImage',{ image: true, buffer: imageForEmit.toString('base64') });
@@ -209,38 +171,13 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
         });
 
         socket.on('sentRoomImage', function(data) {
-            if (!data.buffer) return;
-            // context.clearRect(0, 0, canvasDim, canvasDim);
-            var image = new Image();
-            image.src = data;
+              CanvasDraw.renderImage(context, data, canvasDim);
 
-            image.onload = function() {
-
-                context.drawImage(image, 0, 0, canvasDim, canvasDim);
-            };
         });
 
         socket.on('canvasUpdate', function(data) {
-            if (!data.buffer) return;
-            // context.clearRect(0, 0, canvasDim, canvasDim);
-            var image = new Image();
-            image.src = data;
-
-            image.onload = function() {
-
-                context.drawImage(image, 0, 0, canvasDim, canvasDim);
-            };
+               CanvasDraw.renderImage(context, data, canvasDim);
         });
-
-        ////get other users drawings
-        //$rootScope.$on('new coordinate', function(evt, data){
-        //        context.strokeStyle = data.color;
-        //        context.lineWidth = data.brush;
-        //        context.shadowBlur = 2;
-        //        context.shadowColor = data.color;
-        //        context.lineTo(data.x+1, data.y+1);
-        //        context.stroke();
-        //});
 
         //Undo changes to Canvas
         $scope.undoChanges = function() {
