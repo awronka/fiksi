@@ -341,7 +341,6 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
                 notification.close();
             }, 2000);
         }
-    }
     });
 
 
