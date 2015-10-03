@@ -46,9 +46,9 @@ html, body {
     height:100px;
 }
 
-.can-scroll{
-    overflow: auto;
-    height: 100vh;
+#can-scroll{
+    overflow-y: scroll;
+    height: 78vh;
 }
 
 .full-width {

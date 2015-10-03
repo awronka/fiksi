@@ -1,5 +1,5 @@
 //Our Contrller 
-app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialog, SignUp, socket, $http, $rootScope) {
+app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, ChatRoomRoute, $mdDialog, SignUp, socket, $rootScope) {
     //Global Scope
     $scope.messages = [];
     $scope.room = "";
@@ -48,16 +48,18 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
                     click: function () {
                         //What happens on clicking the rooms? Swtich room.
                         $scope.room = clickedRoom;
-                        $rootScope.room = clickedRoom;
+
+                        $scope.inviteLink="localhost:4000/"+$scope.room;
                         //Notify the server that the user changed his room
                         socket.emit('switch room', {
                             newRoom: clickedRoom,
                             username: $scope.username
                         });
                         //Fetch the new rooms messages
-                        $http.get(serverBaseUrl + '/msg?room=' + clickedRoom).success(function (msgs) {
-                            $scope.messages = msgs;
-                        });
+                        ChatRoomRoute.getRoom(serverBaseUrl + '/msg?room=' + clickedRoom).then(function(msgs){
+                            $scope.messages = msgs.data;
+                        })
+                        
                     }
                 }));
             }
@@ -78,6 +80,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
                 targetEvent: ev
             })
             .then(function (answer) {
+                console.log("newSession:",answer.newSession);
                 //Set username with the value returned from the modal
                 $scope.username = answer.displayName;
                 //Tell the server there is a new user
@@ -96,9 +99,9 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
                 });
 
                 //Fetch chat messages in room
-                $http.get(serverBaseUrl + '/msg?room=' + $scope.room).success(function (msgs) {
-                    $scope.messages = msgs;
-                });
+                ChatRoomRoute.getRoom(serverBaseUrl + '/msg?room=' + $scope.room).then(function(msgs){
+                    $scope.messages = msgs.data;
+                })
             }, function () {
 
             });
@@ -255,31 +258,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
 
     
     //Listen for new messages
-    socket.on('message created', function (data) {
-        console.log('listened');
-        //Push to new message to our $scope.messages
-        $scope.messages.push(data);
-        //Empty the textarea
-        $scope.message = "";
 
-        var options = {
-            body: data.content
-        };
-
-        var notification = new Notification("Message from: "+data.username, options);        
-
-        notification.onshow = function () {
-            
-            // auto close after 1 second
-            setTimeout(function () {
-                notification.close();
-            }, 2000);
-        }
-
-    });
-/*    socket.on('stellatest',function(data){
-        console.log(data);
-    });*/
     //Send a new message
     $scope.send = function (msg) {
         //Notify the server that there is a new message with the message as packet
@@ -288,7 +267,36 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, $mdDialo
             message: msg,
             username: $scope.username
         });
+        //$scope.message="";
 
-    }
+    } 
+    socket.on('message created', function (data) {
+        if(data.room==$scope.room){
+        //Push to new message to our $scope.messages
+           $scope.messages.push(data);
+            //Empty the textarea
+            $scope.message = "";
+
+            setTimeout(function(){
+                var chatwindow=document.getElementById('can-scroll');
+                chatwindow.scrollTop=chatwindow.scrollHeight;
+            },300);
+
+            var options = {
+                body: data.content
+            };
+
+            var notification = new Notification("Message from: "+data.username, options);        
+
+            notification.onshow = function () {
+            
+                // auto close after 1 second
+                setTimeout(function () {
+                    notification.close();
+                }, 2000);
+            }
+        } 
+    });
+  
 });
 

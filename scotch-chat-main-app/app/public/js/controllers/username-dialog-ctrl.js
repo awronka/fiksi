@@ -1,22 +1,19 @@
 //Dialog controller
 function UsernameDialogController($scope, $mdDialog, SignUp, AuthService) {
     //show and hide the depending on the userStatus being new or returning
-/*    $scope.userStatus = true;
+   $scope.newSession = true;
     
 
     
-    $scope.newUser = function(){
-        $scope.userStatus = true;
-            SignUp.getUsers().then(function(data){
-                    console.log(data)
-                })
+    $scope.newRoom = function(){
+        $scope.newSession = false;
     }
     
-    $scope.returningUser = function(){
-        $scope.userStatus = false;
+    $scope.existingRoom = function(){
+        $scope.newSession = true;
     }
     
-   $scope.Login = function (answer) {
+   /*$scope.Login = function (answer) {
 
         $scope.error = null;
 
@@ -31,6 +28,7 @@ function UsernameDialogController($scope, $mdDialog, SignUp, AuthService) {
     
     
     $scope.answer = function (answer) {
+        answer.newSession=$scope.newSession;
          SignUp.signup(answer).then(function(data){
              console.log("This is the data" + data);
          });

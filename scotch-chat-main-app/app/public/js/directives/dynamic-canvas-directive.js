@@ -2,43 +2,14 @@
  * Created by GalenWeber on 9/19/15.
  * Edited Brilliantly by AlexiusWronka on 9/24/15
  */
-app.directive('dynamicCanvas', function($rootScope, UndoRedo, socket) {
 
+app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw) {
 
 
 
     function CanvasLink($scope) {
 
-
-        // We need to have the pixel density of the canvas reflect the pixel density of the users screen
-        // PIXEL_RATIO is an automatically invoked function that returns the relevant ratio
-        var PIXEL_RATIO = (function() {
-            var ctx = document.createElement("canvas").getContext("2d"),
-                dpr = window.devicePixelRatio || 1,
-                bsr = ctx.webkitBackingStorePixelRatio ||
-                ctx.mozBackingStorePixelRatio ||
-                ctx.msBackingStorePixelRatio ||
-                ctx.oBackingStorePixelRatio ||
-                ctx.backingStorePixelRatio || 1;
-
-            return dpr / bsr;
-        })();
-
-
-
-        var createHiDPICanvas = function(w, h, ratio) {
-            if (!ratio) {
-                ratio = PIXEL_RATIO;
-            }
-            var can = document.createElement("canvas");
-            can.width = w * ratio;
-            can.height = h * ratio;
-            can.style.width = w + "px";
-            can.style.height = h + "px";
-            can.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0);
-            return can;
-        };
-
+        var createHiDPICanvas = CanvasDraw.pixelRatioCanvas;
 
         // Here we set the width and height of the canvas, then create one with our function
         var canvasWidth = 450;
@@ -49,8 +20,6 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, socket) {
         var context = canvas.getContext("2d");
         var mouseDown = false;
         var hasText = true;
-        var brushColor = "rgb(0, 0, 0)";
-        var image = document.createElement("img");
 
         var clearCanvas = function() {
             context.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -151,14 +120,6 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, socket) {
             brushSize = num;
         };
         
-        //draw a dot
-        function point(x, y, canvas){
-        canvas.beginPath();
-        canvas.arc(x, y, 1, 0, 2 * Math.PI, true);
-        canvas.stroke();
-        }
-        
-        
         // Detect mousedown
         canvas.addEventListener("mousedown", function(evt) {
             if (hasText) {
@@ -167,13 +128,7 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, socket) {
             }
             console.log("the room object is: ", $rootScope.room);
             mouseDown = true;
-            var colors = curColor;
-            brushColor = colors;
-            context.beginPath();
-            context.lineWidth = brushSize;
-            context.strokeStyle = brushColor;
-            context.lineJoin = context.lineCap = "round";
-            point(evt.layerX, evt.layerY, context)
+            CanvasDraw.downDraw(curColor, brushSize, evt.layerX, evt.layerY, context)
             $rootScope.$broadcast('newLine', {});
             socket.emit('beginPath',{room: $rootScope.room});
         }, false);
@@ -198,27 +153,15 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, socket) {
         // Draw, if mouse button is pressed
         canvas.addEventListener("mousemove", function(evt) {
             if (mouseDown) {                               
-                //context.lineTo(evt.layerX + 1, evt.layerY + 1);
-                //context.stroke();
-                context.shadowBlur = 2;
-                context.shadowColor = brushColor;
-                //$rootScope.$broadcast('coordinateToSocket', {
-                //    x: (evt.layerX + 1),
-                //    y: (evt.layerY + 1),
-                //    color: brushColor,
-                //    brush: brushSize
-                //});
-                socket.emit('draw',{
-                    room: $rootScope.room,
+                CanvasDraw.moveDraw(curColor, evt.layerX, evt.layerY, context)
+                $rootScope.$broadcast('coordinateToSocket', {
                     x: (evt.layerX + 1),
                     y: (evt.layerY + 1),
-                    color: brushColor,
+                    color: curColor,
                     brush: brushSize
                 });
             }
         }, false);
-
-
 
         socket.on('newPath', function(data) {
             if (data.room == $rootScope.room) {
