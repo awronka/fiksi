@@ -88,8 +88,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, ChatRoom
                 socket.emit('new user', {
                     username: answer.displayName
                 });
-                //Set room to general;
-                $scope.room = answer.displayName.split(' ').join('-')+'*'+answer.chatRoom.split(' ').join('-');
+                $scope.room = answer.chatRoom.split(' ').join('-');
                 $rootScope.room = $scope.room;
                 
                 $scope.inviteLink="localhost:4000/"+$scope.room;
