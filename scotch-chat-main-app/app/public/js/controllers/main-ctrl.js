@@ -118,8 +118,10 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
                         //What happens on clicking the rooms? Swtich room.
                         $scope.room = clickedRoom;
                         $rootScope.room = $scope.room;
+                        socket.emit("requestRoom",{room:$rootScope.room});
 
-                        $scope.inviteLink = "localhost:4000/" + $scope.room;
+                        //$scope.inviteLink="localhost:4000/"+$scope.room;
+                        $scope.inviteLink="https://powerful-caverns-6918.herokuapp.com"+$scope.room;
                         //Notify the server that the user changed his room
                         socket.emit('switch room', {
                             newRoom: clickedRoom,
@@ -160,8 +162,9 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
                 });
                 $scope.room = answer.chatRoom.split(' ').join('-');
                 $rootScope.room = $scope.room;
-
-                $scope.inviteLink = "localhost:4000/" + $scope.room;
+                socket.emit("requestRoom",{room:$rootScope.room});
+                
+                $scope.inviteLink="localhost:4000/"+$scope.room;
                 //$scope.inviteLink=herokulink
 
                 socket.emit('createRoom', {
@@ -322,17 +325,23 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
     //Listen for chat images
     socket.on('chat image created', function(data) {
         console.log('image received');
+        if(data.room==$scope.room){
         $scope.messages.push(data);
 
-        var notification = new Notification("New image from " + data.username);
 
-        notification.onshow = function() {
+        setTimeout(function(){
+            var chatwindow=document.getElementById('can-scroll');
+            chatwindow.scrollTop=chatwindow.scrollHeight;
+        },150);
+
+        var notification = new Notification("New image from " + data.username);        
 
             // auto close after 2 second
             setTimeout(function() {
                 notification.close();
             }, 2000);
         }
+    }
     });
 
 
@@ -360,6 +369,7 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
                 var chatwindow = document.getElementById('can-scroll');
                 chatwindow.scrollTop = chatwindow.scrollHeight;
             }, 300);
+
 
             var options = {
                 body: data.content
