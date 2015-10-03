@@ -63,27 +63,7 @@ app.get('/', function(req, res) {
 //This route is simply run only on first launch just to generate some chat history
 app.post('/setup', function(req, res) {
     //Array of chat data. Each object properties must match the schema object properties
-    var chatData = [{
-        created: new Date(),
-        content: 'Hi',
-        username: 'Chris',
-        room: 'php'
-    }, {
-        created: new Date(),
-        content: 'Hello',
-        username: 'Obinna',
-        room: 'laravel'
-    }, {
-        created: new Date(),
-        content: 'Ait',
-        username: 'Bill',
-        room: 'angular'
-    }, {
-        created: new Date(),
-        content: 'Amazing room',
-        username: 'Patience',
-        room: 'socet.io'
-    }];
+    var chatData = [];
 
     //Loop through each of the chat data and insert into the database
     for (var c = 0; c < chatData.length; c++) {
@@ -104,7 +84,7 @@ app.get('/msg', function(req, res) {
     //Find
     Chat.find({
         'room': req.query.room
-    }).sort('created').exec(function(err, msgs) {
+    }).exec(function(err, msgs) {
         //console.log(err, "done");
         //Send
         res.json(msgs);
@@ -135,6 +115,10 @@ io.on('connection', function(socket) {
   });
 
   });
+
+  socket.on("new room created", function(obj){
+    io.emit("new room to append to GUI", obj)
+  })
 
 
   //Listens for new user
@@ -172,10 +156,6 @@ io.on('connection', function(socket) {
         io.emit('drawLine', obj);
     });
 
-    socket.on('mouseUp', function(obj) {
-        io.emit('triggerMouseUp', obj);
-    });
-
     socket.on('newImage', function(img) {
         io.emit('drawImage', img);
     });
@@ -208,9 +188,6 @@ io.on('connection', function(socket) {
       });
     });
 
-    socket.on('switch room',function(data){
-        defaultRoom=data.newRoom;
-    })
     //Listens for a new chat message
     socket.on('new message', function(data) {
 
