@@ -3,7 +3,7 @@
  * Edited Brilliantly by AlexiusWronka on 9/24/15
  */
 
-app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw) {
+app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket) {
 
 
 
@@ -12,9 +12,8 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw) {
         var createHiDPICanvas = CanvasDraw.pixelRatioCanvas;
 
         // Here we set the width and height of the canvas, then create one with our function
-        var canvasWidth = 450;
-        var canvasHeight = 450;
-        var canvas = createHiDPICanvas(canvasWidth, canvasHeight);
+        var canvasDim = 500;
+        var canvas = createHiDPICanvas(canvasDim, canvasDim);
 
 
         var context = canvas.getContext("2d");
@@ -22,12 +21,12 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw) {
         var hasText = true;
 
         var clearCanvas = function() {
-            context.clearRect(0, 0, canvasWidth, canvasHeight);
+            context.clearRect(0, 0, canvasDim, canvasDim);
         };
 
         // Adding instructions
-        context.fillText("Drop an image onto the canvas", canvasWidth / 2, canvasHeight / 2);
-        context.fillText("Click a spot to set as brush color", canvasWidth / 2, canvasHeight / 2 + 20);
+        context.fillText("Drop an image onto the canvas", canvasDim / 2, canvasDim / 2);
+        context.fillText("Click a spot to set as brush color", canvasDim / 2, canvasDim / 2 + 20);
 
 
 
@@ -69,9 +68,9 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw) {
             img.addEventListener("load", function() {
                 console.log("in the img on load function");
                 //clearCanvas();
-                if (img.height > canvasHeight) {
-                    img.width *= canvasHeight / img.height;
-                    img.height = canvasHeight;
+                if (img.height > canvasDim) {
+                    img.width *= canvasDim / img.height;
+                    img.height = canvasDim;
                 }
                 context.drawImage(img, 0, 0, img.width, img.height);
                 imageForEmit = canvas.toDataURL();
@@ -85,13 +84,13 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw) {
         socket.on('drawImage', function(data){
 
             if (!data.buffer) return;
-            // context.clearRect(0, 0, canvasWidth, canvasHeight);
+            // context.clearRect(0, 0, canvasDim, canvasDim);
             var image = new Image();
             image.src = data;
 
             image.onload = function() {
 
-                context.drawImage(image, 0, 0, 450, 450);
+                context.drawImage(image, 0, 0, canvasDim, canvasDim);
             };
 
         });
@@ -191,13 +190,13 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw) {
 
         socket.on('canvasUpdate', function(data) {
             if (!data.buffer) return;
-            // context.clearRect(0, 0, canvasWidth, canvasHeight);
+            // context.clearRect(0, 0, canvasDim, canvasDim);
             var image = new Image();
             image.src = data;
 
             image.onload = function() {
 
-                context.drawImage(image, 0, 0, 450, 450);
+                context.drawImage(image, 0, 0, canvasDim, canvasDim);
             };
         });
 
@@ -215,14 +214,14 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw) {
         $scope.undoChanges = function() {
             var data = UndoRedo.undo();
             if (!data) return;
-            context.clearRect(0, 0, canvasWidth, canvasHeight);
+            context.clearRect(0, 0, canvasDim, canvasDim);
 
             var image = new Image();
             image.src = data;
 
             image.onload = function() {
 
-                context.drawImage(image, 0, 0, 450, 250);
+                context.drawImage(image, 0, 0, canvasDim, canvasDim);
             };
 
         };
@@ -231,20 +230,20 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw) {
         $scope.redoChanges = function() {
             var data = UndoRedo.redo();
             if (!data) return;
-            context.clearRect(0, 0, canvasWidth, canvasHeight);
+            context.clearRect(0, 0, canvasDim, canvasDim);
 
             var image = new Image();
             image.src = data;
 
             image.onload = function() {
 
-                context.drawImage(image, 0, 0, 450, 250);
+                context.drawImage(image, 0, 0, canvasDim, canvasDim);
             };
         }
 
         // clear the canvas
         $scope.clearCanvas = function() {
-            context.clearRect(0, 0, canvasWidth, canvasHeight);
+            context.clearRect(0, 0, canvasDim, canvasDim);
             $rootScope.$broadcast('clearCanvas', {});
         };
 
@@ -265,13 +264,13 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw) {
         $scope.$on("update canvas", function(event, imgData) {
             var data = imgData.data.buffer.buffer;
             if (!data) return;
-            // context.clearRect(0, 0, canvasWidth, canvasHeight);
+            // context.clearRect(0, 0, canvasDim, canvasDim);
             var image = new Image();
             image.src = data;
 
             image.onload = function() {
 
-                context.drawImage(image, 0, 0, 450, 250);
+                context.drawImage(image, 0, 0, canvasDim, canvasDim);
             };
         });
         
@@ -287,13 +286,13 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw) {
             var data = imgData.videoImage;
             
             if (!data) return;
-            // context.clearRect(0, 0, canvasWidth, canvasHeight);
+            // context.clearRect(0, 0, canvasDim, canvasDim);
             var image = new Image();
             image.src = data;
 
             image.onload = function() {
 
-                context.drawImage(image, 0, 0, 450, 250);
+                context.drawImage(image, 0, 0, canvasDim, canvasDim);
             };
         });
 

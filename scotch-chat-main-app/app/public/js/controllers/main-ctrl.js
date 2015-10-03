@@ -156,7 +156,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, ChatRoom
         //should test if the box is working
         var imgFrame = document.getElementById("overlay-canvas");   // Get the <ul> element with id="myList"
         var ctx = imgFrame.getContext('2d');
-        ctx.drawImage(img, 0,0,450,250);
+        ctx.drawImage(img, 0,0,500,500);
         // if (imgFrame.hasChildNodes()) {
         // // It has at least one
         // imgFrame.removeChild(imgFrame.lastChild);
@@ -196,7 +196,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, ChatRoom
 
     // Here we set the width and height of the canvas, then create one with our function
     var canvasWidth = 450;
-    var canvasHeight = 250;
+    var canvasHeight = 450;
     var context = null;
 
     var createCanvas = function() {
