@@ -196,8 +196,8 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
                 $rootScope.room = $scope.room;
                 socket.emit("requestRoom",{room:$rootScope.room});
                 
-                $scope.inviteLink="localhost:4000/"+$scope.room;
-                //$scope.inviteLink=herokulink
+                // $scope.inviteLink="localhost:4000/"+$scope.room;
+                $scope.inviteLink="https://powerful-caverns-6918.herokuapp.com"+$scope.room;
 
                 socket.emit('createRoom', {
                     newRoom: $scope.room

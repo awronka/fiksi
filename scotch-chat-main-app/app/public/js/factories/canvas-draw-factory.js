@@ -50,6 +50,42 @@ app.factory("CanvasDraw", function(){
             can.style.height = h + "px";
             can.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0);
             return can;
+        }, 
+        renderCanvas: function(canvas, data, room, user, usersObject){
+              if (data.room == room) {
+                canvas.strokeStyle = data.color;
+                canvas.lineWidth = data.brush;
+                canvas.shadowBlur = 2;
+                canvas.shadowColor = data.color;
+                canvas.lineJoin = canvas.lineCap = "round";
+                canvas.beginPath();
+                if (usersObject[data.user]) {
+                    user = usersObject[data.user];
+                    user.xArray.push(data.x);
+                    user.yArray.push(data.y);
+                    if (user.xArray.length > 1) {
+                        canvas.moveTo(user.xArray[user.xArray.length -2],user.yArray[user.yArray.length -2]);
+                        canvas.lineTo(user.xArray[user.xArray.length-1],user.yArray[user.yArray.length-1]);
+                        canvas.stroke();
+                    }
+                } else {
+                    usersObject[data.user] = {xArray: [], yArray:[]};
+                    user = usersObject[data.user];
+                    user.xArray.push(data.x);
+                    user.yArray.push(data.y);
+                    canvas.stroke();
+                }
+            }
+        },
+        renderImage(context, data, canvasDim){
+            if (!data) return;
+            var image = new Image();
+            image.src = data;
+            image.onload = function() {
+
+                context.drawImage(image, 0, 0, canvasDim, canvasDim);
+            };
         }
+        
 	}
 })
