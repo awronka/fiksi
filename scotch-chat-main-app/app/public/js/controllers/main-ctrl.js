@@ -4,6 +4,38 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
     $scope.messages = [];
     $scope.room = "";
 
+    // var tray = new GUI.Tray({ 
+    //     title: 'Fiksi', 
+    //     icon: 'img/wrenchGreen.png',
+    //     click: function() {
+    //         Window.close()
+    //     }
+    // });
+
+    // var trayMenu = new GUI.Menu();
+    // trayMenu.append(new GUI.MenuItem({ type: 'normal', label: 'Launch Fiksi' }));
+    // tray.menu = trayMenu;
+
+    // Reference to window and tray
+    var win = GUI.Window.get();
+    var tray;
+
+    // Get the minimize event
+    win.on('minimize', function() {
+      // Hide window
+      this.hide();
+
+      // Show tray
+      tray = new GUI.Tray({ title: 'Fiksi', icon: 'wrenchGreen.png' });
+
+      // Show window and remove tray when clicked
+      tray.on('click', function() {
+        win.show();
+        this.remove();
+        tray = null;
+      });
+    });
+
     //Build the window menu for our app using the GUI and Window service
     var windowMenu = new GUI.Menu({
         type: 'menubar'
