@@ -171,7 +171,7 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
         });
 
         socket.on('sentRoomImage', function(data) {
-              CanvasDraw.renderImage(context, data, canvasDim);git 
+            CanvasDraw.renderImage(context, data.buffer, canvasDim);
         });
 
         socket.on('canvasUpdate', function(data) {
