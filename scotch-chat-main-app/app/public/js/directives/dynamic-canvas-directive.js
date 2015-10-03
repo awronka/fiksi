@@ -171,7 +171,11 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
         });
 
         socket.on('sentRoomImage', function(data) {
-            CanvasDraw.renderImage(context, data.buffer, canvasDim);
+            if(hasText) {
+                clearCanvas();
+                hasText = false;
+                CanvasDraw.renderImage(context, data.buffer, canvasDim);
+            }
         });
 
         socket.on('canvasUpdate', function(data) {
