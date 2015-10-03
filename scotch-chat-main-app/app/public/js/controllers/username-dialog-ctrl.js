@@ -6,11 +6,11 @@ function UsernameDialogController($scope, $mdDialog, SignUp, AuthService) {
 
     
     $scope.newRoom = function(){
-        $scope.newSession = false;
+        $scope.newSession = true;
     }
     
     $scope.existingRoom = function(){
-        $scope.newSession = true;
+        $scope.newSession = false;
     }
     
    /*$scope.Login = function (answer) {
