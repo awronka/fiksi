@@ -77,7 +77,7 @@ app.factory("CanvasDraw", function(){
                 }
             }
         },
-        renderImage(context, data, canvasDim){
+        renderImage: function(context, data, canvasDim){
             if (!data) return;
             var image = new Image();
             image.src = data;
@@ -88,4 +88,4 @@ app.factory("CanvasDraw", function(){
         }
         
 	}
-})
+});
