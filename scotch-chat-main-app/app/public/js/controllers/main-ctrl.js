@@ -363,7 +363,7 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
 
     //Listen for chat images
     socket.on('chat image created', function(data) {
-        console.log('image received');
+        console.log('image received data: ', data);
         if (data.room == $scope.room) {
             $scope.messages.push(data);
 
@@ -397,6 +397,7 @@ app.controller('MainCtrl', function($scope, Window, AuthService, GUI, ChatRoomRo
 
     }
     socket.on('message created', function(data) {
+        console.log("message data: ", data)
         if (data.room == $scope.room) {
             //Push to new message to our $scope.messages
             $scope.messages.push(data);
