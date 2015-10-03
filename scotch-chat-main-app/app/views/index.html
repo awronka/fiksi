@@ -10,7 +10,7 @@
      <link rel="stylesheet" href="css/canvas-style.css">
     <link rel="stylesheet" href="libs/angular-material/angular-material.css">
     <script src="libs/angular/angular.js"></script>
-     <!--<script src="http://localhost:2015/socket.io/socket.io.js"></script>-->
+     <!-- <script src="http://localhost:2015/socket.io/socket.io.js"></script> -->
     <script src="https://frozen-sea-6880.herokuapp.com/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="libs/angular-animate/angular-animate.js"></script>
     <script type="text/javascript" src="libs/angular-aria/angular-aria.js"></script>
@@ -50,7 +50,7 @@
 </head>
 
 <body class="wrapper" ng-controller="ViewCtrl">
-    <video-capture ng-show="captureVideo"></video-capture>
+    <!--<video-capture ng-show="captureVideo"></video-capture>-->
     <div ng-controller="MainCtrl" ng-init="usernameModal()">
         <span ng-show="!captureVideo">
         <div class="col-xs-6">
@@ -60,12 +60,12 @@
                 <div id="draw-window">
                     <div id="canvas-window">
                     <section class="design-surface">
-                        <!--- draw canvas -->
-                        <div id="test-box">
+                        <!--<div id="test-box">
                             <div id="img-test-div">
 
                             </div>
-                        </div>
+                        </div>-->
+                        <!--- draw canvas -->
 
                         <dynamic-canvas></dynamic-canvas>
                     </section>
@@ -79,7 +79,7 @@
         <div class='col-xs-6'>
             <md-content>
                 <section>
-                    <md-subheader class="md-primary header static-header">Room: {{room}} <span align="right">Userame: {{username}} </span> </md-subheader>
+                    <md-subheader class="room-name md-primary header static-header">Room: {{room}} <span align="right">Userame: {{username}} </span> </md-subheader>
 					<md-subheader>
                         <span>Invite anyone to chat instantly: <a ng-href="{{inviteLink}}">{{inviteLink}}</a></span>
                     </md-subheader>                    

@@ -33,10 +33,10 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, ChatRoom
         }
         
     //Listens for a new image to be sent
-    socket.on('new user image', function(image){
-        document.body.appendChild(img);
-        
-    });
+    //socket.on('new user image', function(image){
+    //    document.body.appendChild(img);
+    //
+    //});
     
 
         //Handle creation of room
@@ -48,6 +48,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, ChatRoom
                     click: function () {
                         //What happens on clicking the rooms? Swtich room.
                         $scope.room = clickedRoom;
+
                         $scope.inviteLink="localhost:4000/"+$scope.room;
                         //Notify the server that the user changed his room
                         socket.emit('switch room', {
@@ -87,11 +88,9 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, ChatRoom
                     username: answer.displayName
                 });
                 //Set room to general;
-                if(answer.newSession){
-                    $scope.room = answer.displayName.split(' ').join('-')+'*'+answer.chatRoom.split(' ').join('-');
-                }else{
-                    $scope.room = answer.oldChatRoom;
-                }     
+                $scope.room = answer.displayName.split(' ').join('-')+'*'+answer.chatRoom.split(' ').join('-');
+                $rootScope.room = $scope.room;
+                
                 $scope.inviteLink="localhost:4000/"+$scope.room;
                 //$scope.inviteLink=herokulink
 
@@ -157,7 +156,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, ChatRoom
         //should test if the box is working
         var imgFrame = document.getElementById("overlay-canvas");   // Get the <ul> element with id="myList"
         var ctx = imgFrame.getContext('2d');
-        ctx.drawImage(img, 0,0,450,250);
+        ctx.drawImage(img, 0,0,500,500);
         // if (imgFrame.hasChildNodes()) {
         // // It has at least one
         // imgFrame.removeChild(imgFrame.lastChild);
@@ -197,7 +196,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, ChatRoom
 
     // Here we set the width and height of the canvas, then create one with our function
     var canvasWidth = 450;
-    var canvasHeight = 250;
+    var canvasHeight = 450;
     var context = null;
 
     var createCanvas = function() {
@@ -205,7 +204,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, ChatRoom
         canvas.id = 'overlay-canvas';
         canvas.setAttribute('class','coveringCanvas');
         var imgFrame = document.getElementById("img-test-div");
-        imgFrame.appendChild(canvas);
+        //imgFrame.appendChild(canvas);
         context = canvas.getContext("2d");
         context.strokeStyle = "#cb3594";
         context.lineWidth = 10;
