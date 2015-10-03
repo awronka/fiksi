@@ -18,7 +18,7 @@
     },
     "window": {
         "title": "Fiksi",
-        "toolbar": false,
+        "toolbar": true,
         "frame": true,
         "position": "center",
         "fullscreen": false,
