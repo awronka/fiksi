@@ -48,6 +48,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, ChatRoom
                     click: function () {
                         //What happens on clicking the rooms? Swtich room.
                         $scope.room = clickedRoom;
+                        $rootScope.room = $scope.room;
 
                         $scope.inviteLink="localhost:4000/"+$scope.room;
                         //Notify the server that the user changed his room
