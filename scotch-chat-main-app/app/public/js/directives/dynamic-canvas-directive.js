@@ -209,10 +209,12 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
         });
 
         socket.on('sentRoomImage', function(data) {
+            console.log("data is: ", data);
+            clearCanvas();
             if (!data.buffer) return;
             // context.clearRect(0, 0, canvasDim, canvasDim);
             var image = new Image();
-            image.src = data;
+            image.src = data.buffer;
 
             image.onload = function() {
 
