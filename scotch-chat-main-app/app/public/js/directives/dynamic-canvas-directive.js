@@ -5,7 +5,7 @@
 
 app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket) {
 
-
+    var usersObject = {};
 
     function CanvasLink($scope) {
 
@@ -127,8 +127,6 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
             }
             console.log("the room object is: ", $rootScope.room);
             mouseDown = true;
-            $rootScope.$broadcast('newLine', {});
-            socket.emit('beginPath',{room: $rootScope.room});
         }, false);
 
 
@@ -144,7 +142,7 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
         // Draw, if mouse button is pressed
         canvas.addEventListener("mousemove", function(evt) {
             if (mouseDown) {                               
-                CanvasDraw.moveDraw(curColor, evt.layerX, evt.layerY, context);
+                //CanvasDraw.moveDraw(curColor, evt.layerX, evt.layerY, context);
                 //$rootScope.$broadcast('coordinateToSocket', {
                 //    x: (evt.layerX + 1),
                 //    y: (evt.layerY + 1),
@@ -157,29 +155,36 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
                     x: (evt.layerX + 1),
                     y: (evt.layerY + 1),
                     color: curColor,
-                    brush: brushSize
+                    brush: brushSize,
+                    user:$rootScope.username
                 });
             }
         }, false);
-
-        socket.on('newPath', function(data) {
-            if (data.room == $rootScope.room) {
-                context.beginPath();
-            }
-        });
-
-
+        var user;
         socket.on('drawLine', function(data) {
-            console.log("data.room is: ", data.room);
-            console.log("rootscope.room is: ", $rootScope.room);
             if (data.room == $rootScope.room) {
                 context.strokeStyle = data.color;
                 context.lineWidth = data.brush;
                 context.shadowBlur = 2;
                 context.shadowColor = data.color;
                 context.lineJoin = context.lineCap = "round";
-                context.lineTo(data.x+1, data.y+1);
-                context.stroke();
+                context.beginPath();
+                if (usersObject[data.user]) {
+                    user = usersObject[data.user];
+                    user.xArray.push(data.x);
+                    user.yArray.push(data.y);
+                    console.log("first coordinate: ",user.xArray[user.xArray.length -1],user.yArray[user.yArray.length -1]);
+                    console.log("second coordinate: ",user.xArray[user.xArray.length],user.yArray[user.yArray.length]);
+                    context.moveTo(user.xArray[user.xArray.length -2],user.yArray[user.yArray.length -2]);
+                    context.lineTo(user.xArray[user.xArray.length-1],user.yArray[user.yArray.length-1]);
+                    context.stroke();
+                } else {
+                    usersObject[data.user] = {xArray: [], yArray:[]};
+                    user = usersObject[data.user];
+                    user.xArray.push(data.x);
+                    user.yArray.push(data.y);
+                    context.stroke();
+                }
             }
         });
 

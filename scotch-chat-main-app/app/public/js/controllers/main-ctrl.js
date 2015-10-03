@@ -84,6 +84,7 @@ app.controller('MainCtrl', function ( $scope, Window, AuthService, GUI, ChatRoom
                 console.log("newSession:",answer.newSession);
                 //Set username with the value returned from the modal
                 $scope.username = answer.displayName;
+                $rootScope.username = $scope.username;
                 //Tell the server there is a new user
                 socket.emit('new user', {
                     username: answer.displayName
