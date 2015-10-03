@@ -171,8 +171,7 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
         });
 
         socket.on('sentRoomImage', function(data) {
-              CanvasDraw.renderImage(context, data, canvasDim);
-
+              CanvasDraw.renderImage(context, data, canvasDim);git 
         });
 
         socket.on('canvasUpdate', function(data) {
@@ -244,26 +243,26 @@ app.directive('dynamicCanvas', function($rootScope, UndoRedo, CanvasDraw, socket
         });
         
         //switch to video
-        $scope.switchToVideo = function(){
-            console.log('clear')
-            $rootScope.$broadcast("change to video", {show: true})
-        };
+        // $scope.switchToVideo = function(){
+        //     console.log('clear')
+        //     $rootScope.$broadcast("change to video", {show: true})
+        // };
         
-        //get video image
-        $rootScope.$on("send video data", function(event, imgData) {
-            console.log("This is the image data: ", imgData)
-            var data = imgData.videoImage;
+        // //get video image
+        // $rootScope.$on("send video data", function(event, imgData) {
+        //     console.log("This is the image data: ", imgData)
+        //     var data = imgData.videoImage;
             
-            if (!data) return;
-            // context.clearRect(0, 0, canvasDim, canvasDim);
-            var image = new Image();
-            image.src = data;
+        //     if (!data) return;
+        //     // context.clearRect(0, 0, canvasDim, canvasDim);
+        //     var image = new Image();
+        //     image.src = data;
 
-            image.onload = function() {
+        //     image.onload = function() {
 
-                context.drawImage(image, 0, 0, canvasDim, canvasDim);
-            };
-        });
+        //         context.drawImage(image, 0, 0, canvasDim, canvasDim);
+        //     };
+        // });
 
         var __slice = Array.prototype.slice;
 
